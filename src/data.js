@@ -97,11 +97,11 @@ export const projects = [
     blurb:
       'An AI-assisted research tool for NSE-listed stocks — live price charts, fundamentals, recent news, and a generated research brief, with a saveable watchlist.',
     longDescription:
-      'Search any NSE-listed stock and get a live price chart, key fundamentals, recent news, and an AI-generated research brief (bull case / bear case / key risks) via the Gemini API, plus a saveable watchlist backed by Supabase. Built solo on Next.js 14 (App Router) with TypeScript, pulling live data from Yahoo Finance and Google News with a caching layer for resilience against flaky third-party sources. Currently a private prototype — not yet released publicly.',
+      'Search any NSE-listed stock and get a live price chart, key fundamentals, recent news, and an AI-generated research brief (bull case / bear case / key risks) via the Gemini API, plus a saveable watchlist backed by Supabase. Built solo on Next.js 14 (App Router) with TypeScript, pulling live data from Yahoo Finance and Google News with a caching layer for resilience against flaky third-party sources.',
     tags: ['Next.js', 'TypeScript', 'Gemini AI', 'Supabase'],
     match: '94% Match',
     year: '2026',
-    link: '',
+    link: 'https://equity-research-assistant-eta.vercel.app',
     repo: '',
     accent: '#34d399',
   },
