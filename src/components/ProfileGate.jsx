@@ -1,11 +1,18 @@
 import { motion } from 'framer-motion'
 import { profiles } from '../data.js'
+import { playEntryChime } from '../sound.js'
 
 /**
  * The "Who's watching?" Netflix profile selection screen.
- * Selecting any profile calls onSelect() and enters the site.
+ * Selecting any profile plays the entry chime and calls onSelect() to
+ * enter the site.
  */
 export default function ProfileGate({ onSelect }) {
+  function handleSelect(p) {
+    playEntryChime()
+    onSelect(p)
+  }
+
   return (
     <motion.div
       className="gate"
@@ -20,7 +27,7 @@ export default function ProfileGate({ onSelect }) {
           <motion.button
             key={p.id}
             className="gate__profile"
-            onClick={() => onSelect(p)}
+            onClick={() => handleSelect(p)}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
