@@ -26,13 +26,16 @@ export default function ProfileGate({ onSelect }) {
             transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
           >
             <span className="gate__avatar" style={{ background: p.color }}>
-              {p.name[0]}
+              {p.avatar ? (
+                <img className="gate__avatar-img" src={p.avatar} alt={p.name} />
+              ) : (
+                p.name[0]
+              )}
             </span>
             <span className="gate__name">{p.name}</span>
           </motion.button>
         ))}
       </div>
-      <p className="gate__hint">Pick a profile — they all lead to the good stuff.</p>
     </motion.div>
   )
 }
