@@ -28,9 +28,8 @@ export const profiles = [
 
 export const socials = [
   { label: 'GitHub', url: 'https://github.com/Ayush05G', handle: '@Ayush05G' },
-  // TODO: replace with your real LinkedIn and LeetCode profile URLs.
-  { label: 'LinkedIn', url: 'https://linkedin.com/in/', handle: '/in/ayush-gupta' },
-  { label: 'LeetCode', url: 'https://leetcode.com/', handle: 'Top 100K · 500+ solved' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/ayush-gupta-17b3112a2/', handle: '/in/ayush-gupta' },
+  { label: 'LeetCode', url: 'https://leetcode.com/u/AG2425/', handle: '@AG2425 · Top 100K' },
   { label: 'Email', url: 'mailto:ayush2425.rk@gmail.com', handle: 'ayush2425.rk@gmail.com' },
 ]
 
