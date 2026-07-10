@@ -67,43 +67,30 @@ export const skills = [
 // Projects become the "Featured Projects" row. Click a card → detail modal.
 export const projects = [
   {
-    title: 'FinSplit — UPI Expense Tracker',
+    title: 'Delhi-NCR Air Quality Analytics',
     blurb:
-      'A UPI-based group expense tracker for college students — split bills and settle up in a single tap. Spec’d, designed, and built the MVP end to end.',
+      'An analytics dashboard on real CPCB data (2015–2026) that quantifies why and when Delhi’s air gets bad — trends, seasonality, event impact, and a validated SARIMA forecast.',
     longDescription:
-      'Spotted how messy group-expense tracking is among college students, so I wrote the spec, designed the flow, and coded the MVP myself. UPI deep-links make settlement a single tap. Beta-tested with 30 batchmates who logged 500+ transactions; I tracked settlement rate and D7 retention and iterated the UI twice based on what testers actually did — not just what they said.',
-    tags: ['React', 'Node.js', 'MongoDB', 'Razorpay API'],
-    match: '98% Match',
+      'Goes beyond basic EDA on real CPCB air-quality data spanning 2015–2026, stitched from three validated sources. Mean AQI eased from ~254 (2015) to ~200 (2025) with a sharp 2020 lockdown dip; PM2.5 swings ~5× between August and November. Quantifies event impact with confound-controlled baselines — stubble burning lifts Oct–Nov PM2.5 to 1.8× the rest of the year, Diwali adds +85% over the prior fortnight — and ships a SARIMA(1,1,2)(0,1,1,7) forecast that beats naive baselines on a 30-day holdout (MAE 24.7 vs 29.6). Every view surfaces a plain-English insight, not just a chart.',
+    tags: ['Python', 'Streamlit', 'pandas', 'SARIMA', 'Time Series'],
+    match: '99% Match',
     year: '2026',
-    link: '',
-    repo: 'https://github.com/Ayush05G',
+    link: 'https://aqi-analytics-in.streamlit.app',
+    repo: 'https://github.com/Ayush05G/aqi-analytics',
     accent: '#e50914',
   },
   {
-    title: 'Real-Time Chat App',
+    title: 'Product Analytics Dashboard',
     blurb:
-      'One-to-one realtime chat with presence indicators and JWT auth, built on the MERN stack with sub-200ms message delivery.',
+      'Turns a real 2.7M-event e-commerce clickstream into conversion funnels, cohort retention, and a churn model — every section surfaces a plain-English insight, not just a chart.',
     longDescription:
-      'Benchmarked 5 chat apps first — measured their latency and noted UX gaps — then built one-to-one chat with presence indicators and JWT authentication on the MERN stack with Socket.io. Hit under 200ms message delivery and added persistent message history after early testers complained about losing their chats on refresh.',
-    tags: ['MERN', 'Socket.io', 'JWT', 'Tailwind CSS'],
-    match: '95% Match',
-    year: '2025',
-    link: '',
-    repo: 'https://github.com/Ayush05G',
+      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (view → add-to-cart converts at just 2.69%), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69) showing recency drives churn while active days drive return. The funnel/cohort/KPI logic is written as pure, UI-free functions so the same engine generalizes to any event stream, including a fintech app.',
+    tags: ['Python', 'Streamlit', 'pandas', 'scikit-learn', 'Plotly'],
+    match: '97% Match',
+    year: '2026',
+    link: 'https://p-analytics-dashboard.streamlit.app',
+    repo: 'https://github.com/Ayush05G/product-analytics-dashboard',
     accent: '#0071eb',
-  },
-  {
-    title: 'Tuned — Music Streaming App',
-    blurb:
-      'A responsive music player with play, pause, and seek that works cleanly on both mobile and desktop.',
-    longDescription:
-      'Built a music streaming player with play, pause, and seek that works on mobile and desktop without breaking. Showed it to 10 people, learned the controls were confusing, and redesigned the layout into something much clearer.',
-    tags: ['HTML', 'CSS', 'JavaScript'],
-    match: '92% Match',
-    year: '2024',
-    link: '',
-    repo: 'https://github.com/Ayush05G',
-    accent: '#f5c518',
   },
   {
     title: 'Portfolio (this site)',
