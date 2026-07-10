@@ -5,7 +5,8 @@ const links = [
   { id: 'billboard', label: 'Home' },
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
-  { id: 'journey', label: 'Journey' },
+  { id: 'achievements', label: 'Awards' },
+  { id: 'journey', label: 'Experience' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ]

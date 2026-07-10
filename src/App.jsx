@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { profile, projects, skills, timeline, about, socials } from './data.js'
+import { profile, projects, skills, timeline, achievements, about, socials } from './data.js'
 import ProfileGate from './components/ProfileGate.jsx'
 import NetflixNav from './components/NetflixNav.jsx'
 import Billboard from './components/Billboard.jsx'
@@ -74,6 +74,21 @@ function SkillCard({ item }) {
   )
 }
 
+/* Achievement card */
+function AchievementCard({ item }) {
+  return (
+    <div className="card" style={{ '--card-accent': '#3a1a1a' }}>
+      <div className="card__art">
+        <span className="card__tag">{item.tag}</span>
+        <span className="card__label">{item.title}</span>
+        <span className="card__sub" style={{ marginTop: 6 }}>
+          {item.detail}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 /* Journey card */
 function JourneyCard({ item }) {
   return (
@@ -135,7 +150,13 @@ export default function App() {
               ))}
             </Row>
 
-            <Row id="journey" title="My Journey">
+            <Row id="achievements" title="Achievements & Certifications">
+              {achievements.map((a) => (
+                <AchievementCard key={a.title} item={a} />
+              ))}
+            </Row>
+
+            <Row id="journey" title="Experience & Education">
               {timeline.map((t) => (
                 <JourneyCard key={t.title} item={t} />
               ))}
