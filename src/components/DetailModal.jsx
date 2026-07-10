@@ -39,7 +39,8 @@ export default function DetailModal({ item, onClose }) {
         exit={{ scale: 0.95, opacity: 0, y: 10 }}
         transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <div className="modal__hero">
+        <div className={`modal__hero ${item.image ? 'modal__hero--has-image' : ''}`}>
+          {item.image && <img className="modal__shot" src={item.image} alt="" />}
           <button className="modal__close" onClick={onClose} aria-label="Close">
             {Close}
           </button>

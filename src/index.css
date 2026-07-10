@@ -239,6 +239,79 @@ img {
   height: 100%;
   object-fit: cover;
 }
+.nav__account {
+  position: relative;
+}
+.nav__account-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 4px;
+}
+.nav__caret {
+  width: 16px;
+  height: 16px;
+  color: var(--text-dim);
+  transition: transform 0.2s var(--ease);
+}
+.nav__caret.open {
+  transform: rotate(180deg);
+}
+.nav__dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  width: 220px;
+  background: rgba(0, 0, 0, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 300;
+  animation: dropdownIn 0.18s var(--ease);
+}
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.nav__dropdown-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+}
+.nav__avatar--sm {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.nav__dropdown-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+.nav__dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 8px;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  border-radius: 3px;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.nav__dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
 
 @media (max-width: 640px) {
   .nav__links {
@@ -499,6 +572,30 @@ img {
   inset: 0;
   background: radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.12), transparent 45%);
 }
+/* Real screenshot behind the card content (project cards only). The
+   accent-gradient wash becomes a bottom-heavy scrim instead of a full
+   tint, so the screenshot stays visible while text stays legible. */
+.card__shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  z-index: 0;
+}
+.card--has-image .card__art::before {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.35) 55%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  opacity: 1;
+}
+.card--has-image .card__art::after {
+  display: none;
+}
 .card__num {
   position: absolute;
   top: 10px;
@@ -522,6 +619,29 @@ img {
   border-radius: 4px;
   z-index: 2;
 }
+/* In-flow eyebrow label (used instead of .card__tag when text length is
+   unpredictable, e.g. dates/categories) -- guarantees no overlap with the
+   title regardless of how tall the card's text content grows. */
+.card__eyebrow {
+  position: relative;
+  z-index: 2;
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cyan, #22d3ee);
+  margin-bottom: 6px;
+}
+.card--tall {
+  aspect-ratio: 16 / 13;
+}
+.card__sub--clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .card__label {
   position: relative;
   z-index: 2;
@@ -536,6 +656,15 @@ img {
   font-size: 0.82rem;
   color: var(--text-dim);
   margin-top: 4px;
+}
+.skill-logo {
+  position: relative;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
 }
 /* Skill card progress */
 .card__bar {
@@ -628,6 +757,15 @@ img {
   position: absolute;
   inset: 0;
   background: linear-gradient(0deg, #181818, transparent 55%);
+}
+.modal__shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  z-index: 0;
 }
 .modal__close {
   position: absolute;
@@ -780,11 +918,6 @@ img {
 }
 .footer strong {
   color: var(--text-dim);
-}
-.footer__switch {
-  color: var(--nf-gray-light);
-  text-decoration: underline;
-  margin-left: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {

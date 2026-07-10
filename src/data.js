@@ -38,32 +38,34 @@ export const socials = [
 export const about = {
   paragraphs: [
     "I'm a product-oriented Electrical Engineering undergrad at NSUT who builds full-stack products end to end. I like living where product thinking meets engineering — writing the spec, designing the flow, and shipping the MVP myself.",
-    "Most of my work leans fintech and edtech: a UPI expense tracker, a realtime chat app, and more — always tested with real users and iterated on what they actually do, not just what they say. Outside of shipping, I've solved 500+ DSA problems and co-authored a peer-reviewed ML research paper. Currently open to product and software internships.",
+    "Most of my work leans fintech and edtech: a UPI expense tracker, a realtime chat app, and more — always tested with real users and iterated on what they actually do, not just what they say. Outside of shipping, I've solved 500+ DSA problems and co-authored a peer-reviewed ML research paper. Currently open to full-time product and software roles.",
   ],
   facts: [
     { label: 'Focus', value: 'Product + Full-Stack' },
     { label: 'Stack', value: 'MERN · C++ · SQL' },
-    { label: 'Status', value: 'Open to internships' },
+    { label: 'Status', value: 'Open for full-time roles' },
     { label: 'Based in', value: 'Gurugram, India' },
   ],
 }
 
 // Each skill becomes a card in the "Skills & Technologies" row.
 // `level` (0–100) drives the little progress bar. `tag` is the small label.
+// `logo` is an official brand icon in /public/skills (from Simple Icons);
+// omit it for skills with no single brand logo (e.g. soft skills).
 export const skills = [
-  { name: 'C++', level: 85, tag: 'Language' },
-  { name: 'JavaScript', level: 82, tag: 'Language' },
-  { name: 'React', level: 75, tag: 'Framework' },
-  { name: 'Node.js', level: 74, tag: 'Backend' },
-  { name: 'MongoDB', level: 72, tag: 'Database' },
-  { name: 'SQL', level: 76, tag: 'Database' },
-  { name: 'HTML & CSS', level: 88, tag: 'Language' },
-  { name: 'Tailwind CSS', level: 78, tag: 'Styling' },
-  { name: 'Git & GitHub', level: 80, tag: 'Tooling' },
+  { name: 'C++', level: 85, tag: 'Language', logo: '/skills/cplusplus.svg' },
+  { name: 'JavaScript', level: 82, tag: 'Language', logo: '/skills/javascript.svg' },
+  { name: 'React', level: 75, tag: 'Framework', logo: '/skills/react.svg' },
+  { name: 'Node.js', level: 74, tag: 'Backend', logo: '/skills/nodedotjs.svg' },
+  { name: 'MongoDB', level: 72, tag: 'Database', logo: '/skills/mongodb.svg' },
+  { name: 'SQL', level: 76, tag: 'Database', logo: '/skills/mysql.svg' },
+  { name: 'HTML & CSS', level: 88, tag: 'Language', logo: '/skills/html5.svg' },
+  { name: 'Tailwind CSS', level: 78, tag: 'Styling', logo: '/skills/tailwindcss.svg' },
+  { name: 'Git & GitHub', level: 80, tag: 'Tooling', logo: '/skills/git.svg' },
   { name: 'DSA / Problem Solving', level: 85, tag: 'Foundations' },
   { name: 'Product Thinking', level: 82, tag: 'Product' },
   { name: 'Power BI', level: 70, tag: 'Analytics' },
-  { name: 'Figma', level: 66, tag: 'Design' },
+  { name: 'Figma', level: 66, tag: 'Design', logo: '/skills/figma.svg' },
 ]
 
 // Projects become the "Featured Projects" row. Click a card → detail modal.

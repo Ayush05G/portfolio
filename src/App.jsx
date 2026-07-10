@@ -35,7 +35,12 @@ function Intro({ onDone }) {
 /* Project card */
 function ProjectCard({ item, index, onOpen }) {
   return (
-    <button className="card" style={{ '--card-accent': item.accent }} onClick={() => onOpen(item)}>
+    <button
+      className={`card ${item.image ? 'card--has-image' : ''}`}
+      style={{ '--card-accent': item.accent }}
+      onClick={() => onOpen(item)}
+    >
+      {item.image && <img className="card__shot" src={item.image} alt="" />}
       <div className="card__art">
         <span className="card__num">{String(index + 1).padStart(2, '0')}</span>
         <span className="card__tag">Project</span>
@@ -56,6 +61,7 @@ function SkillCard({ item }) {
     <div className="card" style={{ '--card-accent': '#1f1f1f' }}>
       <div className="card__art">
         <span className="card__tag">{item.tag}</span>
+        {item.logo && <img className="skill-logo" src={item.logo} alt="" />}
         <span className="card__label">{item.name}</span>
         <div className="card__bar">
           <motion.div
@@ -77,11 +83,11 @@ function SkillCard({ item }) {
 /* Achievement card */
 function AchievementCard({ item }) {
   return (
-    <div className="card" style={{ '--card-accent': '#3a1a1a' }}>
+    <div className="card card--tall" style={{ '--card-accent': '#3a1a1a' }}>
       <div className="card__art">
-        <span className="card__tag">{item.tag}</span>
+        <span className="card__eyebrow">{item.tag}</span>
         <span className="card__label">{item.title}</span>
-        <span className="card__sub" style={{ marginTop: 6 }}>
+        <span className="card__sub card__sub--clamp" style={{ marginTop: 6 }}>
           {item.detail}
         </span>
       </div>
@@ -92,12 +98,12 @@ function AchievementCard({ item }) {
 /* Journey card */
 function JourneyCard({ item }) {
   return (
-    <div className="card" style={{ '--card-accent': '#242424' }}>
+    <div className="card card--tall" style={{ '--card-accent': '#242424' }}>
       <div className="card__art">
-        <span className="card__tag">{item.when}</span>
+        <span className="card__eyebrow">{item.when}</span>
         <span className="card__label">{item.title}</span>
         <span className="card__sub">{item.place}</span>
-        <span className="card__sub" style={{ marginTop: 6, color: 'var(--text-faint)' }}>
+        <span className="card__sub card__sub--clamp" style={{ marginTop: 6, color: 'var(--text-faint)' }}>
           {item.detail}
         </span>
       </div>
@@ -133,7 +139,7 @@ export default function App() {
 
       {phase === 'app' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-          <NetflixNav activeProfile={activeProfile} />
+          <NetflixNav activeProfile={activeProfile} onSwitchProfile={() => setPhase('gate')} />
 
           <Billboard onMoreInfo={scrollToAbout} />
 
@@ -205,9 +211,6 @@ export default function App() {
           <footer className="footer">
             Designed & built by <strong>{profile.name}</strong> · © {new Date().getFullYear()} ·
             Netflix-inspired, not affiliated with Netflix.
-            <button className="footer__switch" onClick={() => setPhase('gate')}>
-              Switch profile
-            </button>
           </footer>
         </motion.div>
       )}

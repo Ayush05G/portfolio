@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { profile } from '../data.js'
+import { ChevronDown } from '../icons.jsx'
 
 const links = [
   { id: 'billboard', label: 'Home' },
@@ -11,9 +12,11 @@ const links = [
   { id: 'contact', label: 'Contact' },
 ]
 
-export default function NetflixNav({ activeProfile }) {
+export default function NetflixNav({ activeProfile, onSwitchProfile }) {
   const [solid, setSolid] = useState(false)
   const [active, setActive] = useState('billboard')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 60)
@@ -38,12 +41,34 @@ export default function NetflixNav({ activeProfile }) {
     return () => io.disconnect()
   }, [])
 
+  useEffect(() => {
+    function onDocClick(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false)
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onDocClick)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDocClick)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [])
+
   const firstName = profile.name.split(' ')[0].toUpperCase()
 
   function go(e, id) {
     e.preventDefault()
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const AvatarImg = ({ className }) =>
+    activeProfile?.avatar ? (
+      <img className={className} src={activeProfile.avatar} alt={activeProfile.name} />
+    ) : (
+      (activeProfile?.name || firstName)[0]
+    )
 
   return (
     <nav className={`nav ${solid ? 'solid' : ''}`}>
@@ -70,17 +95,46 @@ export default function NetflixNav({ activeProfile }) {
             Résumé
           </a>
         )}
-        <span
-          className="nav__avatar"
-          style={{ background: activeProfile?.color || 'var(--nf-red)' }}
-          title={activeProfile?.name}
-        >
-          {activeProfile?.avatar ? (
-            <img className="nav__avatar-img" src={activeProfile.avatar} alt={activeProfile.name} />
-          ) : (
-            (activeProfile?.name || firstName)[0]
+        <div className="nav__account" ref={menuRef}>
+          <button
+            className="nav__account-trigger"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-expanded={menuOpen}
+            aria-haspopup="true"
+          >
+            <span
+              className="nav__avatar"
+              style={{ background: activeProfile?.color || 'var(--nf-red)' }}
+              title={activeProfile?.name}
+            >
+              <AvatarImg className="nav__avatar-img" />
+            </span>
+            <span className={`nav__caret ${menuOpen ? 'open' : ''}`}>{ChevronDown}</span>
+          </button>
+
+          {menuOpen && (
+            <div className="nav__dropdown">
+              <div className="nav__dropdown-current">
+                <span
+                  className="nav__avatar nav__avatar--sm"
+                  style={{ background: activeProfile?.color || 'var(--nf-red)' }}
+                >
+                  <AvatarImg className="nav__avatar-img" />
+                </span>
+                <span className="nav__dropdown-name">{activeProfile?.name || 'Guest'}</span>
+              </div>
+              <button
+                className="nav__dropdown-item"
+                onClick={() => {
+                  setMenuOpen(false)
+                  onSwitchProfile?.()
+                }}
+              >
+                Switch profile
+              </button>
+            </div>
           )}
-        </span>
+        </div>
       </div>
     </nav>
   )
