@@ -21,7 +21,7 @@ export default function Billboard({ onMoreInfo }) {
 
       <div className="billboard__content">
         <motion.div className="billboard__kicker" {...fade(0)}>
-          <span className="n">N</span> PORTFOLIO
+          <span className="n">A</span> PORTFOLIO
         </motion.div>
 
         <motion.h1 className="billboard__title" {...fade(0.08)}>

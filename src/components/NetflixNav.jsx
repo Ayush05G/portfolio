@@ -75,7 +75,11 @@ export default function NetflixNav({ activeProfile }) {
           style={{ background: activeProfile?.color || 'var(--nf-red)' }}
           title={activeProfile?.name}
         >
-          {(activeProfile?.name || firstName)[0]}
+          {activeProfile?.avatar ? (
+            <img className="nav__avatar-img" src={activeProfile.avatar} alt={activeProfile.name} />
+          ) : (
+            (activeProfile?.name || firstName)[0]
+          )}
         </span>
       </div>
     </nav>
