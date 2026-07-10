@@ -93,6 +93,19 @@ export const projects = [
     accent: '#0071eb',
   },
   {
+    title: 'Equity Research Assistant',
+    blurb:
+      'An AI-assisted research tool for NSE-listed stocks — live price charts, fundamentals, recent news, and a generated research brief, with a saveable watchlist.',
+    longDescription:
+      'Search any NSE-listed stock and get a live price chart, key fundamentals, recent news, and an AI-generated research brief (bull case / bear case / key risks) via the Gemini API, plus a saveable watchlist backed by Supabase. Built solo on Next.js 14 (App Router) with TypeScript, pulling live data from Yahoo Finance and Google News with a caching layer for resilience against flaky third-party sources. Currently a private prototype — not yet released publicly.',
+    tags: ['Next.js', 'TypeScript', 'Gemini AI', 'Supabase'],
+    match: '94% Match',
+    year: '2026',
+    link: '',
+    repo: '',
+    accent: '#34d399',
+  },
+  {
     title: 'Portfolio (this site)',
     blurb:
       'The site you are looking at — a Netflix-inspired portfolio built from scratch with React, Vite, and Framer Motion.',
