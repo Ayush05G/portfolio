@@ -5,7 +5,8 @@
 
 export const profile = {
   name: 'Ayush Gupta',
-  // Shown on the billboard hero under the name.
+  // Default billboard tagline (used as a fallback; each profile below can
+  // override it via profileConfig).
   tagline:
     'Product-oriented Electrical Engineering undergrad at NSUT and a full-stack builder who loves shipping fintech & edtech products. I take ideas from PRD to a working MVP — spec, design, and code.',
   // Fun Netflix-style metadata for the billboard.
@@ -16,6 +17,15 @@ export const profile = {
   email: 'ayush2425.rk@gmail.com',
   location: 'Gurugram, India',
   resumeUrl: '', // Drop resume.pdf in /public and set '/resume.pdf' to show a Résumé button
+  // Real facts that cycle in the billboard "trailer" typewriter.
+  trailerLines: [
+    '500+ DSA problems solved · Top 100K on LeetCode',
+    '2.7M real events analyzed into a churn model',
+    'SARIMA AQI forecast · MAE 24.7 vs 29.6 baseline',
+    'Sub-200ms delivery on a realtime MERN chat app',
+    'Peer-reviewed ML paper · Physica Scripta journal',
+    'From PRD to shipped MVP — spec, design, and code',
+  ],
 }
 
 // The "Who's watching?" profiles. Each is a doorway into the same site.
@@ -27,6 +37,41 @@ export const profiles = [
   { id: 'friend', name: 'Friend', avatar: '/avatars/friend.png', color: 'linear-gradient(135deg,#f5c518,#ff8a00)' },
   { id: 'stalker', name: 'Curious', avatar: '/avatars/curious.png', color: 'linear-gradient(135deg,#8a2be2,#e50914)' },
 ]
+
+// ── Per-profile personalization ──────────────────────────────────────────
+// Each profile reorders the browse rows and gets its own hero tagline + CTA,
+// so picking a profile actually changes the experience (like Netflix tailors
+// rows to the viewer). `order` lists row ids top-to-bottom; the FIRST row is
+// re-titled "Today's Top Picks for <Profile>". Valid row ids:
+//   'projects' · 'top10' · 'skills' · 'achievements' · 'journey'
+// `cta` is the primary billboard button: { label, target } where target is a
+// row id to scroll to, OR { label, href } to link out.
+export const profileConfig = {
+  recruiter: {
+    tagline:
+      "A product-minded full-stack engineer from NSUT, open to full-time roles. Here's the proof — experience, shipped projects, and the numbers behind them.",
+    order: ['journey', 'projects', 'achievements', 'top10', 'skills'],
+    cta: { label: 'See Experience', target: 'journey' },
+  },
+  developer: {
+    tagline:
+      'I build full-stack products end to end — MERN apps, Python data tools, and AI features. Dig into the projects, the stack, and how it all fits together.',
+    order: ['projects', 'top10', 'skills', 'achievements', 'journey'],
+    cta: { label: 'View Projects', target: 'projects' },
+  },
+  friend: {
+    tagline:
+      "Hey! 👋 This is the fun cut — the things I've built, the problems I nerd out on, and where I'm headed next. Grab a coffee and scroll.",
+    order: ['projects', 'journey', 'top10', 'achievements', 'skills'],
+    cta: { label: 'Take a Look', target: 'projects' },
+  },
+  stalker: {
+    tagline:
+      "Curious? Good. Everything's here — every project, every skill, the whole story. Start anywhere and poke around.",
+    order: ['projects', 'top10', 'achievements', 'journey', 'skills'],
+    cta: { label: 'Start Exploring', target: 'projects' },
+  },
+}
 
 export const socials = [
   { label: 'GitHub', url: 'https://github.com/Ayush05G', handle: '@Ayush05G' },

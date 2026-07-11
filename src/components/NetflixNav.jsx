@@ -16,6 +16,7 @@ export default function NetflixNav({ activeProfile, onSwitchProfile }) {
   const [solid, setSolid] = useState(false)
   const [active, setActive] = useState('billboard')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false) // mobile links drawer
   const menuRef = useRef(null)
 
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function NetflixNav({ activeProfile, onSwitchProfile }) {
 
   function go(e, id) {
     e.preventDefault()
+    setNavOpen(false)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -73,10 +75,20 @@ export default function NetflixNav({ activeProfile, onSwitchProfile }) {
   return (
     <nav className={`nav ${solid ? 'solid' : ''}`}>
       <div className="nav__left">
+        <button
+          className={`nav__burger ${navOpen ? 'open' : ''}`}
+          onClick={() => setNavOpen((v) => !v)}
+          aria-label="Toggle menu"
+          aria-expanded={navOpen}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
         <a href="#billboard" className="nav__logo" onClick={(e) => go(e, 'billboard')}>
           {firstName}
         </a>
-        <div className="nav__links">
+        <div className={`nav__links ${navOpen ? 'open' : ''}`}>
           {links.map((l) => (
             <a
               key={l.id}

@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from '../icons.jsx'
  * A Netflix-style horizontal carousel. `id` anchors it for the nav.
  * Children are the cards.
  */
-export default function Row({ id, title, children }) {
+export default function Row({ id, title, className = '', children }) {
   const track = useRef(null)
 
   function scrollBy(dir) {
@@ -15,7 +15,7 @@ export default function Row({ id, title, children }) {
   }
 
   return (
-    <section className="row" id={id}>
+    <section className={`row ${className}`} id={id}>
       <h2 className="row__title">{title}</h2>
       <div className="row__viewport">
         <button className="row__arrow row__arrow--left" onClick={() => scrollBy(-1)} aria-label="Scroll left">

@@ -1,11 +1,83 @@
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { profile } from '../data.js'
-import { Play, Info } from '../icons.jsx'
+import { Play, Info, VolumeOn, VolumeOff } from '../icons.jsx'
+import { playTick } from '../sound.js'
+
+const scrollTo = (id) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+/**
+ * The billboard "trailer": a looping typewriter that types out real facts
+ * about the work, like a muted preview reel. A round Netflix-style sound
+ * toggle turns soft keystroke ticks on/off (starts muted, as trailers do).
+ */
+function Trailer({ lines, muted, onToggleMute }) {
+  const [text, setText] = useState('')
+  const state = useRef({ line: 0, char: 0, deleting: false })
+  const mutedRef = useRef(muted)
+  mutedRef.current = muted
+
+  useEffect(() => {
+    let timer
+    const tick = () => {
+      const s = state.current
+      const full = lines[s.line % lines.length]
+      if (!s.deleting) {
+        s.char++
+        setText(full.slice(0, s.char))
+        if (!mutedRef.current && s.char <= full.length) playTick()
+        if (s.char >= full.length) {
+          s.deleting = true
+          timer = setTimeout(tick, 1900)
+          return
+        }
+        timer = setTimeout(tick, 45 + Math.random() * 45)
+      } else {
+        s.char -= 3
+        if (s.char <= 0) {
+          s.char = 0
+          s.deleting = false
+          s.line++
+        }
+        setText(full.slice(0, Math.max(0, s.char)))
+        timer = setTimeout(tick, s.char <= 0 ? 350 : 18)
+      }
+    }
+    timer = setTimeout(tick, 700)
+    return () => clearTimeout(timer)
+  }, [lines])
+
+  return (
+    <div className="trailer">
+      <div className="trailer__screen">
+        <span className="trailer__prompt">~/ayush</span>
+        <span className="trailer__cmd">
+          {text}
+          <span className="trailer__caret" />
+        </span>
+      </div>
+      <button
+        className="trailer__mute"
+        onClick={onToggleMute}
+        aria-label={muted ? 'Unmute trailer' : 'Mute trailer'}
+        title={muted ? 'Sound off' : 'Sound on'}
+      >
+        {muted ? VolumeOff : VolumeOn}
+      </button>
+    </div>
+  )
+}
 
 /**
  * The featured "title" hero — you, presented like Netflix's billboard.
+ * `config` is the active profile's personalization (tagline + CTA).
  */
-export default function Billboard({ onMoreInfo }) {
+export default function Billboard({ config, onMoreInfo }) {
+  const [muted, setMuted] = useState(true)
+  const tagline = config?.tagline || profile.tagline
+  const cta = config?.cta || { label: 'View Work', target: 'projects' }
+
   const fade = (delay) => ({
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -36,25 +108,33 @@ export default function Billboard({ onMoreInfo }) {
         </motion.div>
 
         <motion.p className="billboard__desc" {...fade(0.24)}>
-          {profile.tagline}
+          {tagline}
         </motion.p>
 
         <motion.div className="billboard__actions" {...fade(0.32)}>
           <a
             className="nf-btn nf-btn--play"
-            href="#projects"
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
-            }}
+            href={cta.href || `#${cta.target}`}
+            {...(cta.href
+              ? { target: '_blank', rel: 'noreferrer' }
+              : {
+                  onClick: (e) => {
+                    e.preventDefault()
+                    scrollTo(cta.target)
+                  },
+                })}
           >
-            {Play} View Work
+            {Play} {cta.label}
           </a>
           <button className="nf-btn nf-btn--info" onClick={onMoreInfo}>
             {Info} More Info
           </button>
         </motion.div>
       </div>
+
+      <motion.div className="billboard__trailer-wrap" {...fade(0.45)}>
+        <Trailer lines={profile.trailerLines} muted={muted} onToggleMute={() => setMuted((m) => !m)} />
+      </motion.div>
     </section>
   )
 }

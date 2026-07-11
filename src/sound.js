@@ -1,3 +1,37 @@
+// A shared AudioContext, created lazily on first real user gesture so we
+// never trip the browser's autoplay policy.
+let sharedCtx = null
+function getCtx() {
+  const Ctx = window.AudioContext || window.webkitAudioContext
+  if (!Ctx) return null
+  if (!sharedCtx) sharedCtx = new Ctx()
+  if (sharedCtx.state === 'suspended') sharedCtx.resume().catch(() => {})
+  return sharedCtx
+}
+
+// A very short, soft "tick" — used for typewriter keystrokes when the
+// billboard trailer's sound is toggled on.
+export function playTick() {
+  try {
+    const ctx = getCtx()
+    if (!ctx) return
+    const now = ctx.currentTime
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'square'
+    osc.frequency.value = 1200 + Math.random() * 400
+    gain.gain.setValueAtTime(0.0001, now)
+    gain.gain.linearRampToValueAtTime(0.03, now + 0.004)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05)
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(now)
+    osc.stop(now + 0.06)
+  } catch {
+    // Sound is a nice-to-have; never let it break anything.
+  }
+}
+
 // A small synthesized "ta-dum" style entry chime, generated with the Web
 // Audio API (no external audio file, no copyrighted Netflix audio).
 export function playEntryChime() {

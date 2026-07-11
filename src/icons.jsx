@@ -24,6 +24,20 @@ export const ChevronRight = (
   </svg>
 )
 
+export const VolumeOff = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <path d="M11 5 6 9H2v6h4l5 4V5z" strokeLinejoin="round" />
+    <path d="M23 9l-6 6M17 9l6 6" strokeLinecap="round" />
+  </svg>
+)
+
+export const VolumeOn = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <path d="M11 5 6 9H2v6h4l5 4V5z" strokeLinejoin="round" />
+    <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" strokeLinecap="round" />
+  </svg>
+)
+
 export const ChevronDown = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
     <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
