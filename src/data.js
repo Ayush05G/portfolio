@@ -82,6 +82,7 @@ export const projects = [
     link: 'https://aqi-analytics-in.streamlit.app',
     repo: 'https://github.com/Ayush05G/aqi-analytics',
     accent: '#e50914',
+    image: '/projects/aqi-analytics.svg',
   },
   {
     title: 'Product Analytics Dashboard',
@@ -95,6 +96,7 @@ export const projects = [
     link: 'https://p-analytics-dashboard.streamlit.app',
     repo: 'https://github.com/Ayush05G/product-analytics-dashboard',
     accent: '#0071eb',
+    image: '/projects/product-analytics.svg',
   },
   {
     title: 'Equity Research Assistant',
@@ -108,6 +110,7 @@ export const projects = [
     link: 'https://equity-research-assistant-eta.vercel.app',
     repo: '',
     accent: '#34d399',
+    image: '/projects/equity-research.svg',
   },
   {
     title: 'Portfolio (this site)',
