@@ -8,23 +8,25 @@ export const profile = {
   // Default billboard tagline (used as a fallback; each profile below can
   // override it via profileConfig).
   tagline:
-    'Product-oriented Electrical Engineering undergrad at NSUT and a full-stack builder who loves shipping fintech & edtech products. I take ideas from PRD to a working MVP — spec, design, and code.',
+    'Associate PM turned builder — I ship products end to end, from the spec and roadmap to the code and the infrastructure it runs on. EE undergrad at NSUT.',
   // Fun Netflix-style metadata for the billboard.
   match: '98% Match',
   year: '2027',
   rating: "EE · NSUT '27",
-  genres: ['Product', 'Full-Stack', 'Fintech', 'Edtech'],
+  genres: ['Product', 'Full-Stack', 'Infrastructure', 'Fintech'],
   email: 'ayush2425.rk@gmail.com',
   location: 'Gurugram, India',
   resumeUrl: '', // Drop resume.pdf in /public and set '/resume.pdf' to show a Résumé button
   // Real facts that cycle in the billboard "trailer" typewriter.
   trailerLines: [
-    '500+ DSA problems solved · Top 100K on LeetCode',
-    '2.7M real events analyzed into a churn model',
+    'Led a credit-card product launch at Bachatt × ZET',
+    'Sprint completion 40% → 75% as Scrum Manager',
+    'Migrated Jira & Confluence → self-hosted on Azure AKS',
+    'Built a two-way Plane ↔ Slack bridge over Socket Mode',
+    '2.7M real events → a plain-English churn model',
     'SARIMA AQI forecast · MAE 24.7 vs 29.6 baseline',
-    'Sub-200ms delivery on a realtime MERN chat app',
+    '500+ DSA problems · Top 100K on LeetCode',
     'Peer-reviewed ML paper · Physica Scripta journal',
-    'From PRD to shipped MVP — spec, design, and code',
   ],
 }
 
@@ -49,25 +51,25 @@ export const profiles = [
 export const profileConfig = {
   recruiter: {
     tagline:
-      "A product-minded full-stack engineer from NSUT, open to full-time roles. Here's the proof — experience, shipped projects, and the numbers behind them.",
+      "Associate PM at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
     order: ['journey', 'projects', 'achievements', 'top10', 'skills'],
     cta: { label: 'See Experience', target: 'journey' },
   },
   developer: {
     tagline:
-      'I build full-stack products end to end — MERN apps, Python data tools, and AI features. Dig into the projects, the stack, and how it all fits together.',
+      'Full-stack + infra: Next.js/TypeScript apps, Python data tools, and the Kubernetes (Azure AKS) and CI/CD they run on. Dig into the projects, the stack, and how it fits together.',
     order: ['projects', 'top10', 'skills', 'achievements', 'journey'],
     cta: { label: 'View Projects', target: 'projects' },
   },
   friend: {
     tagline:
-      "Hey! 👋 This is the fun cut — the things I've built, the problems I nerd out on, and where I'm headed next. Grab a coffee and scroll.",
+      "Hey! 👋 This is the fun cut — the products I've launched, the infra I've broken and fixed, and where I'm headed next. Grab a coffee and scroll.",
     order: ['projects', 'journey', 'top10', 'achievements', 'skills'],
     cta: { label: 'Take a Look', target: 'projects' },
   },
   stalker: {
     tagline:
-      "Curious? Good. Everything's here — every project, every skill, the whole story. Start anywhere and poke around.",
+      "Curious? Good. Everything's here — every project, every skill, the whole story from product to infrastructure. Start anywhere and poke around.",
     order: ['projects', 'top10', 'achievements', 'journey', 'skills'],
     cta: { label: 'Start Exploring', target: 'projects' },
   },
@@ -82,12 +84,12 @@ export const socials = [
 
 export const about = {
   paragraphs: [
-    "I'm a product-oriented Electrical Engineering undergrad at NSUT who builds full-stack products end to end. I like living where product thinking meets engineering — writing the spec, designing the flow, and shipping the MVP myself.",
-    "Most of my work leans fintech and edtech: a UPI expense tracker, a realtime chat app, and more — always tested with real users and iterated on what they actually do, not just what they say. Outside of shipping, I've solved 500+ DSA problems and co-authored a peer-reviewed ML research paper. Currently open to full-time product and software roles.",
+    "I'm an Electrical Engineering undergrad at NSUT who lives where product meets engineering. Most recently I was an Associate PM at Bachatt, a fintech, where I led the launch of a new credit-card product with our partner ZET — owning the spec and roadmap and driving delivery across engineering, design, and the partner team.",
+    "But I don't stop at the spec. On the same role I ran Bachatt's Atlassian → self-hosted migration end to end (Jira & Confluence onto Plane + Outline on Azure AKS), built a two-way Plane ↔ Slack bridge, and stood up production infra and a CDN asset pipeline. Alongside that I ship full-stack side projects, solved 500+ DSA problems, and co-authored a peer-reviewed ML paper. Currently open to full-time product and software roles.",
   ],
   facts: [
-    { label: 'Focus', value: 'Product + Full-Stack' },
-    { label: 'Stack', value: 'MERN · C++ · SQL' },
+    { label: 'Focus', value: 'Product · Full-Stack · Infra' },
+    { label: 'Stack', value: 'Next.js · Python · Azure AKS' },
     { label: 'Status', value: 'Open for full-time roles' },
     { label: 'Based in', value: 'Gurugram, India' },
   ],
@@ -98,45 +100,50 @@ export const about = {
 // `logo` is an official brand icon in /public/skills (from Simple Icons);
 // omit it for skills with no single brand logo (e.g. soft skills).
 export const skills = [
-  { name: 'C++', level: 85, tag: 'Language', logo: '/skills/cplusplus.svg' },
-  { name: 'JavaScript', level: 82, tag: 'Language', logo: '/skills/javascript.svg' },
-  { name: 'React', level: 75, tag: 'Framework', logo: '/skills/react.svg' },
-  { name: 'Node.js', level: 74, tag: 'Backend', logo: '/skills/nodedotjs.svg' },
-  { name: 'MongoDB', level: 72, tag: 'Database', logo: '/skills/mongodb.svg' },
-  { name: 'SQL', level: 76, tag: 'Database', logo: '/skills/mysql.svg' },
-  { name: 'HTML & CSS', level: 88, tag: 'Language', logo: '/skills/html5.svg' },
-  { name: 'Tailwind CSS', level: 78, tag: 'Styling', logo: '/skills/tailwindcss.svg' },
-  { name: 'Git & GitHub', level: 80, tag: 'Tooling', logo: '/skills/git.svg' },
-  { name: 'DSA / Problem Solving', level: 85, tag: 'Foundations' },
-  { name: 'Product Thinking', level: 82, tag: 'Product' },
-  { name: 'Power BI', level: 70, tag: 'Analytics' },
+  { name: 'TypeScript', level: 84, tag: 'Language', logo: '/skills/typescript.svg' },
+  { name: 'JavaScript', level: 86, tag: 'Language', logo: '/skills/javascript.svg' },
+  { name: 'Python', level: 84, tag: 'Language', logo: '/skills/python.svg' },
+  { name: 'C++', level: 80, tag: 'Language', logo: '/skills/cplusplus.svg' },
+  { name: 'Next.js', level: 80, tag: 'Framework', logo: '/skills/nextdotjs.svg' },
+  { name: 'React', level: 80, tag: 'Framework', logo: '/skills/react.svg' },
+  { name: 'Node.js', level: 78, tag: 'Backend', logo: '/skills/nodedotjs.svg' },
+  { name: 'SQL / Postgres', level: 78, tag: 'Database', logo: '/skills/postgresql.svg' },
+  { name: 'MongoDB', level: 74, tag: 'Database', logo: '/skills/mongodb.svg' },
+  { name: 'Docker', level: 78, tag: 'Infra', logo: '/skills/docker.svg' },
+  { name: 'Kubernetes (AKS)', level: 72, tag: 'Infra', logo: '/skills/kubernetes.svg' },
+  { name: 'Git & CI/CD', level: 82, tag: 'Tooling', logo: '/skills/git.svg' },
+  { name: 'Supabase', level: 74, tag: 'Backend', logo: '/skills/supabase.svg' },
+  { name: 'Streamlit', level: 80, tag: 'Data', logo: '/skills/streamlit.svg' },
+  { name: 'pandas', level: 80, tag: 'Data', logo: '/skills/pandas.svg' },
+  { name: 'Product & GTM', level: 85, tag: 'Product' },
+  { name: 'DSA / Problem Solving', level: 84, tag: 'Foundations' },
   { name: 'Figma', level: 66, tag: 'Design', logo: '/skills/figma.svg' },
 ]
 
 // Projects become the "Featured Projects" row. Click a card → detail modal.
 export const projects = [
   {
-    title: 'Delhi-NCR Air Quality Analytics',
+    title: 'Findesk — AI Equity-Research Assistant',
     blurb:
-      'An analytics dashboard on real CPCB data (2015–2026) that quantifies why and when Delhi’s air gets bad — trends, seasonality, event impact, and a validated SARIMA forecast.',
+      'Search any NSE stock for live price, fundamentals & news, plus an AI research brief — Buy/Sell rating, 12-month target, and bull/bear/risks — with a Supabase-backed watchlist.',
     longDescription:
-      'Goes beyond basic EDA on real CPCB air-quality data spanning 2015–2026, stitched from three validated sources. Mean AQI eased from ~254 (2015) to ~200 (2025) with a sharp 2020 lockdown dip; PM2.5 swings ~5× between August and November. Quantifies event impact with confound-controlled baselines — stubble burning lifts Oct–Nov PM2.5 to 1.8× the rest of the year, Diwali adds +85% over the prior fortnight — and ships a SARIMA(1,1,2)(0,1,1,7) forecast that beats naive baselines on a 30-day holdout (MAE 24.7 vs 29.6). Every view surfaces a plain-English insight, not just a chart.',
-    tags: ['Python', 'Streamlit', 'pandas', 'SARIMA', 'Time Series'],
-    match: '99% Match',
+      'A personal build: search any NSE-listed stock and get its live price, key fundamentals, and recent news, plus an AI-generated research brief — a Buy/Sell rating, a 12-month price target, and bull case / bear case / key risks — produced via the Gemini API with structured JSON output. A Supabase-backed watchlist saves the stocks you follow. Every third-party source is cached with a 15–30 min TTL and graceful fallbacks, and all LLM output is defensively validated so the app never crashes on a malformed response. Built solo on Next.js 14 (App Router) with TypeScript.',
+    tags: ['Next.js 14', 'TypeScript', 'Gemini API', 'Supabase'],
+    match: '96% Match',
     year: '2026',
-    link: 'https://aqi-analytics-in.streamlit.app',
-    repo: 'https://github.com/Ayush05G/aqi-analytics',
-    accent: '#e50914',
-    image: '/projects/aqi-analytics.svg',
+    link: 'https://equity-research-assistant-eta.vercel.app',
+    repo: '',
+    accent: '#34d399',
+    image: '/projects/equity-research.svg',
   },
   {
     title: 'Product Analytics Dashboard',
     blurb:
-      'Turns a real 2.7M-event e-commerce clickstream into conversion funnels, cohort retention, and a churn model — every section surfaces a plain-English insight, not just a chart.',
+      'Turns a real 2.7M-event e-commerce clickstream into conversion funnels, cohort retention, and a churn model — every view surfaces a plain-English insight, not just a chart.',
     longDescription:
-      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (view → add-to-cart converts at just 2.69%), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69) showing recency drives churn while active days drive return. The funnel/cohort/KPI logic is written as pure, UI-free functions so the same engine generalizes to any event stream, including a fintech app.',
-    tags: ['Python', 'Streamlit', 'pandas', 'scikit-learn', 'Plotly'],
-    match: '97% Match',
+      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (view → add-to-cart converts at just 2.69%), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69) showing recency drives churn while active days drive return. The funnel/cohort/KPI logic is written as pure, UI-free functions so the same engine generalizes to any event stream.',
+    tags: ['Python', 'Streamlit', 'pandas', 'scikit-learn'],
+    match: '95% Match',
     year: '2026',
     link: 'https://p-analytics-dashboard.streamlit.app',
     repo: 'https://github.com/Ayush05G/product-analytics-dashboard',
@@ -144,18 +151,18 @@ export const projects = [
     image: '/projects/product-analytics.svg',
   },
   {
-    title: 'Equity Research Assistant',
+    title: 'Delhi-NCR Air Quality Analytics',
     blurb:
-      'An AI-assisted research tool for NSE-listed stocks — live price charts, fundamentals, recent news, and a generated research brief, with a saveable watchlist.',
+      'An analytics dashboard on real CPCB data (2015–2026) that quantifies why and when Delhi’s air gets bad — trends, seasonality, event impact, and a validated SARIMA forecast.',
     longDescription:
-      'Search any NSE-listed stock and get a live price chart, key fundamentals, recent news, and an AI-generated research brief (bull case / bear case / key risks) via the Gemini API, plus a saveable watchlist backed by Supabase. Built solo on Next.js 14 (App Router) with TypeScript, pulling live data from Yahoo Finance and Google News with a caching layer for resilience against flaky third-party sources.',
-    tags: ['Next.js', 'TypeScript', 'Gemini AI', 'Supabase'],
+      'Analyzes real CPCB air-quality data spanning 2015–2026, stitched from three validated sources, for long-run trends, the seasonal cycle, and event impact (Diwali, stubble burning, the COVID lockdown). Quantifies each with confound-controlled baselines — stubble burning lifts Oct–Nov PM2.5 to 1.8× the rest of the year — and ships a SARIMA forecast that beats naive baselines on a 30-day holdout (MAE 24.7 vs 29.6). Every view surfaces a plain-English insight, not just a chart.',
+    tags: ['Python', 'Streamlit', 'statsmodels', 'SARIMA'],
     match: '94% Match',
     year: '2026',
-    link: 'https://equity-research-assistant-eta.vercel.app',
-    repo: '',
-    accent: '#34d399',
-    image: '/projects/equity-research.svg',
+    link: 'https://aqi-analytics-in.streamlit.app',
+    repo: 'https://github.com/Ayush05G/aqi-analytics',
+    accent: '#e50914',
+    image: '/projects/aqi-analytics.svg',
   },
   {
     title: 'Portfolio (this site)',
@@ -174,6 +181,13 @@ export const projects = [
 
 // Experience + education become the "My Journey" row (most recent first).
 export const timeline = [
+  {
+    when: 'May 2026 – Jul 2026',
+    title: 'Associate Product Manager',
+    place: 'Bachatt (Fintech)',
+    detail:
+      'Led the launch of a new credit-card product with partner ZET — owned spec & roadmap. As Scrum Manager lifted sprint completion 40% → 75%. Ran the Atlassian → self-hosted migration (Plane + Outline on Azure AKS) and built a two-way Plane ↔ Slack bridge.',
+  },
   {
     when: 'Mar 2026 – Apr 2026',
     title: 'Brand Marketing Intern',
@@ -196,16 +210,10 @@ export const timeline = [
       "Ran logistics for 50+ events across 6 venues at North India's largest college fest, leading 20+ volunteers with zero escalations.",
   },
   {
-    when: 'Aug 2024 – Oct 2024',
-    title: 'Volunteer',
-    place: 'Yuva Jan Sangham (NGO)',
-    detail: 'Joined education and health awareness drives across 3 Delhi districts, reaching 200+ people.',
-  },
-  {
     when: '2023 – 2027',
     title: 'B.Tech, Electrical Engineering',
     place: 'Netaji Subhas University of Technology',
-    detail: 'CGPA 7.6 — building full-stack products and product skills alongside coursework.',
+    detail: 'CGPA 7.7 — building products and full-stack + infra skills alongside coursework.',
   },
 ]
 

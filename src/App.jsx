@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   profile,
   profileConfig,
+  profiles,
   projects,
   skills,
   timeline,
@@ -144,9 +145,17 @@ const firstName = profile.name.split(' ')[0]
 const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
 const DEFAULT_ORDER = ['projects', 'top10', 'skills', 'achievements', 'journey']
 
+// A ?profile=<id> URL param jumps straight into a tailored view — handy for
+// sharing a recruiter-specific link, and it skips the intro + gate.
+const initialProfile = (() => {
+  if (typeof window === 'undefined') return null
+  const id = new URLSearchParams(window.location.search).get('profile')
+  return profiles.find((p) => p.id === id) || null
+})()
+
 export default function App() {
-  const [phase, setPhase] = useState('intro') // 'intro' | 'gate' | 'app'
-  const [activeProfile, setActiveProfile] = useState(null)
+  const [phase, setPhase] = useState(initialProfile ? 'app' : 'intro') // 'intro' | 'gate' | 'app'
+  const [activeProfile, setActiveProfile] = useState(initialProfile)
   const [modalItem, setModalItem] = useState(null)
 
   // Fallback: guarantee the intro never hangs (e.g. if loaded in a background
