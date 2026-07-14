@@ -16,6 +16,8 @@ import NetflixNav from './components/NetflixNav.jsx'
 import Billboard from './components/Billboard.jsx'
 import Row from './components/Row.jsx'
 import DetailModal from './components/DetailModal.jsx'
+import Search from './components/Search.jsx'
+import ContactForm from './components/ContactForm.jsx'
 import { Play } from './icons.jsx'
 
 /* Netflix-style intro flash — the little logo "sting" before the gate.
@@ -145,18 +147,32 @@ const firstName = profile.name.split(' ')[0]
 const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
 const DEFAULT_ORDER = ['projects', 'top10', 'skills', 'achievements', 'journey']
 
-// A ?profile=<id> URL param jumps straight into a tailored view — handy for
-// sharing a recruiter-specific link, and it skips the intro + gate.
-const initialProfile = (() => {
-  if (typeof window === 'undefined') return null
-  const id = new URLSearchParams(window.location.search).get('profile')
-  return profiles.find((p) => p.id === id) || null
+const STORAGE_KEY = 'nf_profile'
+const findProject = (slug) => projects.find((p) => p.slug === slug) || null
+
+// Resolve the starting profile from (1) a ?profile=<id> deep-link, or (2) the
+// last profile saved on a previous visit — either one skips the intro + gate.
+const initial = (() => {
+  if (typeof window === 'undefined') return { profile: null, project: null }
+  const params = new URLSearchParams(window.location.search)
+  const urlId = params.get('profile')
+  const savedId = (() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY)
+    } catch {
+      return null
+    }
+  })()
+  const prof = profiles.find((p) => p.id === (urlId || savedId)) || null
+  const proj = prof ? findProject(params.get('project')) : null
+  return { profile: prof, project: proj }
 })()
 
 export default function App() {
-  const [phase, setPhase] = useState(initialProfile ? 'app' : 'intro') // 'intro' | 'gate' | 'app'
-  const [activeProfile, setActiveProfile] = useState(initialProfile)
-  const [modalItem, setModalItem] = useState(null)
+  const [phase, setPhase] = useState(initial.profile ? 'app' : 'intro') // 'intro' | 'gate' | 'app'
+  const [activeProfile, setActiveProfile] = useState(initial.profile)
+  const [modalItem, setModalItem] = useState(initial.project)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   // Fallback: guarantee the intro never hangs (e.g. if loaded in a background
   // tab where the animation's rAF is throttled and onAnimationComplete stalls).
@@ -166,8 +182,71 @@ export default function App() {
     return () => clearTimeout(t)
   }, [phase])
 
+  // ── URL / history sync for shareable deep-links + working back button ──
+  function urlFor(profileId, projectSlug) {
+    const params = new URLSearchParams()
+    if (profileId) params.set('profile', profileId)
+    if (projectSlug) params.set('project', projectSlug)
+    const qs = params.toString()
+    return qs ? `?${qs}` : window.location.pathname
+  }
+
+  function selectProfile(p) {
+    setActiveProfile(p)
+    setModalItem(null)
+    setPhase('app')
+    window.scrollTo(0, 0)
+    try {
+      localStorage.setItem(STORAGE_KEY, p.id)
+    } catch {
+      /* ignore */
+    }
+    window.history.replaceState({ profile: p.id }, '', urlFor(p.id))
+  }
+
+  function switchProfile() {
+    setActiveProfile(null)
+    setModalItem(null)
+    setPhase('gate')
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+    } catch {
+      /* ignore */
+    }
+    window.history.replaceState({}, '', window.location.pathname)
+  }
+
+  function openProject(p) {
+    setModalItem(p)
+    window.history.pushState(
+      { profile: activeProfile?.id, project: p.slug },
+      '',
+      urlFor(activeProfile?.id, p.slug),
+    )
+  }
+
+  function closeProject() {
+    setModalItem(null)
+    // If we pushed a project entry, go back so the back button stays intuitive.
+    if (window.history.state?.project) window.history.back()
+    else window.history.replaceState({ profile: activeProfile?.id }, '', urlFor(activeProfile?.id))
+  }
+
+  // Sync modal to browser back/forward.
+  useEffect(() => {
+    function onPop() {
+      const slug = new URLSearchParams(window.location.search).get('project')
+      setModalItem(slug ? findProject(slug) : null)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
   function scrollToAbout() {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+  }
+  function scrollToId(id) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const config = activeProfile ? profileConfig[activeProfile.id] : null
@@ -177,7 +256,7 @@ export default function App() {
     projects: {
       title: 'Featured Projects',
       children: projects.map((p, i) => (
-        <ProjectCard key={p.title} item={p} index={i} onOpen={setModalItem} />
+        <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />
       )),
     },
     top10: {
@@ -212,21 +291,16 @@ export default function App() {
           />
         )}
 
-        {phase === 'gate' && (
-          <ProfileGate
-            key="gate"
-            onSelect={(p) => {
-              setActiveProfile(p)
-              setPhase('app')
-              window.scrollTo(0, 0)
-            }}
-          />
-        )}
+        {phase === 'gate' && <ProfileGate key="gate" onSelect={selectProfile} />}
       </AnimatePresence>
 
       {phase === 'app' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-          <NetflixNav activeProfile={activeProfile} onSwitchProfile={() => setPhase('gate')} />
+          <NetflixNav
+            activeProfile={activeProfile}
+            onSwitchProfile={switchProfile}
+            onOpenSearch={() => setSearchOpen(true)}
+          />
 
           <Billboard config={config} onMoreInfo={scrollToAbout} />
 
@@ -269,19 +343,28 @@ export default function App() {
           {/* Contact panel */}
           <section className="panel" id="contact">
             <h2 className="panel__title">Let's Connect</h2>
-            <div className="social-row">
-              {socials.map((s) => (
-                <a
-                  className="social-card"
-                  key={s.label}
-                  href={s.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <div className="social-card__label">{s.label}</div>
-                  <div className="social-card__handle">{s.handle}</div>
-                </a>
-              ))}
+            <div className="contact-grid">
+              <div className="contact-grid__left">
+                <p className="contact-lead">
+                  Open to full-time product & software roles. Have a role, a question, or just want
+                  to say hi? Drop me a line.
+                </p>
+                <div className="social-row">
+                  {socials.map((s) => (
+                    <a
+                      className="social-card"
+                      key={s.label}
+                      href={s.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <div className="social-card__label">{s.label}</div>
+                      <div className="social-card__handle">{s.handle}</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <ContactForm />
             </div>
           </section>
 
@@ -292,8 +375,15 @@ export default function App() {
         </motion.div>
       )}
 
+      <Search
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onOpenProject={openProject}
+        scrollTo={scrollToId}
+      />
+
       <AnimatePresence>
-        {modalItem && <DetailModal item={modalItem} onClose={() => setModalItem(null)} />}
+        {modalItem && <DetailModal item={modalItem} onClose={closeProject} />}
       </AnimatePresence>
     </>
   )

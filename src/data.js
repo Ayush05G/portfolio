@@ -123,6 +123,7 @@ export const skills = [
 // Projects become the "Featured Projects" row. Click a card → detail modal.
 export const projects = [
   {
+    slug: 'findesk',
     title: 'Findesk — AI Equity-Research Assistant',
     blurb:
       'Search any NSE stock for live price, fundamentals & news, plus an AI research brief — Buy/Sell rating, 12-month target, and bull/bear/risks — with a Supabase-backed watchlist.',
@@ -137,6 +138,7 @@ export const projects = [
     image: '/projects/equity-research.svg',
   },
   {
+    slug: 'product-analytics',
     title: 'Product Analytics Dashboard',
     blurb:
       'Turns a real 2.7M-event e-commerce clickstream into conversion funnels, cohort retention, and a churn model — every view surfaces a plain-English insight, not just a chart.',
@@ -151,6 +153,7 @@ export const projects = [
     image: '/projects/product-analytics.svg',
   },
   {
+    slug: 'aqi-analytics',
     title: 'Delhi-NCR Air Quality Analytics',
     blurb:
       'An analytics dashboard on real CPCB data (2015–2026) that quantifies why and when Delhi’s air gets bad — trends, seasonality, event impact, and a validated SARIMA forecast.',
@@ -165,6 +168,7 @@ export const projects = [
     image: '/projects/aqi-analytics.svg',
   },
   {
+    slug: 'portfolio',
     title: 'Portfolio (this site)',
     blurb:
       'The site you are looking at — a Netflix-inspired portfolio built from scratch with React, Vite, and Framer Motion.',
@@ -240,3 +244,13 @@ export const achievements = [
     detail: 'SQL Bootcamp (Udemy) · Product Management (Coursera) · Power BI (Microsoft).',
   },
 ]
+
+// ── Contact form ─────────────────────────────────────────────────────────
+// The "Hire Me / Get in touch" form posts to Web3Forms (free, no backend).
+// To make it send real emails: create a free access key at
+// https://web3forms.com (takes ~30s, no signup — just enter your email),
+// then paste it below. Until a key is set, the form falls back to opening
+// the visitor's email client pre-filled (still fully functional).
+export const contact = {
+  web3formsKey: '', // e.g. 'a1b2c3d4-....' — paste your Web3Forms access key
+}

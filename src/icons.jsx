@@ -24,6 +24,13 @@ export const ChevronRight = (
   </svg>
 )
 
+export const Search = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <circle cx="11" cy="11" r="7" />
+    <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+  </svg>
+)
+
 export const VolumeOff = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
     <path d="M11 5 6 9H2v6h4l5 4V5z" strokeLinejoin="round" />
