@@ -16,7 +16,7 @@ export const profile = {
   genres: ['Product', 'Full-Stack', 'Infrastructure', 'Fintech'],
   email: 'ayush2425.rk@gmail.com',
   location: 'Gurugram, India',
-  resumeUrl: '', // Drop resume.pdf in /public and set '/resume.pdf' to show a Résumé button
+  resumeUrl: '/resume.pdf', // Phone number redacted before publishing — see conversation for details
   // Real facts that cycle in the billboard "trailer" typewriter.
   trailerLines: [
     'Led a credit-card product launch at Bachatt × ZET',
