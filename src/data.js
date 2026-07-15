@@ -45,32 +45,32 @@ export const profiles = [
 // so picking a profile actually changes the experience (like Netflix tailors
 // rows to the viewer). `order` lists row ids top-to-bottom; the FIRST row is
 // re-titled "Today's Top Picks for <Profile>". Valid row ids:
-//   'projects' · 'top10' · 'skills' · 'achievements' · 'journey'
+//   'projects' · 'learning' · 'top10' · 'skills' · 'achievements' · 'journey'
 // `cta` is the primary billboard button: { label, target } where target is a
 // row id to scroll to, OR { label, href } to link out.
 export const profileConfig = {
   recruiter: {
     tagline:
       "Associate PM at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
-    order: ['journey', 'projects', 'achievements', 'top10', 'skills'],
+    order: ['journey', 'projects', 'achievements', 'learning', 'top10', 'skills'],
     cta: { label: 'See Experience', target: 'journey' },
   },
   developer: {
     tagline:
       'Full-stack + infra: Next.js/TypeScript apps, Python data tools, and the Kubernetes (Azure AKS) and CI/CD they run on. Dig into the projects, the stack, and how it fits together.',
-    order: ['projects', 'top10', 'skills', 'achievements', 'journey'],
+    order: ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey'],
     cta: { label: 'View Projects', target: 'projects' },
   },
   friend: {
     tagline:
       "Hey! 👋 This is the fun cut — the products I've launched, the infra I've broken and fixed, and where I'm headed next. Grab a coffee and scroll.",
-    order: ['projects', 'journey', 'top10', 'achievements', 'skills'],
+    order: ['projects', 'learning', 'journey', 'top10', 'achievements', 'skills'],
     cta: { label: 'Take a Look', target: 'projects' },
   },
   stalker: {
     tagline:
       "Curious? Good. Everything's here — every project, every skill, the whole story from product to infrastructure. Start anywhere and poke around.",
-    order: ['projects', 'top10', 'achievements', 'journey', 'skills'],
+    order: ['projects', 'learning', 'top10', 'achievements', 'journey', 'skills'],
     cta: { label: 'Start Exploring', target: 'projects' },
   },
 }
@@ -242,6 +242,35 @@ export const achievements = [
     title: 'Certifications',
     tag: 'Coursework',
     detail: 'SQL Bootcamp (Udemy) · Product Management (Coursera) · Power BI (Microsoft).',
+  },
+]
+
+// "Continue Watching" row — what you're actively leveling up right now, each
+// with a progress bar like Netflix's resume-watching thumbnails. `logo` is
+// optional (reuses an icon from /public/skills where one exists).
+export const learning = [
+  {
+    name: 'Kubernetes & Helm',
+    level: 72,
+    note: 'From spinning up pods to writing Helm charts and cluster bootstrap scripts on Azure AKS.',
+    logo: '/skills/kubernetes.svg',
+  },
+  {
+    name: 'System Design',
+    level: 60,
+    note: 'Studying scale patterns after standing up production infra for a live fintech product.',
+  },
+  {
+    name: 'Advanced TypeScript',
+    level: 78,
+    note: 'Leaning into stricter types and generics after shipping Findesk end to end.',
+    logo: '/skills/typescript.svg',
+  },
+  {
+    name: 'Product Analytics & SQL',
+    level: 82,
+    note: 'Going deeper on cohort and funnel analysis after the 2.7M-event dashboard.',
+    logo: '/skills/postgresql.svg',
   },
 ]
 

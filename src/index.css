@@ -687,10 +687,22 @@ img {
   transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
   will-change: transform;
 }
+/* Netflix-style delayed hover-expand: wait a beat before growing (only on
+   the way IN), but snap back instantly on the way out. Keyboard focus gets
+   the same expand, instantly, plus a visible ring. */
 .card:hover {
   transform: scale(1.09);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   z-index: 10;
+  transition: transform 0.25s var(--ease) 0.4s, box-shadow 0.25s var(--ease) 0.4s;
+}
+.card:focus-visible {
+  transform: scale(1.09);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  outline: 2px solid var(--nf-red);
+  outline-offset: 3px;
+  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
 }
 .card__art {
   position: absolute;
@@ -822,6 +834,23 @@ img {
   border-radius: 999px;
   background: #fff;
 }
+/* Continue Watching: a resume-progress bar fixed to the card's bottom edge */
+.card__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  z-index: 5;
+}
+.card__progress-fill {
+  height: 100%;
+  background: var(--nf-red);
+}
+.card--learning .card__art {
+  padding-bottom: 22px;
+}
 /* Hover reveal footer on project cards */
 .card__hover {
   position: absolute;
@@ -838,9 +867,13 @@ img {
   transform: translateY(8px);
   transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
 }
-.card:hover .card__hover {
+.card:hover .card__hover,
+.card:focus-visible .card__hover {
   opacity: 1;
   transform: translateY(0);
+}
+.card:hover .card__hover {
+  transition: opacity 0.25s var(--ease) 0.4s, transform 0.25s var(--ease) 0.4s;
 }
 .card__play {
   width: 30px;
@@ -879,6 +912,14 @@ img {
 .top10:hover {
   transform: scale(1.06);
   z-index: 5;
+  transition: transform 0.25s var(--ease) 0.4s;
+}
+.top10:focus-visible {
+  transform: scale(1.06);
+  z-index: 5;
+  outline: 2px solid var(--nf-red);
+  outline-offset: 4px;
+  transition: transform 0.15s var(--ease);
 }
 .top10__rank {
   position: absolute;

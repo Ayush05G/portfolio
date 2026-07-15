@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { track } from '@vercel/analytics'
 import {
   profile,
   profileConfig,
@@ -8,6 +9,7 @@ import {
   skills,
   timeline,
   achievements,
+  learning,
   about,
   socials,
 } from './data.js'
@@ -18,6 +20,8 @@ import Row from './components/Row.jsx'
 import DetailModal from './components/DetailModal.jsx'
 import Search from './components/Search.jsx'
 import ContactForm from './components/ContactForm.jsx'
+import useRowNav from './useRowNav.js'
+import { playHoverTick, playModalOpen } from './sound.js'
 import { Play } from './icons.jsx'
 
 /* Netflix-style intro flash — the little logo "sting" before the gate.
@@ -74,7 +78,7 @@ function ProjectCard({ item, index, onOpen }) {
 /* Skill card */
 function SkillCard({ item }) {
   return (
-    <div className="card" style={{ '--card-accent': '#1f1f1f' }}>
+    <div className="card" style={{ '--card-accent': '#1f1f1f' }} tabIndex={0} role="group" aria-label={item.name}>
       <div className="card__art">
         <span className="card__tag">{item.tag}</span>
         {item.logo && <img className="skill-logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}
@@ -99,7 +103,13 @@ function SkillCard({ item }) {
 /* Achievement card */
 function AchievementCard({ item }) {
   return (
-    <div className="card card--tall" style={{ '--card-accent': '#3a1a1a' }}>
+    <div
+      className="card card--tall"
+      style={{ '--card-accent': '#3a1a1a' }}
+      tabIndex={0}
+      role="group"
+      aria-label={item.title}
+    >
       <div className="card__art">
         <span className="card__eyebrow">{item.tag}</span>
         <span className="card__label">{item.title}</span>
@@ -114,7 +124,13 @@ function AchievementCard({ item }) {
 /* Journey card */
 function JourneyCard({ item }) {
   return (
-    <div className="card card--tall" style={{ '--card-accent': '#242424' }}>
+    <div
+      className="card card--tall"
+      style={{ '--card-accent': '#242424' }}
+      tabIndex={0}
+      role="group"
+      aria-label={item.title}
+    >
       <div className="card__art">
         <span className="card__eyebrow">{item.when}</span>
         <span className="card__label">{item.title}</span>
@@ -131,7 +147,7 @@ function JourneyCard({ item }) {
    numeral behind a compact skill "poster". */
 function Top10Card({ item, rank }) {
   return (
-    <div className="top10">
+    <div className="top10" tabIndex={0} role="group" aria-label={`#${rank} ${item.name}`}>
       <span className="top10__rank" aria-hidden>{rank}</span>
       <div className="top10__poster" style={{ '--card-accent': '#1a1a1a' }}>
         {item.logo && <img className="top10__logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}
@@ -142,10 +158,36 @@ function Top10Card({ item, rank }) {
   )
 }
 
+/* "Continue Watching" card — a thumbnail with a resume-progress bar, like
+   Netflix's continue-watching row. */
+function LearningCard({ item }) {
+  return (
+    <div
+      className="card card--tall card--learning"
+      style={{ '--card-accent': '#1a2a3a' }}
+      tabIndex={0}
+      role="group"
+      aria-label={`Currently learning ${item.name}, ${item.level}% in`}
+    >
+      <div className="card__art">
+        <span className="card__eyebrow">Currently Learning</span>
+        {item.logo && <img className="skill-logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}
+        <span className="card__label">{item.name}</span>
+        <span className="card__sub card__sub--clamp" style={{ marginTop: 6 }}>
+          {item.note}
+        </span>
+      </div>
+      <div className="card__progress">
+        <div className="card__progress-fill" style={{ width: `${item.level}%` }} />
+      </div>
+    </div>
+  )
+}
+
 const firstName = profile.name.split(' ')[0]
 // Top 10 = the highest-fluency skills, ranked.
 const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
-const DEFAULT_ORDER = ['projects', 'top10', 'skills', 'achievements', 'journey']
+const DEFAULT_ORDER = ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey']
 
 const STORAGE_KEY = 'nf_profile'
 const findProject = (slug) => projects.find((p) => p.slug === slug) || null
@@ -173,6 +215,21 @@ export default function App() {
   const [activeProfile, setActiveProfile] = useState(initial.profile)
   const [modalItem, setModalItem] = useState(initial.project)
   const [searchOpen, setSearchOpen] = useState(false)
+
+  // Netflix-style arrow-key navigation between/within rows.
+  useRowNav()
+
+  // A soft blip when the mouse actually enters a new card (not on every
+  // mousemove within it), throttled inside playHoverTick itself.
+  useEffect(() => {
+    function onOver(e) {
+      const card = e.target.closest('.card, .top10')
+      if (!card || card.contains(e.relatedTarget)) return
+      playHoverTick()
+    }
+    document.addEventListener('mouseover', onOver)
+    return () => document.removeEventListener('mouseover', onOver)
+  }, [])
 
   // Fallback: guarantee the intro never hangs (e.g. if loaded in a background
   // tab where the animation's rAF is throttled and onAnimationComplete stalls).
@@ -202,6 +259,7 @@ export default function App() {
       /* ignore */
     }
     window.history.replaceState({ profile: p.id }, '', urlFor(p.id))
+    track('profile_selected', { profile: p.id })
   }
 
   function switchProfile() {
@@ -218,11 +276,13 @@ export default function App() {
 
   function openProject(p) {
     setModalItem(p)
+    playModalOpen()
     window.history.pushState(
       { profile: activeProfile?.id, project: p.slug },
       '',
       urlFor(activeProfile?.id, p.slug),
     )
+    track('project_opened', { project: p.slug || p.title })
   }
 
   function closeProject() {
@@ -258,6 +318,10 @@ export default function App() {
       children: projects.map((p, i) => (
         <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />
       )),
+    },
+    learning: {
+      title: 'Continue Watching',
+      children: learning.map((l) => <LearningCard key={l.name} item={l} />),
     },
     top10: {
       title: `Top 10 in ${firstName}'s Stack Today`,

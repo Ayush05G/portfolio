@@ -32,6 +32,56 @@ export function playTick() {
   }
 }
 
+// A very quiet hover blip for cards, throttled so rapidly moving the mouse
+// across a row doesn't turn into machine-gun noise.
+let lastHover = 0
+export function playHoverTick() {
+  const now = performance.now()
+  if (now - lastHover < 150) return
+  lastHover = now
+  try {
+    const ctx = getCtx()
+    if (!ctx) return
+    const t = ctx.currentTime
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'sine'
+    osc.frequency.value = 700
+    gain.gain.setValueAtTime(0.0001, t)
+    gain.gain.linearRampToValueAtTime(0.02, t + 0.006)
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09)
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(t)
+    osc.stop(t + 0.1)
+  } catch {
+    // Sound is a nice-to-have; never let it break anything.
+  }
+}
+
+// A soft rising blip when a project's detail modal opens.
+export function playModalOpen() {
+  try {
+    const ctx = getCtx()
+    if (!ctx) return
+    const t = ctx.currentTime
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(420, t)
+    osc.frequency.exponentialRampToValueAtTime(640, t + 0.12)
+    gain.gain.setValueAtTime(0.0001, t)
+    gain.gain.linearRampToValueAtTime(0.05, t + 0.02)
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22)
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(t)
+    osc.stop(t + 0.25)
+  } catch {
+    // Sound is a nice-to-have; never let it break anything.
+  }
+}
+
 // A small synthesized "ta-dum" style entry chime, generated with the Web
 // Audio API (no external audio file, no copyrighted Netflix audio).
 export function playEntryChime() {
