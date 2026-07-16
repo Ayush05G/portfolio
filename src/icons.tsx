@@ -69,11 +69,7 @@ export const External = (
 
 export const Download = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-    <path
-      d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 

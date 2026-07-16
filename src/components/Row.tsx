@@ -31,7 +31,11 @@ export default function Row({ id, title, className = '', children }: Props) {
         <div className="row__track" ref={track}>
           {children}
         </div>
-        <button className="row__arrow row__arrow--right" onClick={() => scrollBy(1)} aria-label="Scroll right">
+        <button
+          className="row__arrow row__arrow--right"
+          onClick={() => scrollBy(1)}
+          aria-label="Scroll right"
+        >
           {ChevronRight}
         </button>
       </div>

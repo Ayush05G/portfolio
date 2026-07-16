@@ -124,10 +124,30 @@ export const profile: Profile = {
 // `avatar` is a photo/icon in /public/avatars; `color` is the fallback
 // background shown behind it (and used for the nav avatar's initial).
 export const profiles: ProfileSummary[] = [
-  { id: 'recruiter', name: 'Recruiter', avatar: '/avatars/recruiter.jpg', color: 'linear-gradient(135deg,#e50914,#b81d24)' },
-  { id: 'developer', name: 'Developer', avatar: '/avatars/developer.png', color: 'linear-gradient(135deg,#0071eb,#00c6ff)' },
-  { id: 'friend', name: 'Friend', avatar: '/avatars/friend.png', color: 'linear-gradient(135deg,#f5c518,#ff8a00)' },
-  { id: 'stalker', name: 'Curious', avatar: '/avatars/curious.png', color: 'linear-gradient(135deg,#8a2be2,#e50914)' },
+  {
+    id: 'recruiter',
+    name: 'Recruiter',
+    avatar: '/avatars/recruiter.webp',
+    color: 'linear-gradient(135deg,#e50914,#b81d24)',
+  },
+  {
+    id: 'developer',
+    name: 'Developer',
+    avatar: '/avatars/developer.webp',
+    color: 'linear-gradient(135deg,#0071eb,#00c6ff)',
+  },
+  {
+    id: 'friend',
+    name: 'Friend',
+    avatar: '/avatars/friend.webp',
+    color: 'linear-gradient(135deg,#f5c518,#ff8a00)',
+  },
+  {
+    id: 'stalker',
+    name: 'Curious',
+    avatar: '/avatars/curious.webp',
+    color: 'linear-gradient(135deg,#8a2be2,#e50914)',
+  },
 ]
 
 // ── Per-profile personalization ──────────────────────────────────────────

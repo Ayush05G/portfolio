@@ -26,9 +26,11 @@ npm run preview  # preview the production build
 - **`timeline`** — the "My Journey" row.
 
 ### Résumé
+
 Drop a `resume.pdf` into `public/`, then set `resumeUrl: '/resume.pdf'` in `profile`. A "Résumé" button then appears in the nav.
 
 ### Colors & branding
+
 Design tokens are CSS variables at the top of [`src/index.css`](src/index.css). The Netflix red is `--nf-red` — change it (and `--nf-black`) to re-theme the whole site.
 
 ## Deploy

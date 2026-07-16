@@ -10,6 +10,9 @@
     />
     <meta name="author" content="Ayush Gupta" />
     <meta name="theme-color" content="#141414" />
+    <link rel="canonical" href="https://ayushguptaprofile.vercel.app/" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
 
     <!-- Open Graph / social preview -->
     <meta property="og:title" content="Ayush Gupta — Portfolio" />
@@ -19,6 +22,9 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ayushguptaprofile.vercel.app/" />
+    <meta property="og:image" content="https://ayushguptaprofile.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -27,13 +33,35 @@
       name="twitter:description"
       content="Product-minded full-stack engineer at NSUT. A Netflix-inspired interactive portfolio."
     />
+    <meta name="twitter:image" content="https://ayushguptaprofile.vercel.app/og.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "name": "Ayush Gupta",
+            "url": "https://ayushguptaprofile.vercel.app/",
+            "jobTitle": "Associate Product Manager",
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "Netaji Subhas University of Technology"
+            },
+            "sameAs": [
+              "https://github.com/Ayush05G",
+              "https://www.linkedin.com/in/ayush-gupta-17b3112a2/",
+              "https://leetcode.com/u/AG2425/"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "name": "Ayush Gupta — Portfolio",
+            "url": "https://ayushguptaprofile.vercel.app/"
+          }
+        ]
+      }
+    </script>
 
     <title>Ayush Gupta — Portfolio</title>
   </head>

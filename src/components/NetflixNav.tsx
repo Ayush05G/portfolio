@@ -20,7 +20,13 @@ interface Props {
   onOpenResume: () => void
 }
 
-export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearch, resumeUrl, onOpenResume }: Props) {
+export default function NetflixNav({
+  activeProfile,
+  onSwitchProfile,
+  onOpenSearch,
+  resumeUrl,
+  onOpenResume,
+}: Props) {
   const [solid, setSolid] = useState(false)
   const [active, setActive] = useState('billboard')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -73,12 +79,13 @@ export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearc
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const AvatarImg = ({ className }: { className: string }) =>
-    activeProfile?.avatar ? (
+  function renderAvatar(className: string) {
+    return activeProfile?.avatar ? (
       <img className={className} src={activeProfile.avatar} alt={activeProfile.name} />
     ) : (
       (activeProfile?.name || firstName)[0]
     )
+  }
 
   return (
     <nav className={`nav ${solid ? 'solid' : ''}`}>
@@ -130,7 +137,7 @@ export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearc
               style={{ background: activeProfile?.color || 'var(--nf-red)' }}
               title={activeProfile?.name}
             >
-              <AvatarImg className="nav__avatar-img" />
+              {renderAvatar('nav__avatar-img')}
             </span>
             <span className={`nav__caret ${menuOpen ? 'open' : ''}`}>{ChevronDown}</span>
           </button>
@@ -142,7 +149,7 @@ export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearc
                   className="nav__avatar nav__avatar--sm"
                   style={{ background: activeProfile?.color || 'var(--nf-red)' }}
                 >
-                  <AvatarImg className="nav__avatar-img" />
+                  {renderAvatar('nav__avatar-img')}
                 </span>
                 <span className="nav__dropdown-name">{activeProfile?.name || 'Guest'}</span>
               </div>

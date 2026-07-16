@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, lazy, Suspense, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { track } from '@vercel/analytics'
 import {
@@ -16,14 +16,11 @@ import {
   type Project,
   type RowId,
 } from './data.ts'
+import NotFound from './components/NotFound.tsx'
 import ProfileGate from './components/ProfileGate.tsx'
 import NetflixNav from './components/NetflixNav.tsx'
 import Billboard from './components/Billboard.tsx'
 import Row from './components/Row.tsx'
-import DetailModal from './components/DetailModal.tsx'
-import ResumeModal from './components/ResumeModal.tsx'
-import Search from './components/Search.tsx'
-import ContactForm from './components/ContactForm.tsx'
 import ProjectCard from './components/cards/ProjectCard.tsx'
 import SkillCard from './components/cards/SkillCard.tsx'
 import AchievementCard from './components/cards/AchievementCard.tsx'
@@ -32,6 +29,13 @@ import Top10Card from './components/cards/Top10Card.tsx'
 import LearningCard from './components/cards/LearningCard.tsx'
 import useRowNav from './useRowNav.ts'
 import { playHoverTick, playModalOpen } from './sound.ts'
+
+// Interaction-gated / below-the-fold — code-split so first paint doesn't
+// pay for them.
+const DetailModal = lazy(() => import('./components/DetailModal.tsx'))
+const ResumeModal = lazy(() => import('./components/ResumeModal.tsx'))
+const Search = lazy(() => import('./components/Search.tsx'))
+const ContactForm = lazy(() => import('./components/ContactForm.tsx'))
 
 type Phase = 'intro' | 'gate' | 'app'
 
@@ -79,7 +83,8 @@ const findProject = (slug: string | null): Project | null => projects.find((p) =
 // Resolve the starting profile from (1) a ?profile=<id> deep-link, or (2) the
 // last profile saved on a previous visit — either one skips the intro + gate.
 const initial = (() => {
-  if (typeof window === 'undefined') return { profile: null as ProfileSummary | null, project: null as Project | null }
+  if (typeof window === 'undefined')
+    return { profile: null as ProfileSummary | null, project: null as Project | null }
   const params = new URLSearchParams(window.location.search)
   const urlId = params.get('profile')
   const savedId = (() => {
@@ -214,9 +219,7 @@ export default function App() {
   const rowDefs: Partial<Record<RowId, RowDef>> = {
     projects: {
       title: 'Featured Projects',
-      children: projects.map((p, i) => (
-        <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />
-      )),
+      children: projects.map((p, i) => <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />),
     },
     learning: {
       title: 'Continue Watching',
@@ -242,6 +245,9 @@ export default function App() {
   }
 
   const order = config?.order || DEFAULT_ORDER
+  const isNotFound = typeof window !== 'undefined' && window.location.pathname !== '/'
+
+  if (isNotFound) return <NotFound />
 
   return (
     <>
@@ -274,9 +280,7 @@ export default function App() {
               const def = rowDefs[id]
               if (!def) return null
               const title =
-                idx === 0 && activeProfile
-                  ? `Today's Top Picks for ${activeProfile.name}`
-                  : def.title
+                idx === 0 && activeProfile ? `Today's Top Picks for ${activeProfile.name}` : def.title
               return (
                 <Row key={id} id={id} title={title} className={def.className || ''}>
                   {def.children}
@@ -311,25 +315,21 @@ export default function App() {
             <div className="contact-grid">
               <div className="contact-grid__left">
                 <p className="contact-lead">
-                  Open to full-time product & software roles. Have a role, a question, or just want
-                  to say hi? Drop me a line.
+                  Open to full-time product & software roles. Have a role, a question, or just want to say hi?
+                  Drop me a line.
                 </p>
                 <div className="social-row">
                   {socials.map((s) => (
-                    <a
-                      className="social-card"
-                      key={s.label}
-                      href={s.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <a className="social-card" key={s.label} href={s.url} target="_blank" rel="noreferrer">
                       <div className="social-card__label">{s.label}</div>
                       <div className="social-card__handle">{s.handle}</div>
                     </a>
                   ))}
                 </div>
               </div>
-              <ContactForm />
+              <Suspense fallback={null}>
+                <ContactForm />
+              </Suspense>
             </div>
           </section>
 
@@ -340,20 +340,28 @@ export default function App() {
         </motion.div>
       )}
 
-      <Search
-        open={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        onOpenProject={openProject}
-        scrollTo={scrollToId}
-      />
+      <Suspense fallback={null}>
+        {searchOpen && (
+          <Search
+            open={searchOpen}
+            onClose={() => setSearchOpen(false)}
+            onOpenProject={openProject}
+            scrollTo={scrollToId}
+          />
+        )}
+      </Suspense>
 
-      <AnimatePresence>
-        {modalItem && <DetailModal item={modalItem} onClose={closeProject} />}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {modalItem && <DetailModal item={modalItem} onClose={closeProject} />}
+        </AnimatePresence>
+      </Suspense>
 
-      <AnimatePresence>
-        {resumeOpen && <ResumeModal url={resumeUrl} onClose={() => setResumeOpen(false)} />}
-      </AnimatePresence>
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {resumeOpen && <ResumeModal url={resumeUrl} onClose={() => setResumeOpen(false)} />}
+        </AnimatePresence>
+      </Suspense>
     </>
   )
 }

@@ -58,8 +58,21 @@ interface Props {
 export default function Search({ open, onClose, onOpenProject, scrollTo }: Props) {
   const [q, setQ] = useState('')
   const [active, setActive] = useState(0)
+  const [prevQ, setPrevQ] = useState(q)
+  const [prevOpen, setPrevOpen] = useState(open)
   const inputRef = useRef<HTMLInputElement>(null)
   const index = useMemo(() => buildIndex(onOpenProject, scrollTo), [onOpenProject, scrollTo])
+
+  // Reset the highlighted result whenever the query changes (render-phase
+  // state adjustment, not an effect — see https://react.dev/learn/you-might-not-need-an-effect).
+  if (q !== prevQ) {
+    setPrevQ(q)
+    setActive(0)
+  }
+  if (open !== prevOpen) {
+    setPrevOpen(open)
+    if (open) setQ('')
+  }
 
   const results = useMemo<ResultItem[]>(() => {
     const term = q.trim().toLowerCase()
@@ -80,14 +93,7 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
   }, [q, index])
 
   useEffect(() => {
-    setActive(0)
-  }, [q])
-
-  useEffect(() => {
-    if (open) {
-      setQ('')
-      setTimeout(() => inputRef.current?.focus(), 60)
-    }
+    if (open) setTimeout(() => inputRef.current?.focus(), 60)
   }, [open])
 
   useEffect(() => {

@@ -102,6 +102,35 @@ img {
   padding: 40px 20px;
   background: var(--nf-black);
 }
+.not-found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  background: var(--nf-black);
+}
+.not-found__code {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 12vw, 6rem);
+  color: var(--nf-red);
+  line-height: 1;
+}
+.not-found__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  color: #fff;
+  margin: 12px 0 10px;
+}
+.not-found__desc {
+  color: var(--text-dim);
+  max-width: 440px;
+  margin-bottom: 28px;
+}
 .gate__title {
   font-family: var(--font-display);
   font-weight: 500;
@@ -130,7 +159,9 @@ img {
   border-radius: 8px;
   border: 3px solid transparent;
   overflow: hidden;
-  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+  transition:
+    border-color 0.2s var(--ease),
+    transform 0.2s var(--ease);
   display: grid;
   place-items: center;
   font-family: var(--font-display);
@@ -309,7 +340,9 @@ img {
   font-size: 0.88rem;
   color: var(--text-dim);
   border-radius: 3px;
-  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+  transition:
+    background 0.15s var(--ease),
+    color 0.15s var(--ease);
 }
 .nav__dropdown-item:hover {
   background: rgba(255, 255, 255, 0.08);
@@ -332,7 +365,9 @@ img {
   height: 2px;
   border-radius: 2px;
   background: #fff;
-  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+  transition:
+    transform 0.3s var(--ease),
+    opacity 0.2s var(--ease);
 }
 .nav__burger.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
@@ -418,22 +453,22 @@ img {
   animation: float2 24s var(--ease) infinite alternate;
 }
 @keyframes float1 {
-  to { transform: translate(-6vw, 8vh) scale(1.1); }
+  to {
+    transform: translate(-6vw, 8vh) scale(1.1);
+  }
 }
 @keyframes float2 {
-  to { transform: translate(5vw, -6vh) scale(1.15); }
+  to {
+    transform: translate(5vw, -6vh) scale(1.15);
+  }
 }
 .billboard::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-      77deg,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.45) 45%,
-      transparent 75%
-    ),
+  background:
+    linear-gradient(77deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%),
     linear-gradient(180deg, transparent 60%, var(--nf-black) 100%);
 }
 .billboard__content {
@@ -506,7 +541,9 @@ img {
   font-weight: 600;
   padding: 11px 26px;
   border-radius: 4px;
-  transition: opacity 0.2s var(--ease), background 0.2s var(--ease);
+  transition:
+    opacity 0.2s var(--ease),
+    background 0.2s var(--ease);
 }
 .nf-btn svg {
   width: 22px;
@@ -577,7 +614,9 @@ img {
   animation: caretBlink 1s steps(1) infinite;
 }
 @keyframes caretBlink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 .trailer__mute {
   flex-shrink: 0;
@@ -589,7 +628,9 @@ img {
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.35);
-  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  transition:
+    border-color 0.2s var(--ease),
+    background 0.2s var(--ease);
 }
 .trailer__mute:hover {
   border-color: #fff;
@@ -657,7 +698,9 @@ img {
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
   opacity: 0;
-  transition: opacity 0.2s var(--ease), background 0.2s var(--ease);
+  transition:
+    opacity 0.2s var(--ease),
+    background 0.2s var(--ease);
 }
 .row__viewport:hover .row__arrow {
   opacity: 1;
@@ -687,7 +730,9 @@ img {
   border-radius: 6px;
   overflow: hidden;
   background: var(--nf-card);
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
   will-change: transform;
 }
 /* Netflix-style delayed hover-expand: wait a beat before growing (only on
@@ -697,7 +742,9 @@ img {
   transform: scale(1.09);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   z-index: 10;
-  transition: transform 0.25s var(--ease) 0.4s, box-shadow 0.25s var(--ease) 0.4s;
+  transition:
+    transform 0.25s var(--ease) 0.4s,
+    box-shadow 0.25s var(--ease) 0.4s;
 }
 .card:focus-visible {
   transform: scale(1.09);
@@ -705,7 +752,9 @@ img {
   z-index: 10;
   outline: 2px solid var(--nf-red);
   outline-offset: 3px;
-  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  transition:
+    transform 0.15s var(--ease),
+    box-shadow 0.15s var(--ease);
 }
 .card__art {
   position: absolute;
@@ -868,7 +917,9 @@ img {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), transparent);
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  transition:
+    opacity 0.25s var(--ease),
+    transform 0.25s var(--ease);
 }
 .card:hover .card__hover,
 .card:focus-visible .card__hover {
@@ -876,7 +927,9 @@ img {
   transform: translateY(0);
 }
 .card:hover .card__hover {
-  transition: opacity 0.25s var(--ease) 0.4s, transform 0.25s var(--ease) 0.4s;
+  transition:
+    opacity 0.25s var(--ease) 0.4s,
+    transform 0.25s var(--ease) 0.4s;
 }
 .card__play {
   width: 30px;
@@ -1207,7 +1260,10 @@ img {
   border: 1px solid #2a2a2a;
   border-radius: 8px;
   padding: 20px;
-  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+  transition:
+    background 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    transform 0.2s var(--ease);
 }
 .social-card:hover {
   background: #232323;
@@ -1359,8 +1415,12 @@ img {
   animation: fadeIn 0.18s var(--ease);
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .search-panel {
   width: min(640px, 100%);

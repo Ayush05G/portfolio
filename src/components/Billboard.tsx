@@ -4,8 +4,7 @@ import { profile, type ProfileConfig } from '../data.ts'
 import { Play, Info, VolumeOn, VolumeOff } from '../icons.tsx'
 import { playTick } from '../sound.ts'
 
-const scrollTo = (id: string) =>
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
 interface TrailerProps {
   lines: string[]
@@ -22,7 +21,9 @@ function Trailer({ lines, muted, onToggleMute }: TrailerProps) {
   const [text, setText] = useState('')
   const state = useRef({ line: 0, char: 0, deleting: false })
   const mutedRef = useRef(muted)
-  mutedRef.current = muted
+  useEffect(() => {
+    mutedRef.current = muted
+  }, [muted])
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>

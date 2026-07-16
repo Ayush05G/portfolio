@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ayushguptaprofile.vercel.app/sitemap.xml

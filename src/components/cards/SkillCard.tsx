@@ -8,7 +8,13 @@ interface Props {
 
 export default function SkillCard({ item }: Props) {
   return (
-    <div className="card" style={{ '--card-accent': '#1f1f1f' } as CSSProperties} tabIndex={0} role="group" aria-label={item.name}>
+    <div
+      className="card"
+      style={{ '--card-accent': '#1f1f1f' } as CSSProperties}
+      tabIndex={0}
+      role="group"
+      aria-label={item.name}
+    >
       <div className="card__art">
         <span className="card__tag">{item.tag}</span>
         {item.logo && <img className="skill-logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}

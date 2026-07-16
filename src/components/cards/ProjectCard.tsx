@@ -15,7 +15,9 @@ export default function ProjectCard({ item, index, onOpen }: Props) {
       style={{ '--card-accent': item.accent } as CSSProperties}
       onClick={() => onOpen(item)}
     >
-      {item.image && <img className="card__shot" src={item.image} alt={`${item.title} preview`} loading="lazy" />}
+      {item.image && (
+        <img className="card__shot" src={item.image} alt={`${item.title} preview`} loading="lazy" />
+      )}
       <div className="card__art">
         <span className="card__num">{String(index + 1).padStart(2, '0')}</span>
         <span className="card__tag">Project</span>
