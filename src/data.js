@@ -60,6 +60,7 @@ export const profileConfig = {
       'Full-stack + infra: Next.js/TypeScript apps, Python data tools, and the Kubernetes (Azure AKS) and CI/CD they run on. Dig into the projects, the stack, and how it fits together.',
     order: ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey'],
     cta: { label: 'View Projects', target: 'projects' },
+    resumeUrl: '/resume-developer.pdf', // Phone number redacted before publishing — see conversation for details
   },
   friend: {
     tagline:
