@@ -281,5 +281,5 @@ export const learning = [
 // then paste it below. Until a key is set, the form falls back to opening
 // the visitor's email client pre-filled (still fully functional).
 export const contact = {
-  web3formsKey: '', // e.g. 'a1b2c3d4-....' — paste your Web3Forms access key
+  web3formsKey: '26890515-b887-4c49-82d9-34729f953b42',
 }
