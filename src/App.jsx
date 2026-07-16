@@ -18,6 +18,7 @@ import NetflixNav from './components/NetflixNav.jsx'
 import Billboard from './components/Billboard.jsx'
 import Row from './components/Row.jsx'
 import DetailModal from './components/DetailModal.jsx'
+import ResumeModal from './components/ResumeModal.jsx'
 import Search from './components/Search.jsx'
 import ContactForm from './components/ContactForm.jsx'
 import useRowNav from './useRowNav.js'
@@ -215,6 +216,7 @@ export default function App() {
   const [activeProfile, setActiveProfile] = useState(initial.profile)
   const [modalItem, setModalItem] = useState(initial.project)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [resumeOpen, setResumeOpen] = useState(false)
 
   // Netflix-style arrow-key navigation between/within rows.
   useRowNav()
@@ -310,6 +312,13 @@ export default function App() {
   }
 
   const config = activeProfile ? profileConfig[activeProfile.id] : null
+  const resumeUrl = config?.resumeUrl || profile.resumeUrl
+
+  function openResume() {
+    setResumeOpen(true)
+    playModalOpen()
+    track('resume_opened', { profile: activeProfile?.id })
+  }
 
   // Row definitions, keyed by id so profiles can reorder them freely.
   const rowDefs = {
@@ -364,6 +373,8 @@ export default function App() {
             activeProfile={activeProfile}
             onSwitchProfile={switchProfile}
             onOpenSearch={() => setSearchOpen(true)}
+            resumeUrl={resumeUrl}
+            onOpenResume={openResume}
           />
 
           <Billboard config={config} onMoreInfo={scrollToAbout} />
@@ -448,6 +459,10 @@ export default function App() {
 
       <AnimatePresence>
         {modalItem && <DetailModal item={modalItem} onClose={closeProject} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {resumeOpen && <ResumeModal url={resumeUrl} onClose={() => setResumeOpen(false)} />}
       </AnimatePresence>
     </>
   )

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { profile, profileConfig } from '../data.js'
+import { profile } from '../data.js'
 import { ChevronDown, Search as SearchIcon } from '../icons.jsx'
 
 const links = [
@@ -12,8 +12,7 @@ const links = [
   { id: 'contact', label: 'Contact' },
 ]
 
-export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearch }) {
-  const resumeUrl = (activeProfile && profileConfig[activeProfile.id]?.resumeUrl) || profile.resumeUrl
+export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearch, resumeUrl, onOpenResume }) {
   const [solid, setSolid] = useState(false)
   const [active, setActive] = useState('billboard')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -107,9 +106,9 @@ export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearc
           {SearchIcon}
         </button>
         {resumeUrl && (
-          <a className="nav__resume" href={resumeUrl} target="_blank" rel="noreferrer">
+          <button className="nav__resume" onClick={onOpenResume}>
             Résumé
-          </a>
+          </button>
         )}
         <div className="nav__account" ref={menuRef}>
           <button
