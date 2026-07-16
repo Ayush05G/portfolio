@@ -3,7 +3,97 @@
 //  Edit this file to make the whole site yours. Nothing else needs to change.
 // ============================================================================
 
-export const profile = {
+export type RowId = 'projects' | 'learning' | 'top10' | 'skills' | 'achievements' | 'journey'
+
+export interface Profile {
+  name: string
+  tagline: string
+  match: string
+  year: string
+  rating: string
+  genres: string[]
+  email: string
+  location: string
+  resumeUrl: string
+  trailerLines: string[]
+}
+
+export interface ProfileSummary {
+  id: string
+  name: string
+  avatar: string
+  color: string
+}
+
+export interface ProfileConfig {
+  tagline: string
+  order: RowId[]
+  cta: { label: string; target?: string; href?: string }
+  resumeUrl?: string
+}
+
+export interface Social {
+  label: string
+  url: string
+  handle: string
+}
+
+export interface AboutFact {
+  label: string
+  value: string
+}
+
+export interface About {
+  paragraphs: string[]
+  facts: AboutFact[]
+}
+
+export interface Skill {
+  name: string
+  level: number
+  tag: string
+  logo?: string
+}
+
+export interface Project {
+  slug: string
+  title: string
+  blurb: string
+  longDescription: string
+  tags: string[]
+  match: string
+  year: string
+  link: string
+  repo: string
+  accent: string
+  image?: string
+}
+
+export interface TimelineEntry {
+  when: string
+  title: string
+  place: string
+  detail: string
+}
+
+export interface Achievement {
+  title: string
+  tag: string
+  detail: string
+}
+
+export interface LearningItem {
+  name: string
+  level: number
+  note: string
+  logo?: string
+}
+
+export interface Contact {
+  web3formsKey: string
+}
+
+export const profile: Profile = {
   name: 'Ayush Gupta',
   // Default billboard tagline (used as a fallback; each profile below can
   // override it via profileConfig).
@@ -33,7 +123,7 @@ export const profile = {
 // The "Who's watching?" profiles. Each is a doorway into the same site.
 // `avatar` is a photo/icon in /public/avatars; `color` is the fallback
 // background shown behind it (and used for the nav avatar's initial).
-export const profiles = [
+export const profiles: ProfileSummary[] = [
   { id: 'recruiter', name: 'Recruiter', avatar: '/avatars/recruiter.jpg', color: 'linear-gradient(135deg,#e50914,#b81d24)' },
   { id: 'developer', name: 'Developer', avatar: '/avatars/developer.png', color: 'linear-gradient(135deg,#0071eb,#00c6ff)' },
   { id: 'friend', name: 'Friend', avatar: '/avatars/friend.png', color: 'linear-gradient(135deg,#f5c518,#ff8a00)' },
@@ -48,7 +138,7 @@ export const profiles = [
 //   'projects' · 'learning' · 'top10' · 'skills' · 'achievements' · 'journey'
 // `cta` is the primary billboard button: { label, target } where target is a
 // row id to scroll to, OR { label, href } to link out.
-export const profileConfig = {
+export const profileConfig: Record<string, ProfileConfig> = {
   recruiter: {
     tagline:
       "Associate PM at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
@@ -76,14 +166,14 @@ export const profileConfig = {
   },
 }
 
-export const socials = [
+export const socials: Social[] = [
   { label: 'GitHub', url: 'https://github.com/Ayush05G', handle: '@Ayush05G' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/ayush-gupta-17b3112a2/', handle: '/in/ayush-gupta' },
   { label: 'LeetCode', url: 'https://leetcode.com/u/AG2425/', handle: '@AG2425 · Top 100K' },
   { label: 'Email', url: 'mailto:ayush2425.rk@gmail.com', handle: 'ayush2425.rk@gmail.com' },
 ]
 
-export const about = {
+export const about: About = {
   paragraphs: [
     "I'm an Electrical Engineering undergrad at NSUT who lives where product meets engineering. Most recently I was an Associate PM at Bachatt, a fintech, where I led the launch of a new credit-card product with our partner ZET — owning the spec and roadmap and driving delivery across engineering, design, and the partner team.",
     "But I don't stop at the spec. On the same role I ran Bachatt's Atlassian → self-hosted migration end to end (Jira & Confluence onto Plane + Outline on Azure AKS), built a two-way Plane ↔ Slack bridge, and stood up production infra and a CDN asset pipeline. Alongside that I ship full-stack side projects, solved 500+ DSA problems, and co-authored a peer-reviewed ML paper. Currently open to full-time product and software roles.",
@@ -100,7 +190,7 @@ export const about = {
 // `level` (0–100) drives the little progress bar. `tag` is the small label.
 // `logo` is an official brand icon in /public/skills (from Simple Icons);
 // omit it for skills with no single brand logo (e.g. soft skills).
-export const skills = [
+export const skills: Skill[] = [
   { name: 'TypeScript', level: 84, tag: 'Language', logo: '/skills/typescript.svg' },
   { name: 'JavaScript', level: 86, tag: 'Language', logo: '/skills/javascript.svg' },
   { name: 'Python', level: 84, tag: 'Language', logo: '/skills/python.svg' },
@@ -122,7 +212,7 @@ export const skills = [
 ]
 
 // Projects become the "Featured Projects" row. Click a card → detail modal.
-export const projects = [
+export const projects: Project[] = [
   {
     slug: 'findesk',
     title: 'Findesk — AI Equity-Research Assistant',
@@ -185,7 +275,7 @@ export const projects = [
 ]
 
 // Experience + education become the "My Journey" row (most recent first).
-export const timeline = [
+export const timeline: TimelineEntry[] = [
   {
     when: 'May 2026 – Jul 2026',
     title: 'Associate Product Manager',
@@ -223,7 +313,7 @@ export const timeline = [
 ]
 
 // Achievements & certifications become their own row of cards.
-export const achievements = [
+export const achievements: Achievement[] = [
   {
     title: '500+ DSA Problems',
     tag: 'Problem Solving',
@@ -249,7 +339,7 @@ export const achievements = [
 // "Continue Watching" row — what you're actively leveling up right now, each
 // with a progress bar like Netflix's resume-watching thumbnails. `logo` is
 // optional (reuses an icon from /public/skills where one exists).
-export const learning = [
+export const learning: LearningItem[] = [
   {
     name: 'Kubernetes & Helm',
     level: 72,
@@ -281,6 +371,6 @@ export const learning = [
 // https://web3forms.com (takes ~30s, no signup — just enter your email),
 // then paste it below. Until a key is set, the form falls back to opening
 // the visitor's email client pre-filled (still fully functional).
-export const contact = {
+export const contact: Contact = {
   web3formsKey: '26890515-b887-4c49-82d9-34729f953b42',
 }

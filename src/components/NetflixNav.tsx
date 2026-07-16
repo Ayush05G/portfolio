@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
-import { profile } from '../data.js'
-import { ChevronDown, Search as SearchIcon } from '../icons.jsx'
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { profile, type ProfileSummary } from '../data.ts'
+import { ChevronDown, Search as SearchIcon } from '../icons.tsx'
 
 const links = [
   { id: 'billboard', label: 'Home' },
@@ -12,12 +12,20 @@ const links = [
   { id: 'contact', label: 'Contact' },
 ]
 
-export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearch, resumeUrl, onOpenResume }) {
+interface Props {
+  activeProfile: ProfileSummary | null
+  onSwitchProfile: () => void
+  onOpenSearch: () => void
+  resumeUrl?: string
+  onOpenResume: () => void
+}
+
+export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearch, resumeUrl, onOpenResume }: Props) {
   const [solid, setSolid] = useState(false)
   const [active, setActive] = useState('billboard')
   const [menuOpen, setMenuOpen] = useState(false)
   const [navOpen, setNavOpen] = useState(false) // mobile links drawer
-  const menuRef = useRef(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 60)
@@ -43,10 +51,10 @@ export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearc
   }, [])
 
   useEffect(() => {
-    function onDocClick(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false)
+    function onDocClick(e: globalThis.MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false)
     }
-    function onKey(e) {
+    function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setMenuOpen(false)
     }
     document.addEventListener('mousedown', onDocClick)
@@ -59,13 +67,13 @@ export default function NetflixNav({ activeProfile, onSwitchProfile, onOpenSearc
 
   const firstName = profile.name.split(' ')[0].toUpperCase()
 
-  function go(e, id) {
+  function go(e: ReactMouseEvent<HTMLAnchorElement>, id: string) {
     e.preventDefault()
     setNavOpen(false)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const AvatarImg = ({ className }) =>
+  const AvatarImg = ({ className }: { className: string }) =>
     activeProfile?.avatar ? (
       <img className={className} src={activeProfile.avatar} alt={activeProfile.name} />
     ) : (

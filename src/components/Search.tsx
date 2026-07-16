@@ -1,9 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { projects, skills, timeline, achievements } from '../data.js'
-import { Search as SearchIcon, Close } from '../icons.jsx'
+import { projects, skills, timeline, achievements, type Project } from '../data.ts'
+import { Search as SearchIcon, Close } from '../icons.tsx'
+
+interface IndexItem {
+  type: string
+  label: string
+  sub: string
+  keywords: string
+  run: () => void
+}
+
+interface ResultItem extends IndexItem {
+  score: number
+}
 
 // Build a flat, searchable index once.
-function buildIndex(onOpenProject, scrollTo) {
+function buildIndex(onOpenProject: (p: Project) => void, scrollTo: (id: string) => void): IndexItem[] {
   return [
     ...projects.map((p) => ({
       type: 'Project',
@@ -36,17 +48,24 @@ function buildIndex(onOpenProject, scrollTo) {
   ]
 }
 
-export default function Search({ open, onClose, onOpenProject, scrollTo }) {
+interface Props {
+  open: boolean
+  onClose: () => void
+  onOpenProject: (p: Project) => void
+  scrollTo: (id: string) => void
+}
+
+export default function Search({ open, onClose, onOpenProject, scrollTo }: Props) {
   const [q, setQ] = useState('')
   const [active, setActive] = useState(0)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const index = useMemo(() => buildIndex(onOpenProject, scrollTo), [onOpenProject, scrollTo])
 
-  const results = useMemo(() => {
+  const results = useMemo<ResultItem[]>(() => {
     const term = q.trim().toLowerCase()
     if (!term) return []
     return index
-      .map((item) => {
+      .map((item): ResultItem | null => {
         const hay = `${item.label} ${item.sub} ${item.keywords}`.toLowerCase()
         if (!hay.includes(term)) return null
         // Rank: label starts-with > label includes > body includes.
@@ -55,7 +74,7 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }) {
         else if (item.label.toLowerCase().includes(term)) score = 1
         return { ...item, score }
       })
-      .filter(Boolean)
+      .filter((item): item is ResultItem => item !== null)
       .sort((a, b) => a.score - b.score)
       .slice(0, 8)
   }, [q, index])
@@ -73,7 +92,7 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }) {
 
   useEffect(() => {
     if (!open) return
-    const onKey = (e) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
       else if (e.key === 'ArrowDown') {
         e.preventDefault()
@@ -87,9 +106,10 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }) {
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, results, active])
 
-  function pick(item) {
+  function pick(item: ResultItem) {
     onClose()
     item.run()
   }

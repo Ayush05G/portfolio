@@ -1,15 +1,21 @@
-import { useEffect } from 'react'
+import { useEffect, type CSSProperties } from 'react'
 import { motion } from 'framer-motion'
-import { Play, Close, External, Github } from '../icons.jsx'
+import { Play, Close, Github } from '../icons.tsx'
+import type { Project } from '../data.ts'
+
+interface Props {
+  item: Project | null
+  onClose: () => void
+}
 
 /**
  * Netflix-style "title" modal that opens when a project card is clicked.
  * `item` is a project object (or null when closed).
  */
-export default function DetailModal({ item, onClose }) {
+export default function DetailModal({ item, onClose }: Props) {
   useEffect(() => {
     if (!item) return
-    const onKey = (e) => e.key === 'Escape' && onClose()
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     document.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -33,7 +39,7 @@ export default function DetailModal({ item, onClose }) {
       <motion.div
         className="modal"
         onClick={(e) => e.stopPropagation()}
-        style={{ '--card-accent': item.accent }}
+        style={{ '--card-accent': item.accent } as CSSProperties}
         initial={{ scale: 0.92, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 10 }}

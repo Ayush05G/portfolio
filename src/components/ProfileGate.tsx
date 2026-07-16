@@ -1,14 +1,18 @@
 import { motion } from 'framer-motion'
-import { profiles } from '../data.js'
-import { playEntryChime } from '../sound.js'
+import { profiles, type ProfileSummary } from '../data.ts'
+import { playEntryChime } from '../sound.ts'
+
+interface Props {
+  onSelect: (p: ProfileSummary) => void
+}
 
 /**
  * The "Who's watching?" Netflix profile selection screen.
  * Selecting any profile plays the entry chime and calls onSelect() to
  * enter the site.
  */
-export default function ProfileGate({ onSelect }) {
-  function handleSelect(p) {
+export default function ProfileGate({ onSelect }: Props) {
+  function handleSelect(p: ProfileSummary) {
     playEntryChime()
     onSelect(p)
   }

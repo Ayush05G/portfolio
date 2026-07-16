@@ -1,14 +1,21 @@
-import { useRef } from 'react'
-import { ChevronLeft, ChevronRight } from '../icons.jsx'
+import { useRef, type ReactNode } from 'react'
+import { ChevronLeft, ChevronRight } from '../icons.tsx'
+
+interface Props {
+  id: string
+  title: string
+  className?: string
+  children: ReactNode
+}
 
 /**
  * A Netflix-style horizontal carousel. `id` anchors it for the nav.
  * Children are the cards.
  */
-export default function Row({ id, title, className = '', children }) {
-  const track = useRef(null)
+export default function Row({ id, title, className = '', children }: Props) {
+  const track = useRef<HTMLDivElement>(null)
 
-  function scrollBy(dir) {
+  function scrollBy(dir: number) {
     const el = track.current
     if (!el) return
     el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: 'smooth' })

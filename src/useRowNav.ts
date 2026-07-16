@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
-const isCard = (el) => el?.classList?.contains('card') || el?.classList?.contains('top10')
+const isCard = (el: Element | null): el is HTMLElement =>
+  !!el && (el.classList.contains('card') || el.classList.contains('top10'))
 
 /**
  * Netflix-style keyboard navigation for the browse rows: arrow keys move
@@ -10,7 +11,7 @@ const isCard = (el) => el?.classList?.contains('card') || el?.classList?.contain
  */
 export default function useRowNav() {
   useEffect(() => {
-    function onKeyDown(e) {
+    function onKeyDown(e: KeyboardEvent) {
       const active = document.activeElement
       if (!isCard(active)) return
       const track = active.closest('.row__track')
@@ -18,7 +19,7 @@ export default function useRowNav() {
 
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault()
-        const cards = [...track.children]
+        const cards = [...track.children] as HTMLElement[]
         const next = cards[cards.indexOf(active) + (e.key === 'ArrowRight' ? 1 : -1)]
         next?.focus()
         next?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
@@ -28,25 +29,25 @@ export default function useRowNav() {
         const targetTrack = tracks[tracks.indexOf(track) + (e.key === 'ArrowDown' ? 1 : -1)]
         if (!targetTrack || !targetTrack.children.length) return
         const activeLeft = active.getBoundingClientRect().left
-        let best = targetTrack.children[0]
+        let best = targetTrack.children[0] as HTMLElement
         let bestDist = Infinity
         for (const c of targetTrack.children) {
           const dist = Math.abs(c.getBoundingClientRect().left - activeLeft)
           if (dist < bestDist) {
             bestDist = dist
-            best = c
+            best = c as HTMLElement
           }
         }
         best.focus()
         best.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
       } else if (e.key === 'Home') {
         e.preventDefault()
-        const first = track.children[0]
+        const first = track.children[0] as HTMLElement | undefined
         first?.focus()
         first?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
       } else if (e.key === 'End') {
         e.preventDefault()
-        const last = track.children[track.children.length - 1]
+        const last = track.children[track.children.length - 1] as HTMLElement | undefined
         last?.focus()
         last?.scrollIntoView({ behavior: 'smooth', inline: 'end' })
       }

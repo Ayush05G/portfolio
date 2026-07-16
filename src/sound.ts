@@ -1,7 +1,13 @@
+declare global {
+  interface Window {
+    webkitAudioContext?: typeof AudioContext
+  }
+}
+
 // A shared AudioContext, created lazily on first real user gesture so we
 // never trip the browser's autoplay policy.
-let sharedCtx = null
-function getCtx() {
+let sharedCtx: AudioContext | null = null
+function getCtx(): AudioContext | null {
   const Ctx = window.AudioContext || window.webkitAudioContext
   if (!Ctx) return null
   if (!sharedCtx) sharedCtx = new Ctx()
@@ -91,7 +97,7 @@ export function playEntryChime() {
     const ctx = new Ctx()
     const now = ctx.currentTime
 
-    const tone = (freq, start, duration, peakGain) => {
+    const tone = (freq: number, start: number, duration: number, peakGain: number) => {
       const osc = ctx.createOscillator()
       const gain = ctx.createGain()
       osc.type = 'sine'

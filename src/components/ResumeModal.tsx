@@ -1,16 +1,21 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Close, Download } from '../icons.jsx'
+import { Close, Download } from '../icons.tsx'
+
+interface Props {
+  url?: string
+  onClose: () => void
+}
 
 /**
  * In-page résumé preview — embeds the PDF via <iframe> so visitors never
  * leave the site. `url` is the active profile's résumé path, or null when
  * closed.
  */
-export default function ResumeModal({ url, onClose }) {
+export default function ResumeModal({ url, onClose }: Props) {
   useEffect(() => {
     if (!url) return
-    const onKey = (e) => e.key === 'Escape' && onClose()
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     document.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'

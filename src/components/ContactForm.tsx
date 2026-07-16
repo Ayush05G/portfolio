@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import { profile, contact } from '../data.js'
+import { useState, type FormEvent } from 'react'
+import { profile, contact } from '../data.ts'
+
+type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 /**
  * "Get in touch" form. If a Web3Forms access key is configured it POSTs there
@@ -7,10 +9,10 @@ import { profile, contact } from '../data.js'
  * visitor's email client pre-filled.
  */
 export default function ContactForm() {
-  const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState('')
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
@@ -87,7 +89,7 @@ export default function ContactForm() {
       </div>
       <label>
         <span>Message</span>
-        <textarea name="message" rows="4" required placeholder="What's on your mind?" />
+        <textarea name="message" rows={4} required placeholder="What's on your mind?" />
       </label>
       {status === 'error' && <p className="contact-form__error">{error}</p>}
       <button className="nf-btn nf-btn--play" type="submit" disabled={status === 'sending'}>

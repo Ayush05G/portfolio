@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { track } from '@vercel/analytics'
 import {
@@ -12,22 +12,37 @@ import {
   learning,
   about,
   socials,
-} from './data.js'
-import ProfileGate from './components/ProfileGate.jsx'
-import NetflixNav from './components/NetflixNav.jsx'
-import Billboard from './components/Billboard.jsx'
-import Row from './components/Row.jsx'
-import DetailModal from './components/DetailModal.jsx'
-import ResumeModal from './components/ResumeModal.jsx'
-import Search from './components/Search.jsx'
-import ContactForm from './components/ContactForm.jsx'
-import useRowNav from './useRowNav.js'
-import { playHoverTick, playModalOpen } from './sound.js'
-import { Play } from './icons.jsx'
+  type ProfileSummary,
+  type Project,
+  type RowId,
+} from './data.ts'
+import ProfileGate from './components/ProfileGate.tsx'
+import NetflixNav from './components/NetflixNav.tsx'
+import Billboard from './components/Billboard.tsx'
+import Row from './components/Row.tsx'
+import DetailModal from './components/DetailModal.tsx'
+import ResumeModal from './components/ResumeModal.tsx'
+import Search from './components/Search.tsx'
+import ContactForm from './components/ContactForm.tsx'
+import ProjectCard from './components/cards/ProjectCard.tsx'
+import SkillCard from './components/cards/SkillCard.tsx'
+import AchievementCard from './components/cards/AchievementCard.tsx'
+import JourneyCard from './components/cards/JourneyCard.tsx'
+import Top10Card from './components/cards/Top10Card.tsx'
+import LearningCard from './components/cards/LearningCard.tsx'
+import useRowNav from './useRowNav.ts'
+import { playHoverTick, playModalOpen } from './sound.ts'
+
+type Phase = 'intro' | 'gate' | 'app'
+
+interface IntroProps {
+  onDone: () => void
+  onSkip: () => void
+}
 
 /* Netflix-style intro flash — the little logo "sting" before the gate.
    Clicking or pressing a key skips straight to the gate. */
-function Intro({ onDone, onSkip }) {
+function Intro({ onDone, onSkip }: IntroProps) {
   return (
     <motion.div
       className="intro"
@@ -53,150 +68,18 @@ function Intro({ onDone, onSkip }) {
   )
 }
 
-/* Project card */
-function ProjectCard({ item, index, onOpen }) {
-  return (
-    <button
-      className={`card ${item.image ? 'card--has-image' : ''}`}
-      style={{ '--card-accent': item.accent }}
-      onClick={() => onOpen(item)}
-    >
-      {item.image && <img className="card__shot" src={item.image} alt={`${item.title} preview`} loading="lazy" />}
-      <div className="card__art">
-        <span className="card__num">{String(index + 1).padStart(2, '0')}</span>
-        <span className="card__tag">Project</span>
-        <span className="card__label">{item.title}</span>
-        <span className="card__sub">{item.tags.join(' · ')}</span>
-      </div>
-      <div className="card__hover">
-        <span className="card__play">{Play}</span>
-        <span className="card__hovertext">{item.match} · Click for details</span>
-      </div>
-    </button>
-  )
-}
-
-/* Skill card */
-function SkillCard({ item }) {
-  return (
-    <div className="card" style={{ '--card-accent': '#1f1f1f' }} tabIndex={0} role="group" aria-label={item.name}>
-      <div className="card__art">
-        <span className="card__tag">{item.tag}</span>
-        {item.logo && <img className="skill-logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}
-        <span className="card__label">{item.name}</span>
-        <div className="card__bar">
-          <motion.div
-            className="card__fill"
-            initial={{ width: 0 }}
-            whileInView={{ width: `${item.level}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          />
-        </div>
-        <span className="card__sub" style={{ marginTop: 6 }}>
-          {item.level}% fluency
-        </span>
-      </div>
-    </div>
-  )
-}
-
-/* Achievement card */
-function AchievementCard({ item }) {
-  return (
-    <div
-      className="card card--tall"
-      style={{ '--card-accent': '#3a1a1a' }}
-      tabIndex={0}
-      role="group"
-      aria-label={item.title}
-    >
-      <div className="card__art">
-        <span className="card__eyebrow">{item.tag}</span>
-        <span className="card__label">{item.title}</span>
-        <span className="card__sub card__sub--clamp" style={{ marginTop: 6 }}>
-          {item.detail}
-        </span>
-      </div>
-    </div>
-  )
-}
-
-/* Journey card */
-function JourneyCard({ item }) {
-  return (
-    <div
-      className="card card--tall"
-      style={{ '--card-accent': '#242424' }}
-      tabIndex={0}
-      role="group"
-      aria-label={item.title}
-    >
-      <div className="card__art">
-        <span className="card__eyebrow">{item.when}</span>
-        <span className="card__label">{item.title}</span>
-        <span className="card__sub">{item.place}</span>
-        <span className="card__sub card__sub--clamp" style={{ marginTop: 6, color: 'var(--text-faint)' }}>
-          {item.detail}
-        </span>
-      </div>
-    </div>
-  )
-}
-
-/* Top 10 card — the iconic Netflix ranked row, with a giant background rank
-   numeral behind a compact skill "poster". */
-function Top10Card({ item, rank }) {
-  return (
-    <div className="top10" tabIndex={0} role="group" aria-label={`#${rank} ${item.name}`}>
-      <span className="top10__rank" aria-hidden>{rank}</span>
-      <div className="top10__poster" style={{ '--card-accent': '#1a1a1a' }}>
-        {item.logo && <img className="top10__logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}
-        <span className="top10__name">{item.name}</span>
-        <span className="top10__level">{item.level}%</span>
-      </div>
-    </div>
-  )
-}
-
-/* "Continue Watching" card — a thumbnail with a resume-progress bar, like
-   Netflix's continue-watching row. */
-function LearningCard({ item }) {
-  return (
-    <div
-      className="card card--tall card--learning"
-      style={{ '--card-accent': '#1a2a3a' }}
-      tabIndex={0}
-      role="group"
-      aria-label={`Currently learning ${item.name}, ${item.level}% in`}
-    >
-      <div className="card__art">
-        <span className="card__eyebrow">Currently Learning</span>
-        {item.logo && <img className="skill-logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />}
-        <span className="card__label">{item.name}</span>
-        <span className="card__sub card__sub--clamp" style={{ marginTop: 6 }}>
-          {item.note}
-        </span>
-      </div>
-      <div className="card__progress">
-        <div className="card__progress-fill" style={{ width: `${item.level}%` }} />
-      </div>
-    </div>
-  )
-}
-
 const firstName = profile.name.split(' ')[0]
 // Top 10 = the highest-fluency skills, ranked.
 const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
-const DEFAULT_ORDER = ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey']
+const DEFAULT_ORDER: RowId[] = ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey']
 
 const STORAGE_KEY = 'nf_profile'
-const findProject = (slug) => projects.find((p) => p.slug === slug) || null
+const findProject = (slug: string | null): Project | null => projects.find((p) => p.slug === slug) || null
 
 // Resolve the starting profile from (1) a ?profile=<id> deep-link, or (2) the
 // last profile saved on a previous visit — either one skips the intro + gate.
 const initial = (() => {
-  if (typeof window === 'undefined') return { profile: null, project: null }
+  if (typeof window === 'undefined') return { profile: null as ProfileSummary | null, project: null as Project | null }
   const params = new URLSearchParams(window.location.search)
   const urlId = params.get('profile')
   const savedId = (() => {
@@ -211,10 +94,16 @@ const initial = (() => {
   return { profile: prof, project: proj }
 })()
 
+interface RowDef {
+  title: string
+  className?: string
+  children: ReactNode
+}
+
 export default function App() {
-  const [phase, setPhase] = useState(initial.profile ? 'app' : 'intro') // 'intro' | 'gate' | 'app'
-  const [activeProfile, setActiveProfile] = useState(initial.profile)
-  const [modalItem, setModalItem] = useState(initial.project)
+  const [phase, setPhase] = useState<Phase>(initial.profile ? 'app' : 'intro')
+  const [activeProfile, setActiveProfile] = useState<ProfileSummary | null>(initial.profile)
+  const [modalItem, setModalItem] = useState<Project | null>(initial.project)
   const [searchOpen, setSearchOpen] = useState(false)
   const [resumeOpen, setResumeOpen] = useState(false)
 
@@ -224,9 +113,10 @@ export default function App() {
   // A soft blip when the mouse actually enters a new card (not on every
   // mousemove within it), throttled inside playHoverTick itself.
   useEffect(() => {
-    function onOver(e) {
-      const card = e.target.closest('.card, .top10')
-      if (!card || card.contains(e.relatedTarget)) return
+    function onOver(e: MouseEvent) {
+      const target = e.target as HTMLElement
+      const card = target.closest('.card, .top10')
+      if (!card || card.contains(e.relatedTarget as Node)) return
       playHoverTick()
     }
     document.addEventListener('mouseover', onOver)
@@ -242,7 +132,7 @@ export default function App() {
   }, [phase])
 
   // ── URL / history sync for shareable deep-links + working back button ──
-  function urlFor(profileId, projectSlug) {
+  function urlFor(profileId?: string, projectSlug?: string): string {
     const params = new URLSearchParams()
     if (profileId) params.set('profile', profileId)
     if (projectSlug) params.set('project', projectSlug)
@@ -250,7 +140,7 @@ export default function App() {
     return qs ? `?${qs}` : window.location.pathname
   }
 
-  function selectProfile(p) {
+  function selectProfile(p: ProfileSummary) {
     setActiveProfile(p)
     setModalItem(null)
     setPhase('app')
@@ -276,7 +166,7 @@ export default function App() {
     window.history.replaceState({}, '', window.location.pathname)
   }
 
-  function openProject(p) {
+  function openProject(p: Project) {
     setModalItem(p)
     playModalOpen()
     window.history.pushState(
@@ -290,7 +180,7 @@ export default function App() {
   function closeProject() {
     setModalItem(null)
     // If we pushed a project entry, go back so the back button stays intuitive.
-    if (window.history.state?.project) window.history.back()
+    if ((window.history.state as { project?: string } | null)?.project) window.history.back()
     else window.history.replaceState({ profile: activeProfile?.id }, '', urlFor(activeProfile?.id))
   }
 
@@ -307,7 +197,7 @@ export default function App() {
   function scrollToAbout() {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
   }
-  function scrollToId(id) {
+  function scrollToId(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -321,7 +211,7 @@ export default function App() {
   }
 
   // Row definitions, keyed by id so profiles can reorder them freely.
-  const rowDefs = {
+  const rowDefs: Partial<Record<RowId, RowDef>> = {
     projects: {
       title: 'Featured Projects',
       children: projects.map((p, i) => (

@@ -1,25 +1,31 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
-import { profile } from '../data.js'
-import { Play, Info, VolumeOn, VolumeOff } from '../icons.jsx'
-import { playTick } from '../sound.js'
+import { profile, type ProfileConfig } from '../data.ts'
+import { Play, Info, VolumeOn, VolumeOff } from '../icons.tsx'
+import { playTick } from '../sound.ts'
 
-const scrollTo = (id) =>
+const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+interface TrailerProps {
+  lines: string[]
+  muted: boolean
+  onToggleMute: () => void
+}
 
 /**
  * The billboard "trailer": a looping typewriter that types out real facts
  * about the work, like a muted preview reel. A round Netflix-style sound
  * toggle turns soft keystroke ticks on/off (starts muted, as trailers do).
  */
-function Trailer({ lines, muted, onToggleMute }) {
+function Trailer({ lines, muted, onToggleMute }: TrailerProps) {
   const [text, setText] = useState('')
   const state = useRef({ line: 0, char: 0, deleting: false })
   const mutedRef = useRef(muted)
   mutedRef.current = muted
 
   useEffect(() => {
-    let timer
+    let timer: ReturnType<typeof setTimeout>
     const tick = () => {
       const s = state.current
       const full = lines[s.line % lines.length]
@@ -69,16 +75,21 @@ function Trailer({ lines, muted, onToggleMute }) {
   )
 }
 
+interface Props {
+  config: ProfileConfig | null
+  onMoreInfo: () => void
+}
+
 /**
  * The featured "title" hero — you, presented like Netflix's billboard.
  * `config` is the active profile's personalization (tagline + CTA).
  */
-export default function Billboard({ config, onMoreInfo }) {
+export default function Billboard({ config, onMoreInfo }: Props) {
   const [muted, setMuted] = useState(true)
   const tagline = config?.tagline || profile.tagline
   const cta = config?.cta || { label: 'View Work', target: 'projects' }
 
-  const fade = (delay) => ({
+  const fade = (delay: number) => ({
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
@@ -118,9 +129,9 @@ export default function Billboard({ config, onMoreInfo }) {
             {...(cta.href
               ? { target: '_blank', rel: 'noreferrer' }
               : {
-                  onClick: (e) => {
+                  onClick: (e: MouseEvent<HTMLAnchorElement>) => {
                     e.preventDefault()
-                    scrollTo(cta.target)
+                    if (cta.target) scrollTo(cta.target)
                   },
                 })}
           >
