@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { projects, skills, timeline, achievements, type Project } from '../data.ts'
+import { projects, skills, seasons, achievements, type Project } from '../data.ts'
 import { Search as SearchIcon, Close } from '../icons.tsx'
 
 interface IndexItem {
@@ -31,13 +31,17 @@ function buildIndex(onOpenProject: (p: Project) => void, scrollTo: (id: string) 
       keywords: `${s.name} ${s.tag}`,
       run: () => scrollTo('skills'),
     })),
-    ...timeline.map((t) => ({
-      type: 'Experience',
-      label: t.title,
-      sub: t.place,
-      keywords: `${t.title} ${t.place} ${t.detail}`,
-      run: () => scrollTo('journey'),
-    })),
+    // Every episode across every season is searchable; they all live in the
+    // one #journey section.
+    ...seasons.flatMap((s) =>
+      s.episodes.map((e) => ({
+        type: 'Experience',
+        label: e.title,
+        sub: e.place,
+        keywords: `${e.title} ${e.place} ${e.synopsis} ${e.highlight ?? ''} ${s.title}`,
+        run: () => scrollTo('journey'),
+      })),
+    ),
     ...achievements.map((a) => ({
       type: 'Achievement',
       label: a.title,

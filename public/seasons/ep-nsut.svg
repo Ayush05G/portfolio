@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" role="img" aria-label="University campus and graduation cap">
+  <defs>
+    <linearGradient id="nsutBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#141b2e"/>
+      <stop offset="100%" stop-color="#0e1117"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="270" fill="url(#nsutBg)"/>
+  <!-- horizon -->
+  <line x1="0" y1="208" x2="480" y2="208" stroke="#2b3450" stroke-width="1.5"/>
+  <!-- campus blocks -->
+  <rect x="60" y="140" width="70" height="68" fill="#1d2740"/>
+  <rect x="140" y="112" width="86" height="96" fill="#243250"/>
+  <rect x="236" y="152" width="60" height="56" fill="#1d2740"/>
+  <g fill="#4b6bdd" opacity="0.75">
+    <rect x="72" y="152" width="10" height="10"/><rect x="90" y="152" width="10" height="10"/><rect x="108" y="152" width="10" height="10"/>
+    <rect x="72" y="172" width="10" height="10"/><rect x="90" y="172" width="10" height="10"/><rect x="108" y="172" width="10" height="10"/>
+    <rect x="154" y="126" width="11" height="11"/><rect x="176" y="126" width="11" height="11"/><rect x="198" y="126" width="11" height="11"/>
+    <rect x="154" y="150" width="11" height="11"/><rect x="176" y="150" width="11" height="11"/><rect x="198" y="150" width="11" height="11"/>
+    <rect x="154" y="174" width="11" height="11"/><rect x="176" y="174" width="11" height="11"/><rect x="198" y="174" width="11" height="11"/>
+    <rect x="248" y="166" width="9" height="9"/><rect x="264" y="166" width="9" height="9"/><rect x="280" y="166" width="9" height="9"/>
+  </g>
+  <!-- graduation cap -->
+  <g transform="translate(370 108)">
+    <path d="M-58 0 L0 -28 L58 0 L0 28 Z" fill="#5a7bff"/>
+    <path d="M-30 12 V42 Q0 58 30 42 V12 L0 26 Z" fill="#3c56c4"/>
+    <line x1="58" y1="0" x2="58" y2="46" stroke="#8aa2ff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="58" cy="50" r="6" fill="#e50914"/>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" role="img" aria-label="Migration from hosted tools to a self-hosted Kubernetes cluster">
+  <defs>
+    <linearGradient id="aksBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a2029"/>
+      <stop offset="100%" stop-color="#0e1117"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="270" fill="url(#aksBg)"/>
+
+  <!-- source: legacy stack (fading) -->
+  <g opacity="0.45">
+    <rect x="42" y="96" width="96" height="30" rx="5" fill="#1b3a48" stroke="#2c5768" stroke-width="1.5"/>
+    <rect x="42" y="136" width="96" height="30" rx="5" fill="#1b3a48" stroke="#2c5768" stroke-width="1.5"/>
+    <circle cx="60" cy="111" r="6" fill="#38809c"/>
+    <circle cx="60" cy="151" r="6" fill="#38809c"/>
+    <rect x="76" y="107" width="46" height="7" rx="3.5" fill="#38809c"/>
+    <rect x="76" y="147" width="46" height="7" rx="3.5" fill="#38809c"/>
+  </g>
+
+  <!-- migration arrow -->
+  <g stroke="#00c6ff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M152 131 H214" stroke-dasharray="7 7"/>
+    <path d="M204 121 L216 131 L204 141" stroke-dasharray="0"/>
+  </g>
+
+  <!-- target: k8s cluster hexagons -->
+  <g transform="translate(330 131)">
+    <!-- control plane -->
+    <path d="M0 -56 L46 -30 L46 22 L0 48 L-46 22 L-46 -30 Z" fill="#0d2b38" stroke="#00c6ff" stroke-width="2"/>
+    <!-- nodes -->
+    <g fill="#00c6ff">
+      <path d="M0 -34 L15 -25 L15 -8 L0 1 L-15 -8 L-15 -25 Z" opacity="0.95"/>
+      <path d="M-24 6 L-9 15 L-9 32 L-24 41 L-39 32 L-39 15 Z" opacity="0.7"/>
+      <path d="M24 6 L39 15 L39 32 L24 41 L9 32 L9 15 Z" opacity="0.7"/>
+    </g>
+    <!-- links -->
+    <g stroke="#5fdcff" stroke-width="1.5" opacity="0.8">
+      <line x1="-6" y1="0" x2="-18" y2="10"/>
+      <line x1="6" y1="0" x2="18" y2="10"/>
+    </g>
+  </g>
+
+  <!-- cloud (azure) -->
+  <g transform="translate(330 44)" fill="#1b6f8c" opacity="0.65">
+    <path d="M-34 10 a16 16 0 0 1 4-31 a22 22 0 0 1 42-6 a17 17 0 0 1 14 37 z"/>
+  </g>
+  <line x1="330" y1="60" x2="330" y2="76" stroke="#2c7f9c" stroke-width="2" stroke-dasharray="3 4"/>
+
+  <text x="90" y="196" font-family="Arial, sans-serif" font-size="10" fill="#4f7d90" text-anchor="middle" letter-spacing="2">HOSTED</text>
+  <text x="330" y="214" font-family="Arial, sans-serif" font-size="10" fill="#5fdcff" text-anchor="middle" letter-spacing="2">SELF-HOSTED · AKS</text>
+</svg>

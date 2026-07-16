@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense, type ReactNode } from 'react'
+import { useEffect, useState, lazy, Suspense, Fragment, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { track } from '@vercel/analytics'
 import {
@@ -7,7 +7,6 @@ import {
   profiles,
   projects,
   skills,
-  timeline,
   achievements,
   learning,
   about,
@@ -21,10 +20,10 @@ import ProfileGate from './components/ProfileGate.tsx'
 import NetflixNav from './components/NetflixNav.tsx'
 import Billboard from './components/Billboard.tsx'
 import Row from './components/Row.tsx'
+import SeasonsSection from './components/SeasonsSection.tsx'
 import ProjectCard from './components/cards/ProjectCard.tsx'
 import SkillCard from './components/cards/SkillCard.tsx'
 import AchievementCard from './components/cards/AchievementCard.tsx'
-import JourneyCard from './components/cards/JourneyCard.tsx'
 import Top10Card from './components/cards/Top10Card.tsx'
 import LearningCard from './components/cards/LearningCard.tsx'
 import useRowNav from './useRowNav.ts'
@@ -99,10 +98,10 @@ const initial = (() => {
   return { profile: prof, project: proj }
 })()
 
-interface RowDef {
+interface SectionDef {
+  /** Default heading; App swaps in a personalized one for the first slot. */
   title: string
-  className?: string
-  children: ReactNode
+  render: (title: string) => ReactNode
 }
 
 export default function App() {
@@ -215,32 +214,63 @@ export default function App() {
     track('resume_opened', { profile: activeProfile?.id })
   }
 
-  // Row definitions, keyed by id so profiles can reorder them freely.
-  const rowDefs: Partial<Record<RowId, RowDef>> = {
+  // Section definitions, keyed by id so profiles can reorder them freely.
+  // `render` takes the (possibly personalized) title, so a slot is free to
+  // emit a card carousel or a full-width section like Seasons.
+  const rowDefs: Partial<Record<RowId, SectionDef>> = {
     projects: {
       title: 'Featured Projects',
-      children: projects.map((p, i) => <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />),
+      render: (title) => (
+        <Row id="projects" title={title}>
+          {projects.map((p, i) => (
+            <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />
+          ))}
+        </Row>
+      ),
     },
     learning: {
       title: 'Continue Watching',
-      children: learning.map((l) => <LearningCard key={l.name} item={l} />),
+      render: (title) => (
+        <Row id="learning" title={title}>
+          {learning.map((l) => (
+            <LearningCard key={l.name} item={l} />
+          ))}
+        </Row>
+      ),
     },
     top10: {
       title: `Top 10 in ${firstName}'s Stack Today`,
-      className: 'row--top10',
-      children: topSkills.map((s, i) => <Top10Card key={s.name} item={s} rank={i + 1} />),
+      render: (title) => (
+        <Row id="top10" title={title} className="row--top10">
+          {topSkills.map((s, i) => (
+            <Top10Card key={s.name} item={s} rank={i + 1} />
+          ))}
+        </Row>
+      ),
     },
     skills: {
       title: 'Skills & Technologies',
-      children: skills.map((s) => <SkillCard key={s.name} item={s} />),
+      render: (title) => (
+        <Row id="skills" title={title}>
+          {skills.map((s) => (
+            <SkillCard key={s.name} item={s} />
+          ))}
+        </Row>
+      ),
     },
     achievements: {
       title: 'Achievements & Certifications',
-      children: achievements.map((a) => <AchievementCard key={a.title} item={a} />),
+      render: (title) => (
+        <Row id="achievements" title={title}>
+          {achievements.map((a) => (
+            <AchievementCard key={a.title} item={a} />
+          ))}
+        </Row>
+      ),
     },
     journey: {
       title: 'Experience & Education',
-      children: timeline.map((t) => <JourneyCard key={t.title} item={t} />),
+      render: (title) => <SeasonsSection title={title} />,
     },
   }
 
@@ -281,11 +311,7 @@ export default function App() {
               if (!def) return null
               const title =
                 idx === 0 && activeProfile ? `Today's Top Picks for ${activeProfile.name}` : def.title
-              return (
-                <Row key={id} id={id} title={title} className={def.className || ''}>
-                  {def.children}
-                </Row>
-              )
+              return <Fragment key={id}>{def.render(title)}</Fragment>
             })}
           </div>
 

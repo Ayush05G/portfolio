@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" role="img" aria-label="Festival venue map with stage and location pins">
+  <defs>
+    <linearGradient id="festBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a1e0c"/>
+      <stop offset="100%" stop-color="#0e1117"/>
+    </linearGradient>
+    <linearGradient id="festStage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb020"/>
+      <stop offset="100%" stop-color="#ff8a00"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="270" fill="url(#festBg)"/>
+  <!-- venue grid -->
+  <g stroke="#4a3a1c" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="60" x2="480" y2="60"/><line x1="0" y1="120" x2="480" y2="120"/>
+    <line x1="0" y1="180" x2="480" y2="180"/><line x1="0" y1="240" x2="480" y2="240"/>
+    <line x1="80" y1="0" x2="80" y2="270"/><line x1="160" y1="0" x2="160" y2="270"/>
+    <line x1="240" y1="0" x2="240" y2="270"/><line x1="320" y1="0" x2="320" y2="270"/>
+    <line x1="400" y1="0" x2="400" y2="270"/>
+  </g>
+  <!-- main stage: arc + truss -->
+  <path d="M150 176 Q240 78 330 176 Z" fill="url(#festStage)" opacity="0.9"/>
+  <rect x="150" y="176" width="180" height="12" rx="2" fill="#c96a00"/>
+  <g stroke="#0e1117" stroke-width="2" opacity="0.35">
+    <line x1="180" y1="176" x2="196" y2="132"/><line x1="240" y1="176" x2="240" y2="112"/><line x1="300" y1="176" x2="284" y2="132"/>
+  </g>
+  <!-- crowd -->
+  <g fill="#7a5a24">
+    <circle cx="170" cy="212" r="7"/><circle cx="196" cy="222" r="7"/><circle cx="224" cy="210" r="7"/>
+    <circle cx="252" cy="222" r="7"/><circle cx="280" cy="210" r="7"/><circle cx="308" cy="222" r="7"/>
+    <circle cx="146" cy="228" r="7"/><circle cx="334" cy="228" r="7"/>
+  </g>
+  <!-- venue pins -->
+  <g fill="#ffb020">
+    <path d="M64 74 a11 11 0 1 1 22 0 c0 9-11 22-11 22 s-11-13-11-22 z"/>
+    <path d="M394 74 a11 11 0 1 1 22 0 c0 9-11 22-11 22 s-11-13-11-22 z"/>
+    <path d="M64 208 a11 11 0 1 1 22 0 c0 9-11 22-11 22 s-11-13-11-22 z"/>
+    <path d="M394 208 a11 11 0 1 1 22 0 c0 9-11 22-11 22 s-11-13-11-22 z"/>
+  </g>
+  <g fill="#0e1117">
+    <circle cx="75" cy="74" r="4"/><circle cx="405" cy="74" r="4"/>
+    <circle cx="75" cy="208" r="4"/><circle cx="405" cy="208" r="4"/>
+  </g>
+</svg>

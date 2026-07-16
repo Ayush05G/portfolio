@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" role="img" aria-label="Conversion funnel narrowing to first transaction">
+  <defs>
+    <linearGradient id="ckBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d2620"/>
+      <stop offset="100%" stop-color="#0e1117"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="270" fill="url(#ckBg)"/>
+  <!-- funnel stages -->
+  <g>
+    <path d="M96 58 H384 L344 100 H136 Z" fill="#34d399" opacity="0.92"/>
+    <path d="M136 108 H344 L312 150 H168 Z" fill="#2bb587" opacity="0.92"/>
+    <path d="M168 158 H312 L284 200 H196 Z" fill="#1f9370" opacity="0.92"/>
+    <path d="M196 208 H284 L268 244 H212 Z" fill="#14705a" opacity="0.92"/>
+  </g>
+  <!-- stage labels -->
+  <g font-family="Arial, sans-serif" font-size="12" fill="#0e1117" font-weight="700" text-anchor="middle">
+    <text x="240" y="85">SIGNUP</text>
+    <text x="240" y="135">ACTIVATED</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="11" fill="#8ff0cd" font-weight="700" text-anchor="middle">
+    <text x="240" y="184">RETURNED</text>
+    <text x="240" y="232">FIRST TXN</text>
+  </g>
+  <!-- growth arrow -->
+  <g stroke="#e5f9f0" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <path d="M410 214 L410 82"/>
+    <path d="M398 96 L410 80 L422 96"/>
+  </g>
+  <g fill="#34d399">
+    <circle cx="410" cy="214" r="4"/>
+  </g>
+  <!-- people entering -->
+  <g fill="#34d399" opacity="0.5">
+    <circle cx="52" cy="46" r="6"/><circle cx="72" cy="34" r="6"/><circle cx="34" cy="34" r="6"/>
+    <circle cx="428" cy="46" r="6"/><circle cx="448" cy="34" r="6"/><circle cx="410" cy="34" r="6"/>
+  </g>
+</svg>

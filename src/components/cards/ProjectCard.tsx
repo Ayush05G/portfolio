@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { Project } from '../../data.ts'
 import { Play } from '../../icons.tsx'
+import useImageLoaded from '../../useImageLoaded.ts'
 
 interface Props {
   item: Project
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export default function ProjectCard({ item, index, onOpen }: Props) {
+  const { loaded, imgProps } = useImageLoaded()
+
   return (
     <button
       className={`card ${item.image ? 'card--has-image' : ''}`}
@@ -16,7 +19,13 @@ export default function ProjectCard({ item, index, onOpen }: Props) {
       onClick={() => onOpen(item)}
     >
       {item.image && (
-        <img className="card__shot" src={item.image} alt={`${item.title} preview`} loading="lazy" />
+        <img
+          className={`card__shot img-fade ${loaded ? 'is-loaded' : ''}`}
+          src={item.image}
+          alt={`${item.title} preview`}
+          loading="lazy"
+          {...imgProps}
+        />
       )}
       <div className="card__art">
         <span className="card__num">{String(index + 1).padStart(2, '0')}</span>

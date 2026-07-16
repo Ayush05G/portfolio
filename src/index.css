@@ -1197,6 +1197,397 @@ img {
 }
 
 /* ===========================================================================
+   Experience & education, as a Netflix title page: season picker + episodes.
+   Declared BEFORE .skeleton so the shimmer wins while a thumbnail loads.
+   =========================================================================== */
+/* Two classes on purpose: .panel is declared later in this file and its
+   `padding` shorthand would otherwise win. */
+.panel.seasons {
+  padding-bottom: 30px;
+}
+.seasons__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.seasons__top .panel__title {
+  margin-bottom: 0;
+}
+.seasons__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+.seasons__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--nf-red);
+}
+.seasons__dot {
+  color: #4a4a4a;
+}
+.seasons__synopsis {
+  color: var(--text-dim);
+  max-width: 72ch;
+  margin-bottom: 20px;
+}
+.seasons__list {
+  list-style: none;
+}
+
+/* Season picker dropdown */
+.season-picker {
+  position: relative;
+  flex: 0 0 auto;
+}
+.season-picker__trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  background: #191919;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background 0.15s var(--ease),
+    border-color 0.15s var(--ease);
+}
+.season-picker__trigger:hover {
+  background: #232323;
+  border-color: #5a5a5a;
+}
+.season-picker__caret {
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s var(--ease);
+}
+.season-picker__caret svg {
+  width: 14px;
+  height: 14px;
+}
+.season-picker__caret.open {
+  transform: rotate(180deg);
+}
+.season-picker__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  background: rgba(0, 0, 0, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 6px;
+  z-index: 40;
+  animation: dropdownIn 0.18s var(--ease);
+}
+.season-picker__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 10px;
+  border-radius: 3px;
+  transition: background 0.15s var(--ease);
+}
+.season-picker__item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.season-picker__item.active {
+  background: rgba(229, 9, 20, 0.16);
+}
+.season-picker__item-n {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.season-picker__item.active .season-picker__item-n {
+  color: var(--nf-red);
+}
+.season-picker__item-t {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Episode list */
+.episode {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.episode:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.episode__main {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 22px);
+  width: 100%;
+  text-align: left;
+  padding: 16px 10px;
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.18s var(--ease);
+}
+.episode__main:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.episode__main:focus-visible {
+  outline: 2px solid var(--nf-red);
+  outline-offset: -2px;
+}
+.episode__num {
+  flex: 0 0 auto;
+  width: 28px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-faint);
+  transition: color 0.18s var(--ease);
+}
+.episode__main:hover .episode__num,
+.episode--open .episode__num {
+  color: var(--text-dim);
+}
+.episode__thumb {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: clamp(110px, 15vw, 168px);
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.episode__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.episode__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.episode__main:hover .episode__play {
+  opacity: 1;
+}
+.episode__play svg {
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+.episode__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.episode__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.episode__title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #fff;
+}
+.episode__duration {
+  flex: 0 0 auto;
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}
+.episode__place {
+  font-size: 0.86rem;
+  color: var(--text-dim);
+}
+.episode__when {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+.episode__synopsis {
+  font-size: 0.88rem;
+  color: var(--text-faint);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.episode__synopsis.is-open {
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+.episode__highlight {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(229, 9, 20, 0.14);
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  color: #ff8f96;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+.episode__chevron {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--text-faint);
+  transition: transform 0.2s var(--ease);
+}
+.episode__chevron svg {
+  width: 18px;
+  height: 18px;
+}
+.episode__chevron.open {
+  transform: rotate(180deg);
+}
+
+/* Images fade in once decoded, revealing the shimmer underneath. */
+.img-fade {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.img-fade.is-loaded {
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .seasons__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .episode__main {
+    gap: 12px;
+    padding: 14px 6px;
+  }
+  .episode__num {
+    width: 18px;
+    font-size: 1.1rem;
+  }
+  .episode__thumb {
+    width: 96px;
+  }
+  .episode__title {
+    font-size: 0.94rem;
+  }
+  .episode__chevron {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   Loading skeletons — shimmer placeholders that hold the real card's
+   footprint so nothing shifts when content swaps in.
+   =========================================================================== */
+.skeleton {
+  background: linear-gradient(90deg, #1a1a1a 25%, #272727 37%, #1a1a1a 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s var(--ease) infinite;
+  border-radius: 4px;
+}
+@keyframes shimmer {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0 50%;
+  }
+}
+.skel-line {
+  height: 12px;
+  border-radius: 4px;
+}
+.skel-card {
+  flex: 0 0 auto;
+  width: clamp(200px, 24vw, 280px);
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+}
+.skel-card--tall {
+  aspect-ratio: 16 / 13;
+}
+.skel-top10 {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: clamp(140px, 20vw, 200px);
+}
+.skel-top10__rank {
+  width: clamp(38px, 5vw, 58px);
+  height: 62%;
+  border-radius: 6px;
+}
+.skel-top10__poster {
+  width: clamp(100px, 13vw, 140px);
+  height: 100%;
+  border-radius: 6px;
+}
+.skel-stat {
+  flex: 0 0 auto;
+  width: clamp(200px, 24vw, 280px);
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+  background: #161616;
+  border: 1px solid #232323;
+  padding: 20px;
+}
+.skel-episode {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.skel-episode__num {
+  width: 22px;
+  height: 30px;
+  flex: 0 0 auto;
+}
+.skel-episode__thumb {
+  width: 150px;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  flex: 0 0 auto;
+}
+.skel-episode__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+/* ===========================================================================
    About / Contact panel sections (simple, on-brand)
    =========================================================================== */
 .panel {
@@ -1549,5 +1940,14 @@ img {
     animation-iteration-count: 1 !important;
     transition-duration: 0.05ms !important;
     scroll-behavior: auto !important;
+  }
+  /* A frozen flat block still reads as "loading" without the pulsing. */
+  .skeleton {
+    animation: none;
+    background: #1f1f1f;
+  }
+  /* Images fade-in is motion too — just show them. */
+  .img-fade {
+    opacity: 1;
   }
 }

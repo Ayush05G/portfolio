@@ -69,11 +69,31 @@ export interface Project {
   image?: string
 }
 
-export interface TimelineEntry {
-  when: string
+/**
+ * Experience & education, told like a Netflix show: each chapter of life is a
+ * Season, each role/milestone within it an Episode.
+ * `duration` is optional on purpose — it's only set where a real span is
+ * known. Episodes that are workstreams inside a single role share the role's
+ * `when` window instead (same window = same season, like a real show).
+ */
+export interface Episode {
+  number: number
   title: string
   place: string
-  detail: string
+  when: string
+  duration?: string
+  synopsis: string
+  thumbnail?: string
+  highlight?: string
+}
+
+export interface Season {
+  id: string
+  number: number
+  title: string
+  years: string
+  synopsis: string
+  episodes: Episode[]
 }
 
 export interface Achievement {
@@ -294,41 +314,121 @@ export const projects: Project[] = [
   },
 ]
 
-// Experience + education become the "My Journey" row (most recent first).
-export const timeline: TimelineEntry[] = [
+// Experience + education, as Seasons & Episodes (see the Season interface).
+// Ordered oldest → newest; the UI opens on the latest season.
+export const seasons: Season[] = [
   {
-    when: 'May 2026 – Jul 2026',
-    title: 'Associate Product Manager',
-    place: 'Bachatt (Fintech)',
-    detail:
-      'Led the launch of a new credit-card product with partner ZET — owned spec & roadmap. As Scrum Manager lifted sprint completion 40% → 75%. Ran the Atlassian → self-hosted migration (Plane + Outline on Azure AKS) and built a two-way Plane ↔ Slack bridge.',
+    id: 's1',
+    number: 1,
+    title: 'Foundations',
+    years: '2023 – 2026',
+    synopsis:
+      'Engineering school, a 100k-footfall fest, and the first taste of product thinking — where the habits came from.',
+    episodes: [
+      {
+        number: 1,
+        title: 'Enrollment',
+        place: 'B.Tech, Electrical Engineering · NSUT',
+        when: '2023 – 2027',
+        duration: '4 years',
+        synopsis:
+          'CGPA 7.7 — building products and full-stack + infra skills alongside coursework at Netaji Subhas University of Technology.',
+        thumbnail: '/seasons/ep-nsut.svg',
+        highlight: 'CGPA 7.7',
+      },
+      {
+        number: 2,
+        title: 'Fest Logistics',
+        place: 'Logistics Coordinator · Moksha & Resonanz, NSUT',
+        when: 'Mar 2024 – Present',
+        duration: '2+ years',
+        synopsis:
+          "Ran logistics for 50+ events across 6 venues at North India's largest college fest, leading 20+ volunteers with zero escalations.",
+        thumbnail: '/seasons/ep-fest.svg',
+        highlight: '50+ events · zero escalations',
+      },
+      {
+        number: 3,
+        title: 'Learning the Craft',
+        place: 'Executive Committee · PM Club, NSUT',
+        when: 'Sep 2025 – Present',
+        duration: '10 months',
+        synopsis:
+          'Run case-study sessions for 50+ members and teach PM fundamentals — RICE, North Star metrics, and JTBD.',
+        thumbnail: '/seasons/ep-pmclub.svg',
+        highlight: 'Teaching 50+ members',
+      },
+    ],
   },
   {
-    when: 'Mar 2026 – Apr 2026',
-    title: 'Brand Marketing Intern',
-    place: 'CashKaro',
-    detail:
-      'Built a campus growth strategy for NSUT — mapped the funnel and unit economics — and drove 40+ students from signup to first transaction within 3 weeks.',
+    id: 's2',
+    number: 2,
+    title: 'The Internship Arc',
+    years: '2026',
+    synopsis: 'First time taking a funnel from whiteboard to real users — on a real campus.',
+    episodes: [
+      {
+        number: 1,
+        title: 'Campus Growth',
+        place: 'Brand Marketing Intern · CashKaro',
+        when: 'Mar 2026 – Apr 2026',
+        duration: '2 months',
+        synopsis:
+          'Built a campus growth strategy for NSUT — mapped the funnel and unit economics — and drove 40+ students from signup to first transaction within 3 weeks.',
+        thumbnail: '/seasons/ep-cashkaro.svg',
+        highlight: '40+ signups → first transaction',
+      },
+    ],
   },
   {
-    when: 'Sep 2025 – Present',
-    title: 'Executive Committee Member',
-    place: 'PM Club, NSUT',
-    detail:
-      'Run case-study sessions for 50+ members and teach PM fundamentals — RICE, North Star metrics, and JTBD.',
-  },
-  {
-    when: 'Mar 2024 – Present',
-    title: 'Logistics Coordinator',
-    place: 'Moksha & Resonanz, NSUT',
-    detail:
-      "Ran logistics for 50+ events across 6 venues at North India's largest college fest, leading 20+ volunteers with zero escalations.",
-  },
-  {
-    when: '2023 – 2027',
-    title: 'B.Tech, Electrical Engineering',
-    place: 'Netaji Subhas University of Technology',
-    detail: 'CGPA 7.7 — building products and full-stack + infra skills alongside coursework.',
+    id: 's3',
+    number: 3,
+    title: 'The Bachatt Era',
+    years: '2026',
+    synopsis:
+      'Associate PM at a fintech — a credit-card launch, a sprint turnaround, and the infra underneath it all. Four episodes, one summer.',
+    episodes: [
+      {
+        number: 1,
+        title: 'The Card Launch',
+        place: 'Associate Product Manager · Bachatt × ZET',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Led the launch of a new credit-card product with partner ZET — owned the spec and roadmap, and drove delivery across engineering, design, and the partner team.',
+        thumbnail: '/seasons/ep-card-launch.svg',
+        highlight: 'Owned spec & roadmap end to end',
+      },
+      {
+        number: 2,
+        title: 'Sprint Zero',
+        place: 'Scrum Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Took over as Scrum Manager and rebuilt the delivery cadence — lifting sprint completion from 40% to 75%.',
+        thumbnail: '/seasons/ep-sprint.svg',
+        highlight: 'Sprint completion 40% → 75%',
+      },
+      {
+        number: 3,
+        title: 'Leaving Atlassian',
+        place: 'Associate Product Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Ran the Atlassian → self-hosted migration end to end: Jira & Confluence onto Plane + Outline, running on Azure AKS, with production infra and a CDN asset pipeline behind it.',
+        thumbnail: '/seasons/ep-aks.svg',
+        highlight: 'Jira & Confluence → Plane + Outline on AKS',
+      },
+      {
+        number: 4,
+        title: 'The Two-Way Bridge',
+        place: 'Associate Product Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Built a two-way Plane ↔ Slack bridge over Socket Mode, so issue updates and conversations stayed in sync without anyone leaving Slack.',
+        thumbnail: '/seasons/ep-slack-bridge.svg',
+        highlight: 'Real-time sync over Socket Mode',
+      },
+    ],
   },
 ]
 
