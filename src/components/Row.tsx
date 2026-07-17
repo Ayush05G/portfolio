@@ -4,7 +4,7 @@ import SkeletonCard, { type SkeletonVariant } from './SkeletonCard.tsx'
 
 interface Props {
   id: string
-  title: string
+  title: ReactNode
   className?: string
   children: ReactNode
   /** Show shimmer placeholders instead of children while data loads. */

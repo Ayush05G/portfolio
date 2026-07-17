@@ -21,6 +21,7 @@ import NetflixNav from './components/NetflixNav.tsx'
 import Billboard from './components/Billboard.tsx'
 import Row from './components/Row.tsx'
 import SeasonsSection from './components/SeasonsSection.tsx'
+import StatsRow from './components/StatsRow.tsx'
 import ProjectCard from './components/cards/ProjectCard.tsx'
 import SkillCard from './components/cards/SkillCard.tsx'
 import AchievementCard from './components/cards/AchievementCard.tsx'
@@ -74,7 +75,7 @@ function Intro({ onDone, onSkip }: IntroProps) {
 const firstName = profile.name.split(' ')[0]
 // Top 10 = the highest-fluency skills, ranked.
 const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
-const DEFAULT_ORDER: RowId[] = ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey']
+const DEFAULT_ORDER: RowId[] = ['projects', 'stats', 'learning', 'top10', 'skills', 'achievements', 'journey']
 
 const STORAGE_KEY = 'nf_profile'
 const findProject = (slug: string | null): Project | null => projects.find((p) => p.slug === slug) || null
@@ -227,6 +228,10 @@ export default function App() {
           ))}
         </Row>
       ),
+    },
+    stats: {
+      title: 'Live from GitHub & LeetCode',
+      render: (title) => <StatsRow title={title} />,
     },
     learning: {
       title: 'Continue Watching',

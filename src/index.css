@@ -666,11 +666,45 @@ img {
   margin-bottom: 44px;
 }
 .row__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   font-weight: 600;
   padding: 0 clamp(16px, 4vw, 56px);
   margin-bottom: 14px;
+}
+.stats-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.stats-badge--live {
+  color: #4ade80;
+}
+.stats-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px 1px rgba(74, 222, 128, 0.7);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 .row__viewport {
   position: relative;
@@ -1188,6 +1222,104 @@ img {
   border: none;
   background: #fff;
 }
+
+/* ===========================================================================
+   Live stats — LeetCode / GitHub numbers
+   =========================================================================== */
+.stat-card__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+.stat-card__value--sm {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+}
+.stat-card__bar {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  margin-top: 14px;
+}
+.stat-card__seg {
+  height: 100%;
+  transition: width 0.6s var(--ease);
+}
+.stat-card__seg--easy {
+  background: #34d399;
+}
+.stat-card__seg--medium {
+  background: #f5c518;
+}
+.stat-card__seg--hard {
+  background: #e50914;
+}
+.stat-card__legend {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+.stat-card__legend-item::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.stat-card__legend-item--easy::before {
+  background: #34d399;
+}
+.stat-card__legend-item--medium::before {
+  background: #f5c518;
+}
+.stat-card__legend-item--hard::before {
+  background: #e50914;
+}
+
+.contribution-card {
+  width: clamp(280px, 34vw, 380px);
+  /* Wider than a standard tall card, so override its 16/13 ratio to keep
+     the row's height consistent rather than growing taller. */
+  aspect-ratio: 5 / 3;
+}
+.contribution-grid {
+  display: flex;
+  gap: 3px;
+  margin-top: 14px;
+  overflow: hidden;
+}
+.contribution-grid__col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.contribution-grid__day {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #161b22;
+}
+.contribution-grid__day.level-1 {
+  background: #0e4429;
+}
+.contribution-grid__day.level-2 {
+  background: #006d32;
+}
+.contribution-grid__day.level-3 {
+  background: #26a641;
+}
+.contribution-grid__day.level-4 {
+  background: #39d353;
+}
+
 .chip {
   font-size: 0.8rem;
   color: var(--text-dim);

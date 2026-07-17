@@ -3,7 +3,7 @@
 //  Edit this file to make the whole site yours. Nothing else needs to change.
 // ============================================================================
 
-export type RowId = 'projects' | 'learning' | 'top10' | 'skills' | 'achievements' | 'journey'
+export type RowId = 'projects' | 'learning' | 'top10' | 'skills' | 'achievements' | 'journey' | 'stats'
 
 export interface Profile {
   name: string
@@ -113,6 +113,44 @@ export interface Contact {
   web3formsKey: string
 }
 
+/**
+ * Live GitHub + LeetCode stats. `contributions` is only populated when the
+ * serverless function has a GITHUB_TOKEN configured (contribution calendars
+ * need GitHub's GraphQL API, which has no unauthenticated access) — the UI
+ * hides the heatmap gracefully when it's null.
+ */
+export interface LiveStats {
+  github: {
+    repos: number
+    stars: number
+    followers: number
+    contributions: { total: number; weeks: number[][] } | null
+  }
+  leetcode: {
+    solved: number
+    ranking: number
+    easy: number
+    medium: number
+    hard: number
+  }
+  fetchedAt: string
+}
+
+export const statsConfig = {
+  githubUser: 'Ayush05G',
+  leetcodeUser: 'AG2425',
+  cacheTtlMs: 6 * 60 * 60 * 1000,
+}
+
+// Last-known-good numbers, shown when the live fetch and the localStorage
+// cache both come up empty (e.g. first paint with a cold cache and a slow
+// network). Refresh these occasionally so the floor doesn't go stale.
+export const statsFallback: LiveStats = {
+  github: { repos: 8, stars: 10, followers: 1, contributions: null },
+  leetcode: { solved: 619, ranking: 124928, easy: 193, medium: 342, hard: 84 },
+  fetchedAt: '2026-07-17',
+}
+
 export const profile: Profile = {
   name: 'Ayush Gupta',
   // Default billboard tagline (used as a fallback; each profile below can
@@ -182,26 +220,26 @@ export const profileConfig: Record<string, ProfileConfig> = {
   recruiter: {
     tagline:
       "Associate PM at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
-    order: ['journey', 'projects', 'achievements', 'learning', 'top10', 'skills'],
+    order: ['journey', 'projects', 'achievements', 'stats', 'learning', 'top10', 'skills'],
     cta: { label: 'See Experience', target: 'journey' },
   },
   developer: {
     tagline:
       'Full-stack + infra: Next.js/TypeScript apps, Python data tools, and the Kubernetes (Azure AKS) and CI/CD they run on. Dig into the projects, the stack, and how it fits together.',
-    order: ['projects', 'learning', 'top10', 'skills', 'achievements', 'journey'],
+    order: ['projects', 'stats', 'learning', 'top10', 'skills', 'achievements', 'journey'],
     cta: { label: 'View Projects', target: 'projects' },
     resumeUrl: '/resume-developer.pdf', // Phone number redacted before publishing — see conversation for details
   },
   friend: {
     tagline:
       "Hey! 👋 This is the fun cut — the products I've launched, the infra I've broken and fixed, and where I'm headed next. Grab a coffee and scroll.",
-    order: ['projects', 'learning', 'journey', 'top10', 'achievements', 'skills'],
+    order: ['projects', 'learning', 'journey', 'stats', 'top10', 'achievements', 'skills'],
     cta: { label: 'Take a Look', target: 'projects' },
   },
   stalker: {
     tagline:
       "Curious? Good. Everything's here — every project, every skill, the whole story from product to infrastructure. Start anywhere and poke around.",
-    order: ['projects', 'learning', 'top10', 'achievements', 'journey', 'skills'],
+    order: ['projects', 'stats', 'learning', 'top10', 'achievements', 'journey', 'skills'],
     cta: { label: 'Start Exploring', target: 'projects' },
   },
 }
