@@ -173,7 +173,7 @@ export const profile: Profile = {
     'Built a two-way Plane ↔ Slack bridge over Socket Mode',
     '2.7M real events → a plain-English churn model',
     'SARIMA AQI forecast · MAE 24.7 vs 29.6 baseline',
-    '500+ DSA problems · Top 100K on LeetCode',
+    '500+ DSA problems solved · LeetCode rank #124,928',
     'Peer-reviewed ML paper · Physica Scripta journal',
   ],
 }
@@ -247,7 +247,7 @@ export const profileConfig: Record<string, ProfileConfig> = {
 export const socials: Social[] = [
   { label: 'GitHub', url: 'https://github.com/Ayush05G', handle: '@Ayush05G' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/ayush-gupta-17b3112a2/', handle: '/in/ayush-gupta' },
-  { label: 'LeetCode', url: 'https://leetcode.com/u/AG2425/', handle: '@AG2425 · Top 100K' },
+  { label: 'LeetCode', url: 'https://leetcode.com/u/AG2425/', handle: '@AG2425 · Rank #124,928' },
   { label: 'Email', url: 'mailto:ayush2425.rk@gmail.com', handle: 'ayush2425.rk@gmail.com' },
 ]
 
@@ -475,7 +475,7 @@ export const achievements: Achievement[] = [
   {
     title: '500+ DSA Problems',
     tag: 'Problem Solving',
-    detail: 'Top 100K on LeetCode · Pupil on Codeforces.',
+    detail: 'LeetCode rank #124,928 · Pupil on Codeforces.',
   },
   {
     title: 'Published Researcher',
