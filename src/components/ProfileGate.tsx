@@ -4,6 +4,8 @@ import { playEntryChime } from '../sound.ts'
 
 interface Props {
   onSelect: (p: ProfileSummary) => void
+  /** Konami-code state: hidden profiles only render once unlocked. */
+  showHidden?: boolean
 }
 
 /**
@@ -11,7 +13,9 @@ interface Props {
  * Selecting any profile plays the entry chime and calls onSelect() to
  * enter the site.
  */
-export default function ProfileGate({ onSelect }: Props) {
+export default function ProfileGate({ onSelect, showHidden = false }: Props) {
+  const visible = profiles.filter((p) => !p.hidden || showHidden)
+
   function handleSelect(p: ProfileSummary) {
     playEntryChime()
     onSelect(p)
@@ -27,7 +31,7 @@ export default function ProfileGate({ onSelect }: Props) {
     >
       <h1 className="gate__title">Who's watching?</h1>
       <div className="gate__grid">
-        {profiles.map((p, i) => (
+        {visible.map((p, i) => (
           <motion.button
             key={p.id}
             className="gate__profile"

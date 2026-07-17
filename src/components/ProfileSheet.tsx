@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { profiles, type ProfileSummary } from '../data.ts'
+import { isKonamiUnlocked } from '../useKonami.ts'
 
 interface Props {
   activeId?: string
@@ -55,23 +56,25 @@ export default function ProfileSheet({ activeId, onSelect, onClose }: Props) {
         <h3 className="sheet__title">Who's watching?</h3>
 
         <div className="sheet__list">
-          {profiles.map((p) => (
-            <button
-              key={p.id}
-              className={`sheet__profile ${p.id === activeId ? 'active' : ''}`}
-              onClick={() => onSelect(p)}
-            >
-              <span className="sheet__avatar" style={{ background: p.color }}>
-                {p.avatar ? <img src={p.avatar} alt="" /> : p.name[0]}
-              </span>
-              <span className="sheet__name">{p.name}</span>
-              {p.id === activeId && (
-                <span className="sheet__current" aria-label="Current profile">
-                  ✓
+          {profiles
+            .filter((p) => !p.hidden || isKonamiUnlocked())
+            .map((p) => (
+              <button
+                key={p.id}
+                className={`sheet__profile ${p.id === activeId ? 'active' : ''}`}
+                onClick={() => onSelect(p)}
+              >
+                <span className="sheet__avatar" style={{ background: p.color }}>
+                  {p.avatar ? <img src={p.avatar} alt="" /> : p.name[0]}
                 </span>
-              )}
-            </button>
-          ))}
+                <span className="sheet__name">{p.name}</span>
+                {p.id === activeId && (
+                  <span className="sheet__current" aria-label="Current profile">
+                    ✓
+                  </span>
+                )}
+              </button>
+            ))}
         </div>
       </motion.div>
     </motion.div>

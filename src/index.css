@@ -2071,6 +2071,100 @@ img {
 }
 
 /* ===========================================================================
+   Billboard video trailer — poster shows instantly, video crossfades in.
+   Same slot as the typewriter trailer.
+   =========================================================================== */
+.bvideo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0a0a0a;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.bvideo--still {
+  display: block;
+  width: 100%;
+}
+.bvideo__poster,
+.bvideo__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bvideo__video {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+.bvideo__video.is-playing {
+  opacity: 1;
+}
+.bvideo__mute {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+}
+
+/* Konami unlock toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  z-index: 600;
+  background: rgba(0, 0, 0, 0.92);
+  border: 1px solid rgba(229, 9, 20, 0.55);
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.6);
+  animation: dropdownIn 0.25s var(--ease);
+}
+
+/* The match badge is secretly a button. */
+.billboard__match--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ===========================================================================
+   Hacker profile — terminal-green re-skin, scoped so no other profile is
+   affected. Unlocked via the Konami code.
+   =========================================================================== */
+body.theme-hacker {
+  --nf-red: #00ff41;
+  --nf-red-dark: #00b32e;
+}
+body.theme-hacker .billboard__match {
+  color: #00ff41;
+}
+body.theme-hacker .nav__logo,
+body.theme-hacker .billboard__kicker .n {
+  color: #00ff41;
+  text-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
+}
+body.theme-hacker .nf-btn--play {
+  background: #00ff41;
+  color: #001a06;
+}
+body.theme-hacker .nf-btn--play:hover {
+  background: #00b32e;
+}
+body.theme-hacker .trailer__screen {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  border: 1px solid rgba(0, 255, 65, 0.35);
+}
+body.theme-hacker .trailer__prompt,
+body.theme-hacker .trailer__cmd {
+  color: #00ff41;
+}
+
+/* ===========================================================================
    Mobile app feel — bottom tab bar, profile sheet, touch-friendly rows
    =========================================================================== */
 

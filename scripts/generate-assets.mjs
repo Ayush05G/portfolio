@@ -26,7 +26,8 @@ const ogSvg = `
 </svg>
 `.trim()
 
-const iconSvg = (size) => `
+const iconSvg = (size) =>
+  `
 <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${size}" height="${size}" fill="#141414"/>
   <text x="50%" y="58%" font-family="Arial, sans-serif" font-size="${size * 0.55}" font-weight="700"
@@ -34,7 +35,8 @@ const iconSvg = (size) => `
 </svg>
 `.trim()
 
-const maskableIconSvg = (size) => `
+const maskableIconSvg = (size) =>
+  `
 <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
   <rect width="${size}" height="${size}" fill="#141414"/>
   <text x="50%" y="58%" font-family="Arial, sans-serif" font-size="${size * 0.38}" font-weight="700"
@@ -45,7 +47,13 @@ const maskableIconSvg = (size) => `
 await sharp(Buffer.from(ogSvg)).png().toFile(`${publicDir}og.png`)
 console.log('og.png written (1200x630)')
 
-await sharp(Buffer.from(iconSvg(192))).png().toFile(`${publicDir}icons/icon-192.png`)
-await sharp(Buffer.from(iconSvg(512))).png().toFile(`${publicDir}icons/icon-512.png`)
-await sharp(Buffer.from(maskableIconSvg(512))).png().toFile(`${publicDir}icons/icon-512-maskable.png`)
+await sharp(Buffer.from(iconSvg(192)))
+  .png()
+  .toFile(`${publicDir}icons/icon-192.png`)
+await sharp(Buffer.from(iconSvg(512)))
+  .png()
+  .toFile(`${publicDir}icons/icon-512.png`)
+await sharp(Buffer.from(maskableIconSvg(512)))
+  .png()
+  .toFile(`${publicDir}icons/icon-512-maskable.png`)
 console.log('PWA icons written to public/icons/')

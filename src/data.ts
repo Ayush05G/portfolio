@@ -16,6 +16,12 @@ export interface Profile {
   location: string
   resumeUrl: string
   trailerLines: string[]
+  /**
+   * Optional real video trailer for the billboard (muted, looping, Netflix
+   * style). Remove this to fall back to the typewriter trailer — nothing else
+   * needs to change.
+   */
+  trailer?: { videoSrc: string; webmSrc?: string; poster: string }
 }
 
 export interface ProfileSummary {
@@ -23,6 +29,8 @@ export interface ProfileSummary {
   name: string
   avatar: string
   color: string
+  /** Hidden profiles only appear once the Konami code has been entered. */
+  hidden?: boolean
 }
 
 export interface ProfileConfig {
@@ -172,7 +180,15 @@ export const profile: Profile = {
   email: 'ayush2425.rk@gmail.com',
   location: 'Gurugram, India',
   resumeUrl: '/resume.pdf', // Phone number redacted before publishing — see conversation for details
-  // Real facts that cycle in the billboard "trailer" typewriter.
+  // Billboard video trailer, assembled from the real project charts
+  // (scripts/make-trailer.mjs). Delete this block to get the typewriter back.
+  trailer: {
+    videoSrc: '/trailer/trailer.mp4',
+    poster: '/trailer/poster.jpg',
+  },
+  // Real facts that cycle in the billboard "trailer" typewriter (also the
+  // fallback when the video can't/shouldn't play — reduced motion, save-data,
+  // small screens, or no trailer asset).
   trailerLines: [
     'Led a credit-card product launch at Bachatt × ZET',
     'Sprint completion 40% → 75% as Scrum Manager',
@@ -213,6 +229,14 @@ export const profiles: ProfileSummary[] = [
     avatar: '/avatars/curious.webp',
     color: 'linear-gradient(135deg,#8a2be2,#e50914)',
   },
+  // Unlocked with the Konami code (↑↑↓↓←→←→BA) — see src/useKonami.ts.
+  {
+    id: 'hacker',
+    name: 'Hacker',
+    avatar: '',
+    color: 'linear-gradient(135deg,#00ff41,#003b00)',
+    hidden: true,
+  },
 ]
 
 // ── Per-profile personalization ──────────────────────────────────────────
@@ -248,6 +272,12 @@ export const profileConfig: Record<string, ProfileConfig> = {
       "Curious? Good. Everything's here — every project, every skill, the whole story from product to infrastructure. Start anywhere and poke around.",
     order: ['projects', 'stats', 'learning', 'top10', 'achievements', 'journey', 'skills'],
     cta: { label: 'Start Exploring', target: 'projects' },
+  },
+  hacker: {
+    tagline:
+      '> access granted. You found the hidden profile — enjoy the terminal cut. Live stats first, then the stack, then everything else.',
+    order: ['stats', 'skills', 'top10', 'projects', 'learning', 'achievements', 'journey'],
+    cta: { label: 'cat ./stats', target: 'stats' },
   },
 }
 

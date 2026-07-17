@@ -30,6 +30,7 @@ import AchievementCard from './components/cards/AchievementCard.tsx'
 import Top10Card from './components/cards/Top10Card.tsx'
 import LearningCard from './components/cards/LearningCard.tsx'
 import useRowNav from './useRowNav.ts'
+import useKonami from './useKonami.ts'
 import { playHoverTick, playModalOpen } from './sound.ts'
 
 // Interaction-gated / below-the-fold — code-split so first paint doesn't
@@ -132,6 +133,21 @@ export default function App() {
 
   // Netflix-style arrow-key navigation between/within rows.
   useRowNav()
+
+  // ↑↑↓↓←→←→BA unlocks the hidden Hacker profile.
+  const [toast, setToast] = useState<string | null>(null)
+  const konamiUnlocked = useKonami(() => {
+    track('konami_unlocked')
+    setToast('Hacker profile unlocked — check "Who\'s watching?"')
+    setTimeout(() => setToast(null), 5000)
+  })
+
+  // The hacker profile re-skins the site; keep the override scoped to a body
+  // class so no other profile is affected.
+  useEffect(() => {
+    document.body.classList.toggle('theme-hacker', activeProfile?.id === 'hacker')
+    return () => document.body.classList.remove('theme-hacker')
+  }, [activeProfile])
 
   // A soft blip when the mouse actually enters a new card (not on every
   // mousemove within it), throttled inside playHoverTick itself.
@@ -320,8 +336,14 @@ export default function App() {
           />
         )}
 
-        {phase === 'gate' && <ProfileGate key="gate" onSelect={selectProfile} />}
+        {phase === 'gate' && <ProfileGate key="gate" onSelect={selectProfile} showHidden={konamiUnlocked} />}
       </AnimatePresence>
+
+      {toast && (
+        <div className="toast" role="status">
+          {toast}
+        </div>
+      )}
 
       {phase === 'app' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>

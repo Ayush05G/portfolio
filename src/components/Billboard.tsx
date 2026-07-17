@@ -2,7 +2,9 @@ import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 import { profile, type ProfileConfig } from '../data.ts'
 import { Play, Info, VolumeOn, VolumeOff } from '../icons.tsx'
-import { playTick } from '../sound.ts'
+import { playTick, playEntryChime } from '../sound.ts'
+import BillboardVideo from './BillboardVideo.tsx'
+import { pickTrailerMode } from '../lib/trailerMode.ts'
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
@@ -87,8 +89,23 @@ interface Props {
  */
 export default function Billboard({ config, onMoreInfo }: Props) {
   const [muted, setMuted] = useState(true)
+  // Decided once per mount: whether the trailer slot shows the real video,
+  // a still poster (reduced motion), or the typewriter (no asset / mobile /
+  // data-saver). See pickTrailerMode for the ladder.
+  const [trailerMode] = useState(() => pickTrailerMode(Boolean(profile.trailer)))
   const tagline = config?.tagline || profile.tagline
   const cta = config?.cta || { label: 'View Work', target: 'projects' }
+
+  // Tiny egg: click the match badge five times and it concedes a perfect score.
+  const [matchClicks, setMatchClicks] = useState(0)
+  const matchLabel = matchClicks >= 5 ? '100% Match' : profile.match
+  function bumpMatch() {
+    setMatchClicks((n) => {
+      const next = n + 1
+      if (next === 5) playEntryChime()
+      return next
+    })
+  }
 
   const fade = (delay: number) => ({
     initial: { opacity: 0, y: 20 },
@@ -113,7 +130,13 @@ export default function Billboard({ config, onMoreInfo }: Props) {
         </motion.h1>
 
         <motion.div className="billboard__meta" {...fade(0.16)}>
-          <span className="billboard__match">{profile.match}</span>
+          <span
+            className="billboard__match billboard__match--clickable"
+            onClick={bumpMatch}
+            title={matchClicks >= 5 ? 'Told you.' : undefined}
+          >
+            {matchLabel}
+          </span>
           <span>{profile.year}</span>
           <span className="billboard__badge">{profile.rating}</span>
           <span className="billboard__genres">{profile.genres.join(' · ')}</span>
@@ -145,7 +168,17 @@ export default function Billboard({ config, onMoreInfo }: Props) {
       </div>
 
       <motion.div className="billboard__trailer-wrap" {...fade(0.45)}>
-        <Trailer lines={profile.trailerLines} muted={muted} onToggleMute={() => setMuted((m) => !m)} />
+        {trailerMode === 'video' && profile.trailer ? (
+          <BillboardVideo
+            videoSrc={profile.trailer.videoSrc}
+            webmSrc={profile.trailer.webmSrc}
+            poster={profile.trailer.poster}
+          />
+        ) : trailerMode === 'poster' && profile.trailer ? (
+          <img className="bvideo bvideo--still" src={profile.trailer.poster} alt="" aria-hidden />
+        ) : (
+          <Trailer lines={profile.trailerLines} muted={muted} onToggleMute={() => setMuted((m) => !m)} />
+        )}
       </motion.div>
     </section>
   )

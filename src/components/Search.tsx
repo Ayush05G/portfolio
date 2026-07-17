@@ -145,7 +145,9 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
 
         {q.trim() && (
           <div className="search-results">
-            {results.length === 0 ? (
+            {q.trim().toLowerCase() === 'konami' ? (
+              <div className="search-empty">You know the code: close this, then ↑ ↑ ↓ ↓ ← → ← → B A.</div>
+            ) : results.length === 0 ? (
               <div className="search-empty">No matches for “{q}”.</div>
             ) : (
               results.map((r, i) => (

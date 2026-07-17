@@ -15,7 +15,9 @@ for (const file of rasters) {
   const before = (await import('node:fs')).statSync(src).size
   await sharp(src).webp({ quality: 82 }).toFile(dest)
   const after = (await import('node:fs')).statSync(dest).size
-  console.log(`${file} -> ${file.replace(extname(file), '.webp')}  ${(before / 1024).toFixed(0)}KB -> ${(after / 1024).toFixed(0)}KB`)
+  console.log(
+    `${file} -> ${file.replace(extname(file), '.webp')}  ${(before / 1024).toFixed(0)}KB -> ${(after / 1024).toFixed(0)}KB`,
+  )
   await unlink(src)
 }
 

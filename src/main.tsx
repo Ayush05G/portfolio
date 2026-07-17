@@ -11,6 +11,19 @@ import '@fontsource/inter/600.css'
 import App from './App.tsx'
 import './index.css'
 
+// A hello for anyone who opens DevTools — you're exactly who this is for.
+console.log(
+  `%c
+   ▄▄▄     ▄▄   ▄▄
+  ▐█ █▌    ██   ██   AYUSH GUPTA — a portfolio
+  ▐█▄█▌    ██   ██   Product · Full-Stack · Infrastructure
+  ▐█ █▌    ██▄▄▄██
+  ▐█ █▌ ▄▄  ▀▀█▀▀    Hiring? → mailto:ayush2425.rk@gmail.com
+                     Psst: ↑↑↓↓←→←→BA
+`,
+  'color:#e50914; font-family:monospace',
+)
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

@@ -15,19 +15,30 @@ npm run preview  # preview the production build
 
 ## Make it yours
 
-**Almost everything you'll want to change lives in one file:** [`src/data.js`](src/data.js).
+**Almost everything you'll want to change lives in one file:** [`src/data.ts`](src/data.ts).
 
-- **`profile`** — your name, tagline, and the billboard "metadata" (`match`, `year`, `rating`, `genres`) plus your email and optional résumé link.
-- **`profiles`** — the "Who's watching?" avatars. Each has a `name` and a `color` (CSS gradient for the avatar).
+- **`profile`** — your name, tagline, and the billboard "metadata" (`match`, `year`, `rating`, `genres`) plus your email, optional résumé link, and optional video `trailer`.
+- **`profiles`** — the "Who's watching?" avatars. Each has a `name` and a `color` (CSS gradient for the avatar). One is hidden behind the Konami code.
 - **`socials`** — your GitHub / LinkedIn / etc. (the "Let's Connect" cards).
 - **`about`** — your bio paragraphs and the quick-fact cards.
 - **`skills`** — each skill is a card in the "Skills & Technologies" row. `level` (0–100) drives the little bar; `tag` is the small label.
-- **`projects`** — the "Featured Projects" row. Each has a `blurb` (card) and `longDescription` (modal), `tags`, `match`, `year`, optional `link`/`repo`, and an `accent` color (any hex — it tints the card art and the modal header).
-- **`timeline`** — the "My Journey" row.
+- **`projects`** — the "Featured Projects" row. Each has a `blurb` (card) and `longDescription` (modal), `tags`, `match`, `year`, optional `link`/`repo`, an `accent` color, and an optional `related` list to hand-pick its "Because you watched" row.
+- **`seasons`** — experience & education as Seasons & Episodes (the "Experience" section).
+- **`statsConfig` / `statsFallback`** — the live GitHub + LeetCode row and its offline numbers.
 
 ### Résumé
 
 Drop a `resume.pdf` into `public/`, then set `resumeUrl: '/resume.pdf'` in `profile`. A "Résumé" button then appears in the nav.
+
+### Billboard video trailer
+
+`node scripts/make-trailer.mjs` rebuilds `public/trailer/trailer.mp4` + `poster.jpg` (requires ffmpeg) — it composes branded frames from the real project chart SVGs in `public/projects/` and assembles a Ken Burns slideshow. To use your own screen recording instead, encode it with
+
+```bash
+ffmpeg -i raw.mov -t 22 -vf "scale=1280:-2,fps=24" -an -c:v libx264 -crf 28 -pix_fmt yuv420p -movflags +faststart public/trailer/trailer.mp4
+```
+
+and keep it under ~4 MB. Delete `profile.trailer` in `data.ts` to fall back to the typewriter trailer. The video never auto-plays on small screens, slow connections, or for users preferring reduced motion.
 
 ### Colors & branding
 
