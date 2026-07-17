@@ -22,6 +22,8 @@ import Billboard from './components/Billboard.tsx'
 import Row from './components/Row.tsx'
 import SeasonsSection from './components/SeasonsSection.tsx'
 import StatsRow from './components/StatsRow.tsx'
+import BecauseYouWatched from './components/BecauseYouWatched.tsx'
+import BottomTabBar from './components/BottomTabBar.tsx'
 import ProjectCard from './components/cards/ProjectCard.tsx'
 import SkillCard from './components/cards/SkillCard.tsx'
 import AchievementCard from './components/cards/AchievementCard.tsx'
@@ -36,6 +38,7 @@ const DetailModal = lazy(() => import('./components/DetailModal.tsx'))
 const ResumeModal = lazy(() => import('./components/ResumeModal.tsx'))
 const Search = lazy(() => import('./components/Search.tsx'))
 const ContactForm = lazy(() => import('./components/ContactForm.tsx'))
+const ProfileSheet = lazy(() => import('./components/ProfileSheet.tsx'))
 
 type Phase = 'intro' | 'gate' | 'app'
 
@@ -78,6 +81,10 @@ const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
 const DEFAULT_ORDER: RowId[] = ['projects', 'stats', 'learning', 'top10', 'skills', 'achievements', 'journey']
 
 const STORAGE_KEY = 'nf_profile'
+// Which project seeded the "Because you watched" row. Session-scoped: the row
+// should survive closing the modal and switching profiles, but not outlive the
+// visit.
+const BCW_KEY = 'nf_bcw'
 const findProject = (slug: string | null): Project | null => projects.find((p) => p.slug === slug) || null
 
 // Resolve the starting profile from (1) a ?profile=<id> deep-link, or (2) the
@@ -111,6 +118,17 @@ export default function App() {
   const [modalItem, setModalItem] = useState<Project | null>(initial.project)
   const [searchOpen, setSearchOpen] = useState(false)
   const [resumeOpen, setResumeOpen] = useState(false)
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [watchedSlug, setWatchedSlug] = useState<string | null>(() => {
+    // A ?project= deep-link counts as "watched" too, so a shared link still
+    // gets the recommendation row.
+    if (initial.project) return initial.project.slug
+    try {
+      return sessionStorage.getItem(BCW_KEY)
+    } catch {
+      return null
+    }
+  })
 
   // Netflix-style arrow-key navigation between/within rows.
   useRowNav()
@@ -173,6 +191,12 @@ export default function App() {
 
   function openProject(p: Project) {
     setModalItem(p)
+    setWatchedSlug(p.slug)
+    try {
+      sessionStorage.setItem(BCW_KEY, p.slug)
+    } catch {
+      /* ignore */
+    }
     playModalOpen()
     window.history.pushState(
       { profile: activeProfile?.id, project: p.slug },
@@ -208,6 +232,7 @@ export default function App() {
 
   const config = activeProfile ? profileConfig[activeProfile.id] : null
   const resumeUrl = config?.resumeUrl || profile.resumeUrl
+  const watched = watchedSlug ? findProject(watchedSlug) : null
 
   function openResume() {
     setResumeOpen(true)
@@ -316,7 +341,14 @@ export default function App() {
               if (!def) return null
               const title =
                 idx === 0 && activeProfile ? `Today's Top Picks for ${activeProfile.name}` : def.title
-              return <Fragment key={id}>{def.render(title)}</Fragment>
+              return (
+                <Fragment key={id}>
+                  {def.render(title)}
+                  {id === 'projects' && watched && (
+                    <BecauseYouWatched watched={watched} onOpenProject={openProject} />
+                  )}
+                </Fragment>
+              )
             })}
           </div>
 
@@ -368,6 +400,14 @@ export default function App() {
             Designed & built by <strong>{profile.name}</strong> · © {new Date().getFullYear()} ·
             Netflix-inspired, not affiliated with Netflix.
           </footer>
+
+          <BottomTabBar
+            activeProfile={activeProfile}
+            resumeUrl={resumeUrl}
+            onOpenSearch={() => setSearchOpen(true)}
+            onOpenResume={openResume}
+            onOpenProfiles={() => setSheetOpen(true)}
+          />
         </motion.div>
       )}
 
@@ -391,6 +431,21 @@ export default function App() {
       <Suspense fallback={null}>
         <AnimatePresence>
           {resumeOpen && <ResumeModal url={resumeUrl} onClose={() => setResumeOpen(false)} />}
+        </AnimatePresence>
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {sheetOpen && (
+            <ProfileSheet
+              activeId={activeProfile?.id}
+              onSelect={(p) => {
+                setSheetOpen(false)
+                selectProfile(p)
+              }}
+              onClose={() => setSheetOpen(false)}
+            />
+          )}
         </AnimatePresence>
       </Suspense>
     </>

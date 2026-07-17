@@ -67,6 +67,13 @@ export interface Project {
   repo: string
   accent: string
   image?: string
+  /**
+   * Optional editorial override for the "Because you watched" row: project
+   * slugs and/or exact skill names, in the order you want them shown. Leave it
+   * out and the row is scored automatically from shared tags — only set this
+   * when you want to hand-pick what a project recommends.
+   */
+  related?: string[]
 }
 
 /**

@@ -379,12 +379,18 @@ img {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 720px) {
+/* Matches the bottom tab bar's breakpoint: below it the top bar keeps only the
+   burger (section links) and the logo, and the bottom bar owns the actions. */
+@media (max-width: 760px) {
   .nav__burger {
     display: flex;
   }
   .nav__left {
     gap: 14px;
+  }
+  /* Search / Résumé / avatar all live in the bottom tab bar down here. */
+  .nav__right {
+    display: none;
   }
   .nav__links {
     position: fixed;
@@ -2062,6 +2068,175 @@ img {
 }
 .footer strong {
   color: var(--text-dim);
+}
+
+/* ===========================================================================
+   Mobile app feel — bottom tab bar, profile sheet, touch-friendly rows
+   =========================================================================== */
+
+/* Bottom tab bar: mobile only (desktop keeps the top nav). */
+.tabbar {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 160;
+  align-items: stretch;
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  /* Clear the iOS home indicator. */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 9px 4px;
+  color: var(--text-faint);
+  transition: color 0.15s var(--ease);
+}
+.tabbar__item:active {
+  color: #fff;
+}
+.tabbar__icon {
+  display: grid;
+  place-items: center;
+  height: 22px;
+}
+.tabbar__icon svg {
+  width: 21px;
+  height: 21px;
+}
+.tabbar__label {
+  font-size: 0.63rem;
+  letter-spacing: 0.04em;
+}
+.tabbar__avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+}
+.tabbar__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Profile bottom sheet */
+.sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-end;
+}
+.sheet {
+  width: 100%;
+  background: #181818;
+  border-radius: 14px 14px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 10px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.6);
+  cursor: grab;
+}
+.sheet:active {
+  cursor: grabbing;
+}
+.sheet__handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: #4a4a4a;
+  margin: 0 auto 14px;
+}
+.sheet__title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.sheet__list {
+  display: flex;
+  flex-direction: column;
+}
+.sheet__profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 11px 8px;
+  border-radius: 6px;
+  transition: background 0.15s var(--ease);
+}
+.sheet__profile:active {
+  background: rgba(255, 255, 255, 0.07);
+}
+.sheet__profile.active {
+  background: rgba(255, 255, 255, 0.05);
+}
+.sheet__avatar {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 5px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+}
+.sheet__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sheet__name {
+  flex: 1;
+  font-weight: 600;
+}
+.sheet__current {
+  color: var(--nf-red);
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .tabbar {
+    display: flex;
+  }
+  /* Keep the footer clear of the fixed bar. */
+  .footer {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Touch devices: the arrows are useless without hover, and a swiped row
+   shouldn't trigger the browser's back-navigation gesture. */
+@media (hover: none) {
+  .row__arrow {
+    display: none;
+  }
+  .row__track {
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+  }
+  .row__track > * {
+    scroll-snap-align: start;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
