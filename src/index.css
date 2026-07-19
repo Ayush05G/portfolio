@@ -799,6 +799,13 @@ img {
 .card__art {
   position: absolute;
   inset: 0;
+  /* Establishes a local stacking context so ::before/::after (below) can be
+     pinned behind the real content: without an explicit z-index here, the
+     positioned pseudo-elements paint AFTER (on top of) the plain non-positioned
+     text/grid children per CSS painting order, regardless of DOM order. That
+     washed out the contribution heatmap's saturated squares under the dark
+     scrim — barely visible on bold white text, but very visible on color. */
+  z-index: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -808,6 +815,7 @@ img {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: -1;
   background: linear-gradient(160deg, var(--card-accent, #333) 0%, #111 90%);
   opacity: 0.9;
 }
@@ -815,6 +823,7 @@ img {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: -1;
   background: radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.12), transparent 45%);
 }
 /* Real screenshot behind the card content (project cards only). The
