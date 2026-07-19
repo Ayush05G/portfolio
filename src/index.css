@@ -1298,6 +1298,7 @@ img {
 }
 .contribution-grid {
   display: flex;
+  justify-content: flex-end;
   gap: 3px;
   margin-top: 14px;
   overflow: hidden;
