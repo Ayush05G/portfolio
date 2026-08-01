@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 420" width="930" height="420" role="img" aria-label="Three peer nodes syncing a CRDT ledger over a libp2p mesh with no central server">
+  <!--
+    Schematic, not a data chart: transcribed from the ASCII architecture diagram
+    in the project's own README.md. The convergence timings are the measured
+    ones from the multi-node and partition-heal chaos harnesses.
+  -->
+  <defs>
+    <linearGradient id="dmBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#12100a"/>
+      <stop offset="100%" stop-color="#0a0f0d"/>
+    </linearGradient>
+    <radialGradient id="dmGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="930" height="420" fill="url(#dmBg)"/>
+  <ellipse cx="465" cy="205" rx="330" ry="185" fill="url(#dmGlow)"/>
+
+  <!-- no tower, no cloud: the crossed-out uplink -->
+  <g transform="translate(438 34)" opacity="0.5">
+    <path d="M8 30 Q27 12 46 30" stroke="#6b5a34" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0 38 Q27 4 54 38" stroke="#6b5a34" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="27" cy="38" r="4" fill="#6b5a34"/>
+    <g stroke="#8a5a3a" stroke-width="3" stroke-linecap="round">
+      <path d="M6 6 L48 44"/>
+    </g>
+  </g>
+  <text x="465" y="96" font-family="Arial, sans-serif" font-size="11" fill="#7a6a44" text-anchor="middle" letter-spacing="2">NO SERVER · NO INTERNET</text>
+
+  <!-- mesh links, drawn under the nodes -->
+  <g stroke="#f59e0b" stroke-width="2" fill="none" opacity="0.75">
+    <path d="M258 236 H672"/>
+    <path d="M290 212 L448 140"/>
+    <path d="M640 212 L482 140"/>
+  </g>
+  <!-- gossip packets in flight -->
+  <g fill="#fcd34d">
+    <circle cx="360" cy="236" r="4"/>
+    <circle cx="465" cy="236" r="4" opacity="0.6"/>
+    <circle cx="570" cy="236" r="4"/>
+    <circle cx="372" cy="176" r="4" opacity="0.75"/>
+    <circle cx="558" cy="176" r="4" opacity="0.75"/>
+  </g>
+
+  <!-- node A (top): full local stack -->
+  <g transform="translate(400 96)">
+    <rect x="0" y="0" width="130" height="88" rx="10" fill="#1a1508" stroke="#f59e0b" stroke-width="2.5"/>
+    <text x="65" y="22" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b" text-anchor="middle" letter-spacing="1">NODE</text>
+    <rect x="16" y="32" width="98" height="14" rx="3" fill="#3d2f10"/>
+    <text x="65" y="43" font-family="Arial, sans-serif" font-size="9" fill="#d9a441" text-anchor="middle">local SLM</text>
+    <rect x="16" y="52" width="98" height="14" rx="3" fill="#3d2f10"/>
+    <text x="65" y="63" font-family="Arial, sans-serif" font-size="9" fill="#d9a441" text-anchor="middle">G-Set ledger</text>
+    <rect x="16" y="70" width="98" height="8" rx="3" fill="#2a2109"/>
+  </g>
+
+  <!-- node B (left) -->
+  <g transform="translate(158 194)">
+    <rect x="0" y="0" width="130" height="88" rx="10" fill="#1a1508" stroke="#f59e0b" stroke-width="2.5"/>
+    <text x="65" y="22" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b" text-anchor="middle" letter-spacing="1">NODE</text>
+    <rect x="16" y="32" width="98" height="14" rx="3" fill="#3d2f10"/>
+    <text x="65" y="43" font-family="Arial, sans-serif" font-size="9" fill="#d9a441" text-anchor="middle">local SLM</text>
+    <rect x="16" y="52" width="98" height="14" rx="3" fill="#3d2f10"/>
+    <text x="65" y="63" font-family="Arial, sans-serif" font-size="9" fill="#d9a441" text-anchor="middle">G-Set ledger</text>
+    <rect x="16" y="70" width="98" height="8" rx="3" fill="#2a2109"/>
+  </g>
+
+  <!-- node C (right) -->
+  <g transform="translate(642 194)">
+    <rect x="0" y="0" width="130" height="88" rx="10" fill="#1a1508" stroke="#f59e0b" stroke-width="2.5"/>
+    <text x="65" y="22" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b" text-anchor="middle" letter-spacing="1">NODE</text>
+    <rect x="16" y="32" width="98" height="14" rx="3" fill="#3d2f10"/>
+    <text x="65" y="43" font-family="Arial, sans-serif" font-size="9" fill="#d9a441" text-anchor="middle">local SLM</text>
+    <rect x="16" y="52" width="98" height="14" rx="3" fill="#3d2f10"/>
+    <text x="65" y="63" font-family="Arial, sans-serif" font-size="9" fill="#d9a441" text-anchor="middle">G-Set ledger</text>
+    <rect x="16" y="70" width="98" height="8" rx="3" fill="#2a2109"/>
+  </g>
+
+  <!-- measured results -->
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="310" y="344" font-size="26" font-weight="700" fill="#fcd34d">~2s</text>
+    <text x="310" y="364" font-size="11" fill="#8a7a4e">3-node cold start</text>
+    <text x="465" y="344" font-size="26" font-weight="700" fill="#fcd34d">~1s</text>
+    <text x="465" y="364" font-size="11" fill="#8a7a4e">partition heal</text>
+    <text x="620" y="344" font-size="26" font-weight="700" fill="#fcd34d">0</text>
+    <text x="620" y="364" font-size="11" fill="#8a7a4e">wall clocks trusted</text>
+  </g>
+
+  <text x="465" y="398" font-family="Arial, sans-serif" font-size="10" fill="#6b5f3c" text-anchor="middle" letter-spacing="2">LIBP2P · GOSSIPSUB · LAMPORT CLOCKS</text>
+</svg>

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 420" width="930" height="420" role="img" aria-label="Read-only reads from Plane plus nightly snapshots into an owned database, feeding a sprint dashboard">
+  <!--
+    Schematic, not a data chart: drawn from the "Division of truth" table in the
+    project's own README.md. No burndown curve is shown because no real snapshot
+    history has accumulated yet — inventing one would imply measurements that
+    were never taken.
+
+    Composition note: card art is object-fit:cover with object-position:top, so
+    only source x≈130–800 survives the crop at card size. Everything meaningful
+    is kept inside x=150–790.
+  -->
+  <defs>
+    <linearGradient id="sdBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08191d"/>
+      <stop offset="100%" stop-color="#0a0f0d"/>
+    </linearGradient>
+  </defs>
+  <rect width="930" height="420" fill="url(#sdBg)"/>
+
+  <!-- left: Plane, the source of truth for work items -->
+  <g transform="translate(150 116)">
+    <rect x="0" y="0" width="180" height="172" rx="10" fill="#0d2429" stroke="#22d3ee" stroke-width="2.5"/>
+    <text x="90" y="27" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#22d3ee" text-anchor="middle" letter-spacing="1">PLANE</text>
+    <text x="90" y="45" font-family="Arial, sans-serif" font-size="10" fill="#4f8f9c" text-anchor="middle">source of truth</text>
+    <g fill="#123840">
+      <rect x="20" y="58" width="140" height="20" rx="4"/>
+      <rect x="20" y="84" width="140" height="20" rx="4"/>
+      <rect x="20" y="110" width="140" height="20" rx="4"/>
+      <rect x="20" y="136" width="140" height="20" rx="4"/>
+    </g>
+    <g fill="#22d3ee" opacity="0.85">
+      <circle cx="34" cy="68" r="4"/><circle cx="34" cy="94" r="4"/>
+      <circle cx="34" cy="120" r="4"/><circle cx="34" cy="146" r="4"/>
+    </g>
+    <g fill="#2c6874">
+      <rect x="48" y="65" width="84" height="6" rx="3"/>
+      <rect x="48" y="91" width="62" height="6" rx="3"/>
+      <rect x="48" y="117" width="96" height="6" rx="3"/>
+      <rect x="48" y="143" width="52" height="6" rx="3"/>
+    </g>
+  </g>
+
+  <!-- read-only arrow out, and an explicitly absent write path back -->
+  <g stroke="#22d3ee" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330 178 H378"/>
+    <path d="M368 169 L380 178 L368 187"/>
+  </g>
+  <text x="355" y="164" font-family="Arial, sans-serif" font-size="10" fill="#4f8f9c" text-anchor="middle">read-only</text>
+  <g opacity="0.7">
+    <path d="M380 226 H332" stroke="#3a5b62" stroke-width="2" fill="none" stroke-dasharray="5 5" stroke-linecap="round"/>
+    <g stroke="#7f5a5a" stroke-width="2.5" stroke-linecap="round">
+      <path d="M348 218 L364 234"/><path d="M364 218 L348 234"/>
+    </g>
+    <text x="356" y="252" font-family="Arial, sans-serif" font-size="10" fill="#6b8a90" text-anchor="middle">no writes</text>
+  </g>
+
+  <!-- middle: the nightly snapshot job -->
+  <g transform="translate(392 142)">
+    <rect x="0" y="0" width="110" height="76" rx="10" fill="#102e34" stroke="#22d3ee" stroke-width="2.5"/>
+    <circle cx="55" cy="32" r="17" fill="none" stroke="#67e8f9" stroke-width="2.5"/>
+    <path d="M55 22 V32 L62 37" stroke="#67e8f9" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <text x="55" y="62" font-family="Arial, sans-serif" font-size="9" fill="#67e8f9" text-anchor="middle" letter-spacing="1">NIGHTLY</text>
+  </g>
+
+  <g stroke="#22d3ee" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M502 178 H536"/>
+    <path d="M526 169 L538 178 L526 187"/>
+  </g>
+
+  <!-- right: the database this app owns -->
+  <g transform="translate(548 116)">
+    <rect x="0" y="0" width="130" height="172" rx="10" fill="#0d2429" stroke="#22d3ee" stroke-width="2.5"/>
+    <g transform="translate(65 44)">
+      <ellipse cx="0" cy="-14" rx="32" ry="10" fill="#164e57" stroke="#67e8f9" stroke-width="2"/>
+      <path d="M-32 -14 V14 A32 10 0 0 0 32 14 V-14" fill="#164e57" stroke="#67e8f9" stroke-width="2"/>
+      <ellipse cx="0" cy="0" rx="32" ry="10" fill="none" stroke="#67e8f9" stroke-width="1.5" opacity="0.6"/>
+    </g>
+    <text x="65" y="106" font-family="Arial, sans-serif" font-size="10" fill="#67e8f9" text-anchor="middle">snapshots</text>
+    <text x="65" y="124" font-family="Arial, sans-serif" font-size="10" fill="#67e8f9" text-anchor="middle">standups</text>
+    <text x="65" y="142" font-family="Arial, sans-serif" font-size="10" fill="#67e8f9" text-anchor="middle">blockers</text>
+    <text x="65" y="162" font-family="Arial, sans-serif" font-size="9" fill="#4f8f9c" text-anchor="middle">what Plane can’t</text>
+  </g>
+
+  <g stroke="#22d3ee" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M678 178 H708"/>
+    <path d="M698 169 L710 178 L698 187"/>
+  </g>
+
+  <!-- the dashboard it all feeds -->
+  <g transform="translate(716 134)">
+    <rect x="0" y="0" width="74" height="96" rx="8" fill="#102e34" stroke="#22d3ee" stroke-width="2.5"/>
+    <g fill="#22d3ee" opacity="0.85">
+      <rect x="12" y="58" width="10" height="22" rx="2"/>
+      <rect x="26" y="46" width="10" height="34" rx="2"/>
+      <rect x="40" y="34" width="10" height="46" rx="2"/>
+      <rect x="54" y="22" width="10" height="58" rx="2"/>
+    </g>
+    <rect x="12" y="14" width="30" height="6" rx="3" fill="#2c6874"/>
+  </g>
+
+  <text x="465" y="344" font-family="Arial, sans-serif" font-size="13" fill="#5f9aa6" text-anchor="middle">Plane owns the work items.</text>
+  <text x="465" y="366" font-family="Arial, sans-serif" font-size="13" fill="#5f9aa6" text-anchor="middle">This owns the history Plane can’t replay.</text>
+  <text x="465" y="398" font-family="Arial, sans-serif" font-size="10" fill="#3f6b74" text-anchor="middle" letter-spacing="2">NEXT.JS · PRISMA · POSTGRES</text>
+</svg>

@@ -196,7 +196,7 @@ export const profile: Profile = {
     'Built a two-way Plane ↔ Slack bridge over Socket Mode',
     '2.7M real events → a plain-English churn model',
     'SARIMA AQI forecast · MAE 24.7 vs 29.6 baseline',
-    '500+ DSA problems solved · LeetCode rank #124,928',
+    '600+ DSA problems solved · LeetCode rank #124,928',
     'Peer-reviewed ML paper · Physica Scripta journal',
   ],
 }
@@ -291,7 +291,7 @@ export const socials: Social[] = [
 export const about: About = {
   paragraphs: [
     "I'm an Electrical Engineering undergrad at NSUT who lives where product meets engineering. Most recently I was an Associate PM at Bachatt, a fintech, where I led the launch of a new credit-card product with our partner ZET — owning the spec and roadmap and driving delivery across engineering, design, and the partner team.",
-    "But I don't stop at the spec. On the same role I ran Bachatt's Atlassian → self-hosted migration end to end (Jira & Confluence onto Plane + Outline on Azure AKS), built a two-way Plane ↔ Slack bridge, and stood up production infra and a CDN asset pipeline. Alongside that I ship full-stack side projects, solved 500+ DSA problems, and co-authored a peer-reviewed ML paper. Currently open to full-time product and software roles.",
+    "But I don't stop at the spec. On the same role I ran Bachatt's Atlassian → self-hosted migration end to end (Jira & Confluence onto Plane + Outline on Azure AKS), built a two-way Plane ↔ Slack bridge, and stood up production infra and a CDN asset pipeline. Alongside that I ship full-stack side projects, solved 600+ DSA problems, and co-authored a peer-reviewed ML paper. Currently open to full-time product and software roles.",
   ],
   facts: [
     { label: 'Focus', value: 'Product · Full-Stack · Infra' },
@@ -332,9 +332,9 @@ export const projects: Project[] = [
     slug: 'findesk',
     title: 'Findesk — AI Equity-Research Assistant',
     blurb:
-      'Search any NSE stock for live price, fundamentals & news, plus an AI research brief — Buy/Sell rating, 12-month target, and bull/bear/risks — with a Supabase-backed watchlist.',
+      'Search any NSE stock for live price, fundamentals & news, plus an AI research brief — Buy/Sell rating, 12-month target, bull/bear/risks — with a portfolio tracker, screener, and paper-trading desk.',
     longDescription:
-      'A personal build: search any NSE-listed stock and get its live price, key fundamentals, and recent news, plus an AI-generated research brief — a Buy/Sell rating, a 12-month price target, and bull case / bear case / key risks — produced via the Gemini API with structured JSON output. A Supabase-backed watchlist saves the stocks you follow. Every third-party source is cached with a 15–30 min TTL and graceful fallbacks, and all LLM output is defensively validated so the app never crashes on a malformed response. Built solo on Next.js 14 (App Router) with TypeScript.',
+      'A personal build: search any NSE-listed stock and get its live price, key fundamentals, and recent news, plus an AI-generated research brief — a Buy/Sell rating, a 12-month price target, and bull case / bear case / key risks — produced via the Gemini API with structured JSON output. Around that sits a full research workflow: a Supabase-backed watchlist, a portfolio tracker with an AI health analyzer, a paper-trading desk for testing a thesis without risking money, a mechanical "Stocks to Pick" screen over the NIFTY 500, and a side-by-side compare view for two stocks. Every third-party source is cached with a 15–30 min TTL and graceful fallbacks, and all LLM output is defensively validated so the app never crashes on a malformed response. Built solo on Next.js 14 (App Router) with TypeScript, covered by 53 tests.',
     tags: ['Next.js 14', 'TypeScript', 'Gemini API', 'Supabase'],
     match: '96% Match',
     year: '2026',
@@ -349,7 +349,7 @@ export const projects: Project[] = [
     blurb:
       'Turns a real 2.7M-event e-commerce clickstream into conversion funnels, cohort retention, and a churn model — every view surfaces a plain-English insight, not just a chart.',
     longDescription:
-      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (view → add-to-cart converts at just 2.69%), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69) showing recency drives churn while active days drive return. The funnel/cohort/KPI logic is written as pure, UI-free functions so the same engine generalizes to any event stream.',
+      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (only 2.45% of viewers add to cart, though 28% of those who do go on to buy — 0.83% end to end), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69) showing recency drives churn while active days drive return. The funnel/cohort/KPI logic is written as pure, UI-free functions so the same engine generalizes to any event stream. Written up as a full growth case study — including two results that contradicted the original hypotheses and were kept anyway: https://github.com/Ayush05G/product-analytics-dashboard/blob/main/case-study.md',
     tags: ['Python', 'Streamlit', 'pandas', 'scikit-learn'],
     match: '95% Match',
     year: '2026',
@@ -372,6 +372,36 @@ export const projects: Project[] = [
     repo: 'https://github.com/Ayush05G/aqi-analytics',
     accent: '#e50914',
     image: '/projects/aqi-analytics.svg',
+  },
+  {
+    slug: 'disaster-mesh',
+    title: 'Project Aether — Offline Disaster Mesh',
+    blurb:
+      'A disaster-response network that works with no internet: local AI turns reports into structured data offline, and a CRDT ledger syncs them phone-to-phone over a peer mesh.',
+    longDescription:
+      'When infrastructure goes down, so does every app that assumes a server. Aether assumes the opposite: quantized small language models run on the edge device itself, extracting structured hazard reports from local text and images with no network at all. Those reports sync peer-to-peer over a libp2p mesh (mDNS discovery, gossipsub broadcast) into a grow-only-set CRDT ledger, so any two nodes that meet converge on the same state without a coordinator. Ordering trusts no wall clock — only Lamport clocks and a (node_id, seq) identity — because clocks drift and disagree in exactly the conditions this is built for. Verified with property-based tests and four dedicated chaos suites: three nodes cold-start to convergence in ~2s, a killed node catches up via anti-entropy, and a healed network partition reconverges in ~1s on identical event sets. Chaos testing earned its keep by finding two real bugs — a thread-safety race in the AI engine and a missing read timeout on the anti-entropy path.',
+    tags: ['Python', 'libp2p', 'CRDT', 'FastAPI'],
+    match: '97% Match',
+    year: '2026',
+    link: '',
+    repo: '',
+    accent: '#f59e0b',
+    image: '/projects/disaster-mesh.svg',
+  },
+  {
+    slug: 'scrum-dashboard',
+    title: 'Scrum Dashboard — Sprint Health on Plane',
+    blurb:
+      'Plane tracks work items well but has no standup runner, burndown, or velocity history. This adds the ceremony layer on top — without replacing the tracker underneath.',
+    longDescription:
+      'Built after running sprints on a self-hosted Plane instance and hitting the same wall every week: it is a good work-item tracker and a poor ceremony tool — no standup runner, no burndown, no velocity history, and no way to see who has been blocked three days running. The interesting constraint is that Plane has no cycle-analytics endpoint and cannot report retroactively what a cycle’s scope was last Tuesday, so a burndown is impossible unless something records it daily. That is why this app owns a database despite Plane remaining the source of truth for work items: it stores only what Plane structurally cannot give back — daily cycle snapshots, standup sessions, and blocker history. v1 is strictly read-only against Plane; nothing in the API client issues a mutating request. Next.js and React with Prisma over Postgres, Google SSO via NextAuth, and a nightly snapshot cron, covered by 12 test suites.',
+    tags: ['Next.js', 'TypeScript', 'Prisma', 'Postgres'],
+    match: '93% Match',
+    year: '2026',
+    link: '',
+    repo: '',
+    accent: '#22d3ee',
+    image: '/projects/scrum-dashboard.svg',
   },
   {
     slug: 'portfolio',
@@ -461,7 +491,7 @@ export const seasons: Season[] = [
     title: 'The Bachatt Era',
     years: '2026',
     synopsis:
-      'Associate PM at a fintech — a credit-card launch, a sprint turnaround, and the infra underneath it all. Four episodes, one summer.',
+      'Associate PM at a fintech — a credit-card launch, a sprint turnaround, and the infra underneath it all. Six episodes, one summer.',
     episodes: [
       {
         number: 1,
@@ -503,6 +533,26 @@ export const seasons: Season[] = [
         thumbnail: '/seasons/ep-slack-bridge.svg',
         highlight: 'Real-time sync over Socket Mode',
       },
+      {
+        number: 5,
+        title: 'The Robot Analyst',
+        place: 'Associate Product Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Replaced a daily manual chore — logging into three registrar portals to pull distributor reports — with a scheduled service: headless browser automation, a layered captcha solver, and a small web app to run and monitor it.',
+        thumbnail: '/seasons/ep-orbit.svg',
+        highlight: 'Daily reports from 3 registrars, automated',
+      },
+      {
+        number: 6,
+        title: 'Two Seconds Back',
+        place: 'Associate Product Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'A CDN migration had quietly started serving every image, GIF, and video uncompressed, roughly doubling app load time. Traced it, shipped a compression pipeline, and closed the hole at the source with an upload size gate that auto-compresses.',
+        thumbnail: '/seasons/ep-cdn.svg',
+        highlight: 'Undid a ~2× load-time regression',
+      },
     ],
   },
 ]
@@ -510,7 +560,7 @@ export const seasons: Season[] = [
 // Achievements & certifications become their own row of cards.
 export const achievements: Achievement[] = [
   {
-    title: '500+ DSA Problems',
+    title: '600+ DSA Problems',
     tag: 'Problem Solving',
     detail: 'LeetCode rank #124,928 · Pupil on Codeforces.',
   },

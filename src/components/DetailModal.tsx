@@ -54,18 +54,22 @@ export default function DetailModal({ item, onClose }: Props) {
         </div>
 
         <div className="modal__body">
-          <div className="modal__actions">
-            {item.link && (
-              <a className="nf-btn nf-btn--play" href={item.link} target="_blank" rel="noreferrer">
-                {Play} Live Demo
-              </a>
-            )}
-            {item.repo && (
-              <a className="nf-btn nf-btn--info" href={item.repo} target="_blank" rel="noreferrer">
-                {Github} View Code
-              </a>
-            )}
-          </div>
+          {/* Skip the row entirely when a project has neither link — an empty
+              flex row still carries its bottom margin and leaves a dead gap. */}
+          {(item.link || item.repo) && (
+            <div className="modal__actions">
+              {item.link && (
+                <a className="nf-btn nf-btn--play" href={item.link} target="_blank" rel="noreferrer">
+                  {Play} Live Demo
+                </a>
+              )}
+              {item.repo && (
+                <a className="nf-btn nf-btn--info" href={item.repo} target="_blank" rel="noreferrer">
+                  {Github} View Code
+                </a>
+              )}
+            </div>
+          )}
 
           <div className="modal__meta">
             <span className="billboard__match">{item.match}</span>
