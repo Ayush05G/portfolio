@@ -398,7 +398,9 @@ export const projects: Project[] = [
     tags: ['Next.js', 'TypeScript', 'Prisma', 'Postgres'],
     match: '93% Match',
     year: '2026',
-    link: '',
+    // Deployed, but every route is behind Google SSO — the link lands on the
+    // sign-in screen rather than a browsable demo.
+    link: 'https://scrum-dashboard-sage.vercel.app',
     repo: '',
     accent: '#22d3ee',
     image: '/projects/scrum-dashboard.svg',
