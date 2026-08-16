@@ -322,6 +322,8 @@ export const skills: Skill[] = [
   { name: 'Streamlit', level: 80, tag: 'Data', logo: '/skills/streamlit.svg' },
   { name: 'pandas', level: 80, tag: 'Data', logo: '/skills/pandas.svg' },
   { name: 'Product & GTM', level: 85, tag: 'Product' },
+  { name: 'Equity Research & Backtesting', level: 80, tag: 'Markets' },
+  { name: 'Experimentation & Analytics', level: 82, tag: 'Product' },
   { name: 'DSA / Problem Solving', level: 84, tag: 'Foundations' },
   { name: 'Figma', level: 66, tag: 'Design', logo: '/skills/figma.svg' },
 ]
@@ -330,11 +332,11 @@ export const skills: Skill[] = [
 export const projects: Project[] = [
   {
     slug: 'findesk',
-    title: 'Findesk — AI Equity-Research Assistant',
+    title: 'Findesk — Equity Research & Strategy Platform',
     blurb:
-      'Search any NSE stock for live price, fundamentals & news, plus an AI research brief — Buy/Sell rating, 12-month target, bull/bear/risks — with a portfolio tracker, screener, and paper-trading desk.',
+      'Six live surfaces for researching Indian equities — and behind them a value + momentum strategy backtested over a 715-stock NIFTY-500 universe, made survivorship-free and costed honestly.',
     longDescription:
-      'A personal build: search any NSE-listed stock and get its live price, key fundamentals, and recent news, plus an AI-generated research brief — a Buy/Sell rating, a 12-month price target, and bull case / bear case / key risks — produced via the Gemini API with structured JSON output. Around that sits a full research workflow: a Supabase-backed watchlist, a portfolio tracker with an AI health analyzer, a paper-trading desk for testing a thesis without risking money, a mechanical "Stocks to Pick" screen over the NIFTY 500, and a side-by-side compare view for two stocks. Every third-party source is cached with a 15–30 min TTL and graceful fallbacks, and all LLM output is defensively validated so the app never crashes on a malformed response. Built solo on Next.js 14 (App Router) with TypeScript, covered by 53 tests.',
+      'Six live surfaces shipped 0-to-1: stock research (price, fundamentals, news, and an AI Buy/Sell brief with a 12-month target), a mechanical NIFTY-500 value + momentum screen, a portfolio tracker with an AI health analyzer, a paper-trading desk, compare, and watchlist — on Supabase auth with row-level security and 89 unit tests. The part I care about most is the strategy underneath: ranked on earnings yield (EBIT/EV) and 6-month momentum across a 715-stock universe, with a market-cap floor, a debt-to-equity filter and a 3-name-per-sector cap. It is survivorship-free — point-in-time index membership is reconstructed from 9 archived NIFTY-500 snapshots (2017–26) so delisted names stay in each cohort’s pool — and results are measured net of 0.5% round-trip costs and 12.5% LTCG, with monthly mark-to-market for true drawdown, Sharpe against a 6% risk-free, sub-period splits to test regime dependence, and a t-stat on non-overlapping cohorts. A backtest that flatters itself is worthless, so the framework is built to stop it. The chat assistant runs on Gemini function calling with four server-side tools, and takes user identity from the session cookie rather than the request body, so a crafted request cannot read another user’s holdings; when the model quota runs out it degrades to a deterministic answer over the same live data instead of erroring.',
     tags: ['Next.js 14', 'TypeScript', 'Gemini API', 'Supabase'],
     match: '96% Match',
     year: '2026',
@@ -383,8 +385,9 @@ export const projects: Project[] = [
     tags: ['Python', 'libp2p', 'CRDT', 'FastAPI'],
     match: '97% Match',
     year: '2026',
+    // Local-first by design, so there is nothing to deploy and no live link.
     link: '',
-    repo: '',
+    repo: 'https://github.com/Ayush05G/disaster-mesh',
     accent: '#f59e0b',
     image: '/projects/disaster-mesh.svg',
   },
@@ -439,9 +442,9 @@ export const seasons: Season[] = [
         when: '2023 – 2027',
         duration: '4 years',
         synopsis:
-          'CGPA 7.7 — building products and full-stack + infra skills alongside coursework at Netaji Subhas University of Technology.',
+          'CGPA 7.73 — building products and full-stack + infra skills alongside coursework at Netaji Subhas University of Technology.',
         thumbnail: '/seasons/ep-nsut.svg',
-        highlight: 'CGPA 7.7',
+        highlight: 'CGPA 7.73',
       },
       {
         number: 2,
@@ -493,7 +496,7 @@ export const seasons: Season[] = [
     title: 'The Bachatt Era',
     years: '2026',
     synopsis:
-      'Associate PM at a fintech — a credit-card launch, a sprint turnaround, and the infra underneath it all. Six episodes, one summer.',
+      'Associate PM at a fintech — a credit-card launch, a sprint turnaround, and the infra underneath it all. Eight episodes, one summer.',
     episodes: [
       {
         number: 1,
@@ -554,6 +557,26 @@ export const seasons: Season[] = [
           'A CDN migration had quietly started serving every image, GIF, and video uncompressed, roughly doubling app load time. Traced it, shipped a compression pipeline, and closed the hole at the source with an upload size gate that auto-compresses.',
         thumbnail: '/seasons/ep-cdn.svg',
         highlight: 'Undid a ~2× load-time regression',
+      },
+      {
+        number: 7,
+        title: 'Four Doors In',
+        place: 'Associate Product Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Instrumented the credit-card landing site so its four themes ran as real variants, not just four designs — GA4 and CleverTap events on Apply Now, a scroll-depth event, and the active theme attached as a global parameter so the variants were actually comparable.',
+        thumbnail: '/seasons/ep-experiments.svg',
+        highlight: 'Made four themes genuinely comparable',
+      },
+      {
+        number: 8,
+        title: 'Where People Fall Out',
+        place: 'Associate Product Manager · Bachatt',
+        when: 'May 2026 – Jul 2026',
+        synopsis:
+          'Built the per-user credit-card journey view on BigQuery and took it from one partner to four, reworking each partner’s milestones so they read correctly instead of silently dropping — plus a daily funnel report that assembles itself from partner mailboxes.',
+        thumbnail: '/seasons/ep-funnel.svg',
+        highlight: 'One partner → four, without silent drops',
       },
     ],
   },
