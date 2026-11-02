@@ -196,7 +196,7 @@ export const profile: Profile = {
     'Built a two-way Plane ↔ Slack bridge over Socket Mode',
     '2.7M real events → a plain-English churn model',
     'SARIMA AQI forecast · MAE 24.7 vs 29.6 baseline',
-    '600+ DSA problems solved · LeetCode rank #124,928',
+    '600+ DSA problems solved · Pupil on Codeforces',
     'Peer-reviewed ML paper · Physica Scripta journal',
   ],
 }
@@ -250,7 +250,7 @@ export const profiles: ProfileSummary[] = [
 export const profileConfig: Record<string, ProfileConfig> = {
   recruiter: {
     tagline:
-      "Associate PM at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
+      "Former Associate PM Intern at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
     order: ['journey', 'projects', 'achievements', 'stats', 'learning', 'top10', 'skills'],
     cta: { label: 'See Experience', target: 'journey' },
   },
@@ -284,13 +284,13 @@ export const profileConfig: Record<string, ProfileConfig> = {
 export const socials: Social[] = [
   { label: 'GitHub', url: 'https://github.com/Ayush05G', handle: '@Ayush05G' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/ayush-gupta-17b3112a2/', handle: '/in/ayush-gupta' },
-  { label: 'LeetCode', url: 'https://leetcode.com/u/AG2425/', handle: '@AG2425 · Rank #124,928' },
+  { label: 'LeetCode', url: 'https://leetcode.com/u/AG2425/', handle: '@AG2425 · 600+ solved' },
   { label: 'Email', url: 'mailto:ayush2425.rk@gmail.com', handle: 'ayush2425.rk@gmail.com' },
 ]
 
 export const about: About = {
   paragraphs: [
-    "I'm an Electrical Engineering undergrad at NSUT who lives where product meets engineering. Most recently I was an Associate PM at Bachatt, a fintech, where I led the launch of a new credit-card product with our partner ZET — owning the spec and roadmap and driving delivery across engineering, design, and the partner team.",
+    "I'm an Electrical Engineering undergrad at NSUT who lives where product meets engineering. As an Associate Product Manager Intern at Bachatt, a fintech, I led the launch of a new credit-card product with our partner ZET — owning the spec and roadmap and driving delivery across engineering, design, and the partner team.",
     "But I don't stop at the spec. On the same role I ran Bachatt's Atlassian → self-hosted migration end to end (Jira & Confluence onto Plane + Outline on Azure AKS), built a two-way Plane ↔ Slack bridge, and stood up production infra and a CDN asset pipeline. Alongside that I ship full-stack side projects, solved 600+ DSA problems, and co-authored a peer-reviewed ML paper. Currently open to full-time product and software roles.",
   ],
   facts: [
@@ -334,10 +334,10 @@ export const projects: Project[] = [
     slug: 'findesk',
     title: 'Findesk — Equity Research & Strategy Platform',
     blurb:
-      'Six live surfaces for researching Indian equities — and behind them a value + momentum strategy backtested over a 715-stock NIFTY-500 universe, made survivorship-free and costed honestly.',
+      'An Indian equity research and portfolio platform with a tool-using AI assistant, evidence checks, and a 60-question evaluation benchmark — alongside a value + momentum backtest over a 715-stock universe.',
     longDescription:
-      'Six live surfaces shipped 0-to-1: stock research (price, fundamentals, news, and an AI Buy/Sell brief with a 12-month target), a mechanical NIFTY-500 value + momentum screen, a portfolio tracker with an AI health analyzer, a paper-trading desk, compare, and watchlist — on Supabase auth with row-level security and 89 unit tests. The part I care about most is the strategy underneath: ranked on earnings yield (EBIT/EV) and 6-month momentum across a 715-stock universe, with a market-cap floor, a debt-to-equity filter and a 3-name-per-sector cap. It is survivorship-free — point-in-time index membership is reconstructed from 9 archived NIFTY-500 snapshots (2017–26) so delisted names stay in each cohort’s pool — and results are measured net of 0.5% round-trip costs and 12.5% LTCG, with monthly mark-to-market for true drawdown, Sharpe against a 6% risk-free, sub-period splits to test regime dependence, and a t-stat on non-overlapping cohorts. A backtest that flatters itself is worthless, so the framework is built to stop it. The chat assistant runs on Gemini function calling with four server-side tools, and takes user identity from the session cookie rather than the request body, so a crafted request cannot read another user’s holdings; when the model quota runs out it degrades to a deterministic answer over the same live data instead of erroring.',
-    tags: ['Next.js 14', 'TypeScript', 'Gemini API', 'Supabase'],
+      'Built stock research, screening, portfolio tracking, paper trading, compare and watchlists on Next.js and Supabase with row-level security. The portfolio-aware assistant uses four server-side tools and session-scoped identity; when model quotas run out, a deterministic fallback answers from the same available data. Added evidence guards for unknown analyst coverage, stale quotes, headline-only news causation and unsupported feed provenance, plus request coalescing and model cooldowns. A 60-question benchmark uses fixed synthetic financial snapshots, retaining service failures rather than hiding them. In one same-prompt model comparison, median attempted-turn latency was 1.62s versus 5.73s; this is a benchmark observation, not production-user latency or proof of comprehensive accuracy. November verification recorded 752 passing automated tests. The strategy work ranks value and momentum across a 715-stock universe, reconstructs membership from nine archived index snapshots, and measures returns after costs and tax with drawdown, Sharpe and regime checks. The 2019–24 snapshot gap remains an explicit limitation. Also shipped company-name search, sign-in return paths, watchlist feedback and guards against treating failed account reads as empty portfolios.',
+    tags: ['Next.js 14', 'TypeScript', 'Gemini API', 'Supabase', 'AI Evaluation'],
     match: '96% Match',
     year: '2026',
     link: 'https://equity-research-assistant-eta.vercel.app',
@@ -351,7 +351,7 @@ export const projects: Project[] = [
     blurb:
       'Turns a real 2.7M-event e-commerce clickstream into conversion funnels, cohort retention, and a churn model — every view surfaces a plain-English insight, not just a chart.',
     longDescription:
-      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (only 2.45% of viewers add to cart, though 28% of those who do go on to buy — 0.83% end to end), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69) showing recency drives churn while active days drive return. The funnel/cohort/KPI logic is written as pure, UI-free functions so the same engine generalizes to any event stream. Written up as a full growth case study — including two results that contradicted the original hypotheses and were kept anyway: https://github.com/Ayush05G/product-analytics-dashboard/blob/main/case-study.md',
+      'Built on RetailRocket’s real clickstream data — 2.7M events from 1.4M visitors. Finds the funnel’s biggest leak (only 2.45% of viewers add to cart, though 28% of those who do go on to buy — 0.83% end to end), that only ~4.6% of a week’s new visitors return the following week, and trains a churn model (ROC-AUC ≈ 0.69). Pure funnel/cohort functions keep the analysis independent of the UI; a recorded optimization cut peak funnel memory from 173 MB to 66 MB. The companion growth case study sizes an experiment against observed traffic: a 5% relative effect needed about 17 weeks, so the proposal targets a 10% effect over about 4.5 weeks, with the sensitivity trade-off stated. This is an experiment design, not a measured conversion uplift. The write-up also keeps two findings that contradicted its original hypotheses: https://github.com/Ayush05G/product-analytics-dashboard/blob/main/case-study.md',
     tags: ['Python', 'Streamlit', 'pandas', 'scikit-learn'],
     match: '95% Match',
     year: '2026',
@@ -379,9 +379,9 @@ export const projects: Project[] = [
     slug: 'disaster-mesh',
     title: 'Project Aether — Offline Disaster Mesh',
     blurb:
-      'A disaster-response network that works with no internet: local AI turns reports into structured data offline, and a CRDT ledger syncs them phone-to-phone over a peer mesh.',
+      'A disaster-response prototype designed for offline AI and peer-to-peer report sharing: a CRDT ledger reconciles nodes after disconnection, verified with local multi-node and chaos tests.',
     longDescription:
-      'When infrastructure goes down, so does every app that assumes a server. Aether assumes the opposite: quantized small language models run on the edge device itself, extracting structured hazard reports from local text and images with no network at all. Those reports sync peer-to-peer over a libp2p mesh (mDNS discovery, gossipsub broadcast) into a grow-only-set CRDT ledger, so any two nodes that meet converge on the same state without a coordinator. Ordering trusts no wall clock — only Lamport clocks and a (node_id, seq) identity — because clocks drift and disagree in exactly the conditions this is built for. Verified with property-based tests and four dedicated chaos suites: three nodes cold-start to convergence in ~2s, a killed node catches up via anti-entropy, and a healed network partition reconverges in ~1s on identical event sets. Chaos testing earned its keep by finding two real bugs — a thread-safety race in the AI engine and a missing read timeout on the anti-entropy path.',
+      'Designed around a local quantized-model extraction engine, schema-validated hazard reports, and a libp2p mesh with mDNS discovery, gossipsub broadcast and anti-entropy catch-up. Reports merge into a grow-only-set CRDT; identity is (node_id, seq), with Lamport ordering instead of wall-clock trust. Local single-machine tests show three nodes converging from cold start in about 2s and a healed partition reconverging in about 1s. Property-based and chaos tests surfaced two real defects: an ingest thread-safety race and a missing read timeout. The dashboard distinguishes reports a node authored from reports it carries, without inventing their delivery paths, and its build rejects external URLs. Physical-device networking, real-model extraction quality and Raspberry Pi profiling remain documented hardware-dependent milestones.',
     tags: ['Python', 'libp2p', 'CRDT', 'FastAPI'],
     match: '97% Match',
     year: '2026',
@@ -397,7 +397,7 @@ export const projects: Project[] = [
     blurb:
       'Plane tracks work items well but has no standup runner, burndown, or velocity history. This adds the ceremony layer on top — without replacing the tracker underneath.',
     longDescription:
-      'Built after running sprints on a self-hosted Plane instance and hitting the same wall every week: it is a good work-item tracker and a poor ceremony tool — no standup runner, no burndown, no velocity history, and no way to see who has been blocked three days running. The interesting constraint is that Plane has no cycle-analytics endpoint and cannot report retroactively what a cycle’s scope was last Tuesday, so a burndown is impossible unless something records it daily. That is why this app owns a database despite Plane remaining the source of truth for work items: it stores only what Plane structurally cannot give back — daily cycle snapshots, standup sessions, and blocker history. v1 is strictly read-only against Plane; nothing in the API client issues a mutating request. Next.js and React with Prisma over Postgres, Google SSO via NextAuth, and a nightly snapshot cron, covered by 12 test suites.',
+      'Adds standups, sprint health, workload, blocker history, burndown, velocity and retrospective notes to a self-hosted Plane instance. Plane remains the work-item source of truth; this app records daily cycle snapshots because historical sprint scope cannot be reconstructed from the tracker later. Burndown uses estimate coverage to choose points or item counts, so one estimated completed item cannot make an unfinished sprint look complete. Missing snapshot days remain gaps, and repeat cron runs are idempotent. Company-domain Google SSO establishes identity, while each manager’s validated, encrypted Plane token determines what they can access. Built with Next.js, React and Prisma over Postgres; the API client remains read-only against Plane.',
     tags: ['Next.js', 'TypeScript', 'Prisma', 'Postgres'],
     match: '93% Match',
     year: '2026',
@@ -460,11 +460,10 @@ export const seasons: Season[] = [
       {
         number: 3,
         title: 'Learning the Craft',
-        place: 'Executive Committee · PM Club, NSUT',
+        place: 'Vice President · PM Club, NSUT',
         when: 'Sep 2025 – Present',
-        duration: '10 months',
         synopsis:
-          'Run case-study sessions for 50+ members and teach PM fundamentals — RICE, North Star metrics, and JTBD.',
+          'Lead weekly product case sessions for 50+ members across affiliate economics, accessibility and urban mobility, teaching RICE prioritization, North Star metrics and JTBD.',
         thumbnail: '/seasons/ep-pmclub.svg',
         highlight: 'Teaching 50+ members',
       },
@@ -587,7 +586,7 @@ export const achievements: Achievement[] = [
   {
     title: '600+ DSA Problems',
     tag: 'Problem Solving',
-    detail: 'LeetCode rank #124,928 · Pupil on Codeforces.',
+    detail: '600+ problems solved on LeetCode · Pupil on Codeforces.',
   },
   {
     title: 'Published Researcher',

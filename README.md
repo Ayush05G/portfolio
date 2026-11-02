@@ -30,6 +30,22 @@ npm run preview  # preview the production build
 
 Drop a `resume.pdf` into `public/`, then set `resumeUrl: '/resume.pdf'` in `profile`. A "Résumé" button then appears in the nav.
 
+To refresh both public resumes from the sibling Resume Maker portal's current
+master profile and PDF layout:
+
+```bash
+node scripts/refresh-resumes.mjs
+```
+
+Pass the portal directory as the first argument if it lives elsewhere. Its
+dependencies must already be installed. The script reads the portal without
+changing it, removes the phone before rendering, and builds separate Product
+and Developer selections. It keeps the site's verified `600+` solved lower
+bound and omits the profile's unsupported Top 100K claim. It fails if a selected
+bullet or skill no longer exists, or the PDF cannot fit on one page. Review
+both PDFs visually after regeneration. Full provenance and candidate additions
+from the November review are in [the content audit](docs/content-audit-2026-11-03.md).
+
 ### Billboard video trailer
 
 `node scripts/make-trailer.mjs` rebuilds `public/trailer/trailer.mp4` + `poster.jpg` (requires ffmpeg) — it composes branded frames from the real project chart SVGs in `public/projects/` and assembles a Ken Burns slideshow. To use your own screen recording instead, encode it with
