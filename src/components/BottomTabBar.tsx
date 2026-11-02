@@ -1,54 +1,30 @@
-import type { ProfileSummary } from '../data.ts'
-import { Home, Document, Search as SearchIcon } from '../icons.tsx'
-
+import { Home, Document } from '../icons.tsx'
 interface Props {
-  activeProfile: ProfileSummary | null
-  resumeUrl?: string
-  onOpenSearch: () => void
   onOpenResume: () => void
-  onOpenProfiles: () => void
+  onOpenMore: () => void
 }
-
-/**
- * Mobile-only bottom tab bar (see the ≤760px block in index.css). Mirrors the
- * Netflix app: the primary actions live within thumb reach, so the top bar can
- * stay out of the way.
- */
-export default function BottomTabBar({
-  activeProfile,
-  resumeUrl,
-  onOpenSearch,
-  onOpenResume,
-  onOpenProfiles,
-}: Props) {
+export default function BottomTabBar({ onOpenResume, onOpenMore }: Props) {
   return (
-    <nav className="tabbar" aria-label="Primary">
-      <button className="tabbar__item" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+    <nav className="tabbar" aria-label="Quick navigation">
+      <a className="tabbar__item" href="#projects">
         <span className="tabbar__icon">{Home}</span>
-        <span className="tabbar__label">Home</span>
+        <span>Work</span>
+      </a>
+      <button className="tabbar__item" onClick={onOpenResume}>
+        <span className="tabbar__icon">{Document}</span>
+        <span>Resume</span>
       </button>
-
-      <button className="tabbar__item" onClick={onOpenSearch}>
-        <span className="tabbar__icon">{SearchIcon}</span>
-        <span className="tabbar__label">Search</span>
-      </button>
-
-      {resumeUrl && (
-        <button className="tabbar__item" onClick={onOpenResume}>
-          <span className="tabbar__icon">{Document}</span>
-          <span className="tabbar__label">Résumé</span>
-        </button>
-      )}
-
-      <button className="tabbar__item" onClick={onOpenProfiles} aria-haspopup="dialog">
-        <span className="tabbar__avatar" style={{ background: activeProfile?.color || 'var(--nf-red)' }}>
-          {activeProfile?.avatar ? (
-            <img src={activeProfile.avatar} alt="" />
-          ) : (
-            (activeProfile?.name || 'G')[0]
-          )}
+      <a className="tabbar__item" href="#contact">
+        <span className="tabbar__icon" aria-hidden>
+          ↗
         </span>
-        <span className="tabbar__label">Profile</span>
+        <span>Contact</span>
+      </a>
+      <button className="tabbar__item" onClick={onOpenMore} aria-haspopup="dialog">
+        <span className="tabbar__icon" aria-hidden>
+          •••
+        </span>
+        <span>More</span>
       </button>
     </nav>
   )

@@ -4,10 +4,35 @@ declare global {
   }
 }
 
+const soundListeners = new Set<() => void>()
+let soundEnabled = false
+try {
+  soundEnabled = localStorage.getItem('nf_sound') === 'on'
+} catch {
+  /* optional */
+}
+export const getSoundEnabled = () => soundEnabled
+export function subscribeSound(listener: () => void) {
+  soundListeners.add(listener)
+  return () => {
+    soundListeners.delete(listener)
+  }
+}
+export function setSoundEnabled(enabled: boolean) {
+  soundEnabled = enabled
+  try {
+    localStorage.setItem('nf_sound', enabled ? 'on' : 'off')
+  } catch {
+    /* optional */
+  }
+  if (!enabled) sharedCtx?.suspend().catch(() => {})
+  soundListeners.forEach((listener) => listener())
+}
 // A shared AudioContext, created lazily on first real user gesture so we
 // never trip the browser's autoplay policy.
 let sharedCtx: AudioContext | null = null
 function getCtx(): AudioContext | null {
+  if (!soundEnabled) return null
   const Ctx = window.AudioContext || window.webkitAudioContext
   if (!Ctx) return null
   if (!sharedCtx) sharedCtx = new Ctx()
@@ -92,9 +117,8 @@ export function playModalOpen() {
 // Audio API (no external audio file, no copyrighted Netflix audio).
 export function playEntryChime() {
   try {
-    const Ctx = window.AudioContext || window.webkitAudioContext
-    if (!Ctx) return
-    const ctx = new Ctx()
+    const ctx = getCtx()
+    if (!ctx) return
     const now = ctx.currentTime
 
     const tone = (freq: number, start: number, duration: number, peakGain: number) => {
@@ -116,8 +140,6 @@ export function playEntryChime() {
     // "dum" — richer sustained chord, arriving just after
     tone(220.0, 0.22, 0.9, 0.24) // A3
     tone(277.18, 0.22, 0.9, 0.15) // C#4
-
-    setTimeout(() => ctx.close().catch(() => {}), 1500)
   } catch {
     // Sound is a nice-to-have; never let it break the entry flow.
   }

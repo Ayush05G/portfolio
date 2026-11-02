@@ -1,42 +1,42 @@
 import type { CSSProperties } from 'react'
 import type { Project } from '../../data.ts'
-import { Play } from '../../icons.tsx'
-import useImageLoaded from '../../useImageLoaded.ts'
-
 interface Props {
   item: Project
   index: number
   onOpen: (item: Project) => void
 }
-
 export default function ProjectCard({ item, index, onOpen }: Props) {
-  const { loaded, imgProps } = useImageLoaded()
-
+  const shot = item.screenshot
   return (
     <button
-      className={`card ${item.image ? 'card--has-image' : ''}`}
+      className="work-card"
       style={{ '--card-accent': item.accent } as CSSProperties}
       onClick={() => onOpen(item)}
     >
-      {item.image && (
-        <img
-          className={`card__shot img-fade ${loaded ? 'is-loaded' : ''}`}
-          src={item.image}
-          alt={`${item.title} preview`}
-          loading="lazy"
-          {...imgProps}
-        />
-      )}
-      <div className="card__art">
-        <span className="card__num">{String(index + 1).padStart(2, '0')}</span>
-        <span className="card__tag">Project</span>
-        <span className="card__label">{item.title}</span>
-        <span className="card__sub">{item.tags.join(' · ')}</span>
-      </div>
-      <div className="card__hover">
-        <span className="card__play">{Play}</span>
-        <span className="card__hovertext">{item.match} · Click for details</span>
-      </div>
+      <span className="work-card__visual">
+        {shot ? (
+          <img src={shot} alt={`${item.title} interface`} loading="lazy" />
+        ) : (
+          <span className="work-card__cover">
+            <span className="eyebrow">{item.status || 'Project'}</span>
+            <strong>{item.title.split(' — ')[0]}</strong>
+            <span>{item.outcome || item.blurb}</span>
+          </span>
+        )}
+        <span className="work-card__number">{String(index + 1).padStart(2, '0')}</span>
+      </span>
+      <span className="work-card__body">
+        <span className="work-card__status">
+          {item.status || 'Project'} · {item.year}
+        </span>
+        <strong className="work-card__title">{item.title}</strong>
+        <span className="work-card__outcome">{item.outcome || item.blurb}</span>
+        <span className="work-card__role">{item.role || 'Design & engineering'}</span>
+        <span className="work-card__tags">{item.tags.slice(0, 3).join(' · ')}</span>
+        <span className="work-card__cta">
+          Explore case study <span aria-hidden>↗</span>
+        </span>
+      </span>
     </button>
   )
 }

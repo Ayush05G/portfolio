@@ -61,6 +61,7 @@ export interface Skill {
   level: number
   tag: string
   logo?: string
+  evidence?: string
 }
 
 export interface Project {
@@ -75,6 +76,19 @@ export interface Project {
   repo: string
   accent: string
   image?: string
+  status?: string
+  role?: string
+  outcome?: string
+  accessNote?: string
+  caseStudyUrl?: string
+  screenshot?: string
+  caseStudy?: {
+    problem: string
+    role: string
+    decision: string
+    evidence: string[]
+    limitations: string
+  }
   /**
    * Optional editorial override for the "Because you watched" row: project
    * slugs and/or exact skill names, in the order you want them shown. Leave it
@@ -251,32 +265,32 @@ export const profileConfig: Record<string, ProfileConfig> = {
   recruiter: {
     tagline:
       "Former Associate PM Intern at a fintech who also ships the code and the infra — I launched a credit-card product, ran an Azure AKS migration, and I'm open to full-time roles. Here's the proof.",
-    order: ['journey', 'projects', 'achievements', 'stats', 'learning', 'top10', 'skills'],
+    order: ['projects', 'journey', 'skills', 'achievements', 'stats', 'learning', 'top10'],
     cta: { label: 'See Experience', target: 'journey' },
   },
   developer: {
     tagline:
       'Full-stack + infra: Next.js/TypeScript apps, Python data tools, and the Kubernetes (Azure AKS) and CI/CD they run on. Dig into the projects, the stack, and how it fits together.',
-    order: ['projects', 'stats', 'learning', 'top10', 'skills', 'achievements', 'journey'],
+    order: ['projects', 'journey', 'skills', 'achievements', 'stats', 'learning', 'top10'],
     cta: { label: 'View Projects', target: 'projects' },
     resumeUrl: '/resume-developer.pdf', // Phone number redacted before publishing — see conversation for details
   },
   friend: {
     tagline:
       "Hey! 👋 This is the fun cut — the products I've launched, the infra I've broken and fixed, and where I'm headed next. Grab a coffee and scroll.",
-    order: ['projects', 'learning', 'journey', 'stats', 'top10', 'achievements', 'skills'],
+    order: ['projects', 'journey', 'skills', 'achievements', 'stats', 'learning', 'top10'],
     cta: { label: 'Take a Look', target: 'projects' },
   },
   stalker: {
     tagline:
       "Curious? Good. Everything's here — every project, every skill, the whole story from product to infrastructure. Start anywhere and poke around.",
-    order: ['projects', 'stats', 'learning', 'top10', 'achievements', 'journey', 'skills'],
+    order: ['projects', 'journey', 'skills', 'achievements', 'stats', 'learning', 'top10'],
     cta: { label: 'Start Exploring', target: 'projects' },
   },
   hacker: {
     tagline:
-      '> access granted. You found the hidden profile — enjoy the terminal cut. Live stats first, then the stack, then everything else.',
-    order: ['stats', 'skills', 'top10', 'projects', 'learning', 'achievements', 'journey'],
+      '> access granted. You found the hidden profile — enjoy the terminal cut. Projects first, then the journey, the stack, and everything else.',
+    order: ['projects', 'journey', 'skills', 'achievements', 'stats', 'learning', 'top10'],
     cta: { label: 'cat ./stats', target: 'stats' },
   },
 }
@@ -302,29 +316,129 @@ export const about: About = {
 }
 
 // Each skill becomes a card in the "Skills & Technologies" row.
-// `level` (0–100) drives the little progress bar. `tag` is the small label.
+// `level` is retained for compatibility. `evidence` describes specific work,
+// not proficiency; omit it where no project-level evidence is documented.
+// `tag` is the small label.
 // `logo` is an official brand icon in /public/skills (from Simple Icons);
 // omit it for skills with no single brand logo (e.g. soft skills).
 export const skills: Skill[] = [
-  { name: 'TypeScript', level: 84, tag: 'Language', logo: '/skills/typescript.svg' },
-  { name: 'JavaScript', level: 86, tag: 'Language', logo: '/skills/javascript.svg' },
-  { name: 'Python', level: 84, tag: 'Language', logo: '/skills/python.svg' },
+  {
+    name: 'TypeScript',
+    level: 84,
+    tag: 'Language',
+    logo: '/skills/typescript.svg',
+    evidence: 'Findesk research app and server-side assistant tools',
+  },
+  {
+    name: 'JavaScript',
+    level: 86,
+    tag: 'Language',
+    logo: '/skills/javascript.svg',
+    evidence: 'Plane ↔ Slack relay with Socket Mode',
+  },
+  {
+    name: 'Python',
+    level: 84,
+    tag: 'Language',
+    logo: '/skills/python.svg',
+    evidence: 'RetailRocket funnel analysis and SARIMA air-quality forecasts',
+  },
   { name: 'C++', level: 80, tag: 'Language', logo: '/skills/cplusplus.svg' },
-  { name: 'Next.js', level: 80, tag: 'Framework', logo: '/skills/nextdotjs.svg' },
-  { name: 'React', level: 80, tag: 'Framework', logo: '/skills/react.svg' },
-  { name: 'Node.js', level: 78, tag: 'Backend', logo: '/skills/nodedotjs.svg' },
-  { name: 'SQL / Postgres', level: 78, tag: 'Database', logo: '/skills/postgresql.svg' },
+  {
+    name: 'Next.js',
+    level: 80,
+    tag: 'Framework',
+    logo: '/skills/nextdotjs.svg',
+    evidence: 'Findesk and the Plane-backed Scrum Dashboard',
+  },
+  {
+    name: 'React',
+    level: 80,
+    tag: 'Framework',
+    logo: '/skills/react.svg',
+    evidence: 'This portfolio’s profile gate and browsable project rows',
+  },
+  {
+    name: 'Node.js',
+    level: 78,
+    tag: 'Backend',
+    logo: '/skills/nodedotjs.svg',
+    evidence: 'Plane ↔ Slack relay using Slack Bolt and Express',
+  },
+  {
+    name: 'SQL / Postgres',
+    level: 78,
+    tag: 'Database',
+    logo: '/skills/postgresql.svg',
+    evidence: 'BigQuery credit-card journeys and Postgres sprint snapshots',
+  },
   { name: 'MongoDB', level: 74, tag: 'Database', logo: '/skills/mongodb.svg' },
-  { name: 'Docker', level: 78, tag: 'Infra', logo: '/skills/docker.svg' },
-  { name: 'Kubernetes (AKS)', level: 72, tag: 'Infra', logo: '/skills/kubernetes.svg' },
-  { name: 'Git & CI/CD', level: 82, tag: 'Tooling', logo: '/skills/git.svg' },
-  { name: 'Supabase', level: 74, tag: 'Backend', logo: '/skills/supabase.svg' },
-  { name: 'Streamlit', level: 80, tag: 'Data', logo: '/skills/streamlit.svg' },
-  { name: 'pandas', level: 80, tag: 'Data', logo: '/skills/pandas.svg' },
-  { name: 'Product & GTM', level: 85, tag: 'Product' },
-  { name: 'Equity Research & Backtesting', level: 80, tag: 'Markets' },
-  { name: 'Experimentation & Analytics', level: 82, tag: 'Product' },
-  { name: 'DSA / Problem Solving', level: 84, tag: 'Foundations' },
+  {
+    name: 'Docker',
+    level: 78,
+    tag: 'Infra',
+    logo: '/skills/docker.svg',
+    evidence: 'Self-hosted Plane and Outline migration',
+  },
+  {
+    name: 'Kubernetes (AKS)',
+    level: 72,
+    tag: 'Infra',
+    logo: '/skills/kubernetes.svg',
+    evidence: 'Plane + Outline deployment on Azure AKS',
+  },
+  {
+    name: 'Git & CI/CD',
+    level: 82,
+    tag: 'Tooling',
+    logo: '/skills/git.svg',
+    evidence: 'Product Analytics pytest checks on every push',
+  },
+  {
+    name: 'Supabase',
+    level: 74,
+    tag: 'Backend',
+    logo: '/skills/supabase.svg',
+    evidence: 'Findesk authentication and row-level security for holdings',
+  },
+  {
+    name: 'Streamlit',
+    level: 80,
+    tag: 'Data',
+    logo: '/skills/streamlit.svg',
+    evidence: 'Product Analytics and Delhi-NCR AQI dashboards',
+  },
+  {
+    name: 'pandas',
+    level: 80,
+    tag: 'Data',
+    logo: '/skills/pandas.svg',
+    evidence: 'Pure funnel and cohort functions over 2.7M events',
+  },
+  {
+    name: 'Product & GTM',
+    level: 85,
+    tag: 'Product',
+    evidence: 'Credit-card launch spec and roadmap at Bachatt × ZET',
+  },
+  {
+    name: 'Equity Research & Backtesting',
+    level: 80,
+    tag: 'Markets',
+    evidence: 'Findesk value + momentum strategy over a 715-stock universe',
+  },
+  {
+    name: 'Experimentation & Analytics',
+    level: 82,
+    tag: 'Product',
+    evidence: 'RetailRocket experiment sizing: 5% vs 10% relative effects',
+  },
+  {
+    name: 'DSA / Problem Solving',
+    level: 84,
+    tag: 'Foundations',
+    evidence: '600+ LeetCode problems solved; Pupil on Codeforces',
+  },
   { name: 'Figma', level: 66, tag: 'Design', logo: '/skills/figma.svg' },
 ]
 
@@ -344,6 +458,28 @@ export const projects: Project[] = [
     repo: '',
     accent: '#34d399',
     image: '/projects/equity-research.svg',
+    // Signed-out public /home screen, captured 3 November 2026; market figures are a static snapshot.
+    screenshot: '/projects/findesk-overview.webp',
+    status: 'Live',
+    role: 'Product design, full-stack development and AI evaluation',
+    outcome:
+      'Research and portfolio workflows with evidence guards, a data-only fallback and 752 passing tests recorded in November.',
+    accessNote: 'Public research; sign-in required for saved holdings and watchlists.',
+    caseStudy: {
+      problem:
+        'Stock research combines incomplete quotes, thin analyst coverage and personal holdings. An assistant can turn missing data or failed account reads into confident, misleading answers.',
+      role: 'Built the Next.js/Supabase research and portfolio app, four server-side assistant tools, evidence checks and the evaluation harness.',
+      decision:
+        'Scope identity to the session, distinguish unavailable account data from empty holdings, and constrain answers to available evidence. Use a deterministic data-only fallback during model quota failures and retain service failures in benchmark results.',
+      evidence: [
+        'November evidence-guard verification recorded 752 passing automated tests.',
+        'A fixed 60-question benchmark uses synthetic financial snapshots and real model calls, with service failures kept in the denominator.',
+        'One same-prompt model comparison recorded median attempted-turn latency of 1.62s versus 5.73s.',
+        'The value + momentum backtest covers a 715-stock universe and reconstructs membership from nine archived index snapshots.',
+      ],
+      limitations:
+        'The benchmark tests narrow rules, not comprehensive factual accuracy, production-user latency or actual holdings. No investment-return improvement is established. The strategy has a documented 2019–24 index-snapshot gap; caches and model cooldowns remain per server instance.',
+    },
   },
   {
     slug: 'product-analytics',
@@ -359,6 +495,30 @@ export const projects: Project[] = [
     repo: 'https://github.com/Ayush05G/product-analytics-dashboard',
     accent: '#0071eb',
     image: '/projects/product-analytics.svg',
+    status: 'Live',
+    role: 'Analytics development and growth experiment design',
+    outcome:
+      'Diagnosed funnel and retention gaps; recorded funnel peak memory falling from 173 MB to 66 MB and sized a proposed experiment.',
+    accessNote:
+      'The public demo may need to wake. Screenshot shows an earlier stage-count funnel; the study uses progression-based rates.',
+    caseStudyUrl: 'https://github.com/Ayush05G/product-analytics-dashboard/blob/main/case-study.md',
+    // Existing README screenshot: ../product-analytics-dashboard/docs/dashboard.png.
+    screenshot: '/projects/product-analytics-dashboard.webp',
+    caseStudy: {
+      problem:
+        'A real 2.7M-event RetailRocket clickstream shows low conversion and repeat engagement, but a chart alone does not identify an actionable intervention or a feasible experiment.',
+      role: 'Built the Streamlit dashboard, pure funnel/cohort functions, churn model and companion growth case study.',
+      decision:
+        'Use progression-based funnel rates to account for tracking gaps. Prioritize cart-to-purchase after demonstrated intent, preserve findings that contradict the original hypotheses, and resize the proposed experiment from a 5% to a 10% relative effect to fit observed traffic.',
+      evidence: [
+        '2.45% of viewers add to cart; 28.04% of cart-adders purchase; end-to-end conversion is 0.83%.',
+        'About 4.6% of a week’s new visitors return the following week; held-out churn ROC-AUC is approximately 0.69.',
+        'Recorded optimization reduced peak funnel memory from 173 MB to 66 MB.',
+        'At observed traffic, a 5% relative effect needs about 17 weeks; a 10% effect needs about 4.5 weeks.',
+      ],
+      limitations:
+        'This uses the public RetailRocket dataset, not company operational data. The experiment is proposed, with no measured uplift, and can miss smaller effects. Missing events affect funnel interpretation; visitor-day carts approximate sessions because no cart/session ID is available. Correlations do not establish causes.',
+    },
   },
   {
     slug: 'aqi-analytics',
@@ -374,6 +534,22 @@ export const projects: Project[] = [
     repo: 'https://github.com/Ayush05G/aqi-analytics',
     accent: '#e50914',
     image: '/projects/aqi-analytics.svg',
+    status: 'Live',
+    role: 'Data analysis and forecast development',
+    outcome: 'SARIMA achieved MAE 24.7 versus a 29.6 naive baseline on a 30-day holdout.',
+    caseStudy: {
+      problem:
+        'Delhi-NCR air-quality trends mix seasonal patterns and event effects, making simple before/after comparisons difficult to interpret.',
+      role: 'Combined three validated CPCB-data sources, built the dashboard and evaluated a SARIMA forecast.',
+      decision:
+        'Use confound-controlled baselines for event comparisons and evaluate the forecast against naive baselines on a held-out window.',
+      evidence: [
+        'The analysis spans 2015–2026 and covers seasonality, Diwali, stubble burning and the COVID lockdown.',
+        'The 30-day holdout recorded MAE 24.7 for SARIMA versus 29.6 for the naive baseline.',
+      ],
+      limitations:
+        'Forecast evidence is limited to the documented 30-day holdout. Event comparisons are observational and do not establish causal effects.',
+    },
   },
   {
     slug: 'disaster-mesh',
@@ -390,6 +566,23 @@ export const projects: Project[] = [
     repo: 'https://github.com/Ayush05G/disaster-mesh',
     accent: '#f59e0b',
     image: '/projects/disaster-mesh.svg',
+    status: 'Prototype',
+    role: 'Offline system design and local multi-node verification',
+    outcome: 'Local tests recorded three-node convergence in about 2s and partition recovery in about 1s.',
+    accessNote: 'Local prototype; no hosted demo.',
+    caseStudy: {
+      problem:
+        'Disconnected disaster-response nodes need to exchange and reconcile hazard reports when connectivity returns.',
+      role: 'Designed the extraction pipeline, schema-validated reports, libp2p mesh and CRDT ledger; verified local convergence and failure handling.',
+      decision:
+        'Use a grow-only-set CRDT keyed by node and sequence, Lamport ordering and anti-entropy catch-up instead of trusting wall clocks. Show authored versus carried reports without inventing delivery paths.',
+      evidence: [
+        'Single-machine tests recorded three nodes converging from cold start in about 2s and a healed partition reconverging in about 1s.',
+        'Property-based and chaos tests exposed an ingest thread-safety race and a missing read timeout.',
+      ],
+      limitations:
+        'These are local single-machine results. Physical-device networking, real-model extraction quality and Raspberry Pi profiling remain hardware-dependent milestones.',
+    },
   },
   {
     slug: 'scrum-dashboard',
@@ -407,6 +600,24 @@ export const projects: Project[] = [
     repo: '',
     accent: '#22d3ee',
     image: '/projects/scrum-dashboard.svg',
+    status: 'Internal tool',
+    role: 'Sprint workflow design and full-stack development',
+    outcome:
+      'Implemented standups, sprint snapshots, coverage-aware burndown, velocity and retrospective notes over Plane.',
+    accessNote: 'Sign-in required',
+    caseStudy: {
+      problem:
+        'Plane tracks work items but lacks the standup and historical sprint-health views needed for delivery ceremonies.',
+      role: 'Built the Next.js/Prisma dashboard, daily cycle snapshots and per-manager Plane-token access.',
+      decision:
+        'Keep Plane as the read-only work-item source of truth. Store daily snapshots, choose points or item counts from estimate coverage, and preserve missing-day gaps instead of implying observations.',
+      evidence: [
+        'Implemented burndown, velocity and retrospective notes; repeat snapshot cron runs are idempotent.',
+        'Company-domain Google SSO establishes identity; each manager’s validated, encrypted token scopes Plane access.',
+      ],
+      limitations:
+        'The November audit established features in local code, not deployment of every feature. Historical scope depends on recorded snapshots. No measured delivery improvement is attributed to this dashboard.',
+    },
   },
   {
     slug: 'portfolio',
@@ -421,6 +632,17 @@ export const projects: Project[] = [
     link: '',
     repo: 'https://github.com/Ayush05G/portfolio',
     accent: '#8a2be2',
+    status: 'Live',
+    role: 'Portfolio design and frontend development',
+    outcome: 'Built the profile gate, billboard and browsable project rows shown on this site.',
+    caseStudy: {
+      problem: 'Present product, engineering and infrastructure work in one browsable portfolio.',
+      role: 'Designed and built the site with React, Vite and Framer Motion.',
+      decision:
+        'Use a Netflix-inspired profile gate and rows of projects, with detail views for the supporting work.',
+      evidence: ['Implemented profile selection, a billboard hero and browsable project rows.'],
+      limitations: 'No measured recruiting or engagement outcome is claimed.',
+    },
   },
 ]
 

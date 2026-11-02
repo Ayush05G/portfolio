@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { track } from '@vercel/analytics'
 import { seasons, type Season } from '../data.ts'
+import ExperienceSpotlight from './ExperienceSpotlight.tsx'
 import SeasonPicker from './SeasonPicker.tsx'
 import EpisodeItem from './EpisodeItem.tsx'
 
@@ -33,6 +34,7 @@ export default function SeasonsSection({ title }: Props) {
         <SeasonPicker seasons={seasons} activeId={activeId} onSelect={selectSeason} />
       </div>
 
+      <ExperienceSpotlight />
       {/* Keyed, but deliberately NOT wrapped in AnimatePresence: `mode="wait"`
           would hold the old season on screen until an exit animation finishes,
           so a stalled animation (e.g. a throttled background tab) would leave
@@ -55,11 +57,16 @@ export default function SeasonsSection({ title }: Props) {
         </div>
         <p className="seasons__synopsis">{season.synopsis}</p>
 
-        <ol className="seasons__list">
-          {season.episodes.map((ep) => (
-            <EpisodeItem key={`${season.id}-${ep.number}`} item={ep} />
-          ))}
-        </ol>
+        <details className="episode-browser" key={season.id}>
+          <summary>
+            Explore {season.episodes.length} episodes · {season.title}
+          </summary>
+          <ol className="seasons__list">
+            {season.episodes.map((ep) => (
+              <EpisodeItem key={`${season.id}-${ep.number}`} item={ep} />
+            ))}
+          </ol>
+        </details>
       </motion.div>
     </section>
   )

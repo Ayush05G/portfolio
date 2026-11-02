@@ -10,7 +10,7 @@ interface Props {
    behind a compact skill "poster". */
 export default function Top10Card({ item, rank }: Props) {
   return (
-    <div className="top10" tabIndex={0} role="group" aria-label={`#${rank} ${item.name}`}>
+    <div className="top10" tabIndex={0} role="group" aria-label={item.name}>
       <span className="top10__rank" aria-hidden>
         {rank}
       </span>
@@ -19,7 +19,7 @@ export default function Top10Card({ item, rank }: Props) {
           <img className="top10__logo" src={item.logo} alt={`${item.name} logo`} loading="lazy" />
         )}
         <span className="top10__name">{item.name}</span>
-        <span className="top10__level">{item.level}%</span>
+        <span className="top10__level">{item.tag}</span>
       </div>
     </div>
   )

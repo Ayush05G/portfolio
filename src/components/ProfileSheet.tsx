@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { profiles, type ProfileSummary } from '../data.ts'
 import { isKonamiUnlocked } from '../useKonami.ts'
+import { Close } from '../icons.tsx'
+import useDialog from '../useDialog.ts'
 
 interface Props {
   activeId?: string
@@ -14,16 +15,7 @@ interface Props {
  * gate still handles the first visit; this is the quick in-session swap.
  */
 export default function ProfileSheet({ activeId, onSelect, onClose }: Props) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    document.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
-  }, [onClose])
+  const { dialogRef, titleId } = useDialog({ open: true, onClose })
 
   return (
     <motion.div
@@ -35,9 +27,12 @@ export default function ProfileSheet({ activeId, onSelect, onClose }: Props) {
       transition={{ duration: 0.2 }}
     >
       <motion.div
+        ref={dialogRef}
         className="sheet"
         role="dialog"
-        aria-label="Switch profile"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
@@ -53,7 +48,19 @@ export default function ProfileSheet({ activeId, onSelect, onClose }: Props) {
         }}
       >
         <div className="sheet__handle" aria-hidden />
-        <h3 className="sheet__title">Who's watching?</h3>
+        <div className="dialog__header sheet__header">
+          <h3 className="sheet__title" id={titleId}>
+            Who's watching?
+          </h3>
+          <button
+            className="sheet__close"
+            onClick={onClose}
+            aria-label="Close profile switcher"
+            data-dialog-initial-focus
+          >
+            {Close}
+          </button>
+        </div>
 
         <div className="sheet__list">
           {profiles

@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useId, useMemo, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { projects, skills, seasons, achievements, type Project } from '../data.ts'
 import { Search as SearchIcon, Close } from '../icons.tsx'
+import useDialog from '../useDialog.ts'
 
 interface IndexItem {
   type: string
@@ -27,8 +29,8 @@ function buildIndex(onOpenProject: (p: Project) => void, scrollTo: (id: string) 
     ...skills.map((s) => ({
       type: 'Skill',
       label: s.name,
-      sub: `${s.tag} · ${s.level}%`,
-      keywords: `${s.name} ${s.tag}`,
+      sub: s.evidence || s.tag,
+      keywords: `${s.name} ${s.tag} ${s.evidence || ''}`,
       run: () => scrollTo('skills'),
     })),
     // Every episode across every season is searchable; they all live in the
@@ -65,6 +67,8 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
   const [prevQ, setPrevQ] = useState(q)
   const [prevOpen, setPrevOpen] = useState(open)
   const inputRef = useRef<HTMLInputElement>(null)
+  const { dialogRef } = useDialog({ open, onClose, initialFocusRef: inputRef })
+  const resultsId = useId()
   const index = useMemo(() => buildIndex(onOpenProject, scrollTo), [onOpenProject, scrollTo])
 
   // Reset the highlighted result whenever the query changes (render-phase
@@ -96,39 +100,28 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
       .slice(0, 8)
   }, [q, index])
 
-  useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 60)
-  }, [open])
-
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-      else if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        setActive((a) => Math.min(a + 1, results.length - 1))
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault()
-        setActive((a) => Math.max(a - 1, 0))
-      } else if (e.key === 'Enter' && results[active]) {
-        pick(results[active])
-      }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, results, active])
-
   function pick(item: ResultItem) {
-    onClose()
+    // Finish cleanup and focus restoration before a result opens a new dialog.
+    // Otherwise a late Search cleanup can take focus from the project panel.
+    flushSync(onClose)
     item.run()
   }
 
   if (!open) return null
 
+  const hasResults = q.trim().toLowerCase() !== 'konami' && results.length > 0
+
   return (
     <div className="search-overlay" onClick={onClose}>
-      <div className="search-panel" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={dialogRef}
+        className="search-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search portfolio"
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="search-input">
           <span className="search-input__icon">{SearchIcon}</span>
           <input
@@ -137,6 +130,26 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search projects, skills, experience…"
             aria-label="Search"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={hasResults}
+            aria-controls={hasResults ? resultsId : undefined}
+            aria-activedescendant={hasResults && results[active] ? `${resultsId}-${active}` : undefined}
+            onKeyDown={(e) => {
+              if (e.nativeEvent.isComposing) return
+              if (e.key === 'ArrowDown') {
+                e.preventDefault()
+                setActive((a) => Math.max(0, Math.min(a + 1, results.length - 1)))
+              } else if (e.key === 'ArrowUp') {
+                e.preventDefault()
+                setActive((a) => Math.max(a - 1, 0))
+              } else if (e.key === 'Enter' && hasResults && results[active]) {
+                e.preventDefault()
+                pick(results[active])
+              }
+              // Keep the page's carousel shortcuts out of the search field.
+              e.stopPropagation()
+            }}
           />
           <button className="search-input__close" onClick={onClose} aria-label="Close search">
             {Close}
@@ -144,7 +157,12 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
         </div>
 
         {q.trim() && (
-          <div className="search-results">
+          <div
+            className="search-results"
+            id={resultsId}
+            role={hasResults ? 'listbox' : 'status'}
+            aria-label={hasResults ? 'Search results' : undefined}
+          >
             {q.trim().toLowerCase() === 'konami' ? (
               <div className="search-empty">You know the code: close this, then ↑ ↑ ↓ ↓ ← → ← → B A.</div>
             ) : results.length === 0 ? (
@@ -153,6 +171,10 @@ export default function Search({ open, onClose, onOpenProject, scrollTo }: Props
               results.map((r, i) => (
                 <button
                   key={`${r.type}-${r.label}`}
+                  id={`${resultsId}-${i}`}
+                  role="option"
+                  aria-selected={i === active}
+                  tabIndex={-1}
                   className={`search-result ${i === active ? 'active' : ''}`}
                   onMouseEnter={() => setActive(i)}
                   onClick={() => pick(r)}

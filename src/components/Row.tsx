@@ -1,3 +1,4 @@
+import { scrollBehavior } from '../lib/scroll.ts'
 import { useRef, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight } from '../icons.tsx'
 import SkeletonCard, { type SkeletonVariant } from './SkeletonCard.tsx'
@@ -31,7 +32,7 @@ export default function Row({
   function scrollBy(dir: number) {
     const el = track.current
     if (!el) return
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: 'smooth' })
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: scrollBehavior() })
   }
 
   return (

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { track } from '@vercel/analytics'
 import { profile, contact } from '../data.ts'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
@@ -29,6 +30,7 @@ export default function ContactForm() {
       return
     }
 
+    track('contact_form_started')
     setStatus('sending')
     setError('')
     try {
@@ -46,6 +48,7 @@ export default function ContactForm() {
       })
       const json = await res.json()
       if (json.success) {
+        track('contact_form_sent')
         setStatus('sent')
         form.reset()
       } else {
@@ -60,7 +63,7 @@ export default function ContactForm() {
 
   if (status === 'sent') {
     return (
-      <div className="contact-form contact-form--done">
+      <div className="contact-form contact-form--done" role="status">
         <div className="contact-form__check">✓</div>
         <h3>Message on its way</h3>
         <p>
@@ -80,18 +83,22 @@ export default function ContactForm() {
       <div className="contact-form__row">
         <label>
           <span>Name</span>
-          <input name="name" type="text" required placeholder="Your name" />
+          <input name="name" type="text" autoComplete="name" required placeholder="Your name" />
         </label>
         <label>
           <span>Email</span>
-          <input name="email" type="email" required placeholder="you@email.com" />
+          <input name="email" type="email" autoComplete="email" required placeholder="you@email.com" />
         </label>
       </div>
       <label>
         <span>Message</span>
         <textarea name="message" rows={4} required placeholder="What's on your mind?" />
       </label>
-      {status === 'error' && <p className="contact-form__error">{error}</p>}
+      {status === 'error' && (
+        <p className="contact-form__error" role="alert">
+          {error}
+        </p>
+      )}
       <button className="nf-btn nf-btn--play" type="submit" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending…' : 'Send message'}
       </button>

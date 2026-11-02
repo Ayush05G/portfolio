@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { track } from '@vercel/analytics'
 import { Close, Download } from '../icons.tsx'
+import useDialog from '../useDialog.ts'
 
 interface Props {
   url?: string
@@ -13,17 +14,7 @@ interface Props {
  * closed.
  */
 export default function ResumeModal({ url, onClose }: Props) {
-  useEffect(() => {
-    if (!url) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    document.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
-  }, [url, onClose])
+  const { dialogRef, titleId } = useDialog({ open: !!url, onClose })
 
   if (!url) return null
 
@@ -37,20 +28,30 @@ export default function ResumeModal({ url, onClose }: Props) {
       transition={{ duration: 0.2 }}
     >
       <motion.div
+        ref={dialogRef}
         className="resume-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0.95, opacity: 0, y: 16 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.97, opacity: 0, y: 10 }}
         transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <div className="resume-modal__header">
-          <span>Résumé</span>
+        <div className="dialog__header resume-modal__header">
+          <span id={titleId}>Résumé</span>
           <div className="resume-modal__actions">
-            <a className="resume-modal__link" href={url} download>
+            <a className="resume-modal__link" href={url} download onClick={() => track('resume_downloaded')}>
               {Download} Download
             </a>
-            <button className="resume-modal__close" onClick={onClose} aria-label="Close">
+            <button
+              className="resume-modal__close"
+              onClick={onClose}
+              aria-label="Close résumé"
+              data-dialog-initial-focus
+            >
               {Close}
             </button>
           </div>

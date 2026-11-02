@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { VolumeOn, VolumeOff } from '../icons.tsx'
 import { playTick } from '../sound.ts'
+import useSound from '../useSound.ts'
 
 interface Props {
   videoSrc: string
@@ -20,7 +21,8 @@ export default function BillboardVideo({ videoSrc, webmSrc, poster }: Props) {
   // the poster→video crossfade.
   const [armed, setArmed] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const [muted, setMuted] = useState(true)
+  const { enabled, toggle } = useSound()
+  const muted = !enabled
 
   // The Netflix beat: let the poster land before the video starts.
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function BillboardVideo({ videoSrc, webmSrc, poster }: Props) {
 
   function toggleMute() {
     const next = !muted
-    setMuted(next)
+    toggle()
     if (videoRef.current) videoRef.current.muted = next
     // The track is silent by design; the blip confirms the toggle regardless.
     if (!next) playTick()
@@ -73,7 +75,7 @@ export default function BillboardVideo({ videoSrc, webmSrc, poster }: Props) {
         <video
           ref={videoRef}
           className={`bvideo__video ${playing ? 'is-playing' : ''}`}
-          muted
+          muted={muted}
           loop
           playsInline
           preload="none"

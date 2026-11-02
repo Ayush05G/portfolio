@@ -2,7 +2,10 @@
 
 An interactive, **Netflix-inspired** personal portfolio built with **React + Vite** and **Framer Motion**.
 
-It opens with a logo "sting", then a **"Who's watching?"** profile gate, and drops you into a Netflix-style browse experience: a billboard hero (you, as the featured "title"), horizontally-scrolling rows of cards for Projects / Skills / Journey, and a detail modal when you click a project.
+It opens directly into a Netflix-style browse experience: a clear introduction,
+selected projects, structured case studies and an experience spotlight. The logo
+intro and **"Who's watching?"** profiles are optional under More. Recruiter and
+Developer views use their respective resumes.
 
 ## Run it
 
@@ -54,7 +57,9 @@ from the November review are in [the content audit](docs/content-audit-2026-11-0
 ffmpeg -i raw.mov -t 22 -vf "scale=1280:-2,fps=24" -an -c:v libx264 -crf 28 -pix_fmt yuv420p -movflags +faststart public/trailer/trailer.mp4
 ```
 
-and keep it under ~4 MB. Delete `profile.trailer` in `data.ts` to fall back to the typewriter trailer. The video never auto-plays on small screens, slow connections, or for users preferring reduced motion.
+and keep it under ~4 MB. The trailer mounts only after the visitor explicitly
+chooses Watch the portfolio trailer. Delete `profile.trailer` in `data.ts` to
+remove that action. Sound is off by default and follows the global preference.
 
 ### Colors & branding
 
@@ -66,11 +71,17 @@ Design tokens are CSS variables at the top of [`src/index.css`](src/index.css). 
 
 ## Features
 
-- Netflix-style logo intro + **"Who's watching?"** profile gate
-- Sticky nav (transparent → solid on scroll) with your red logo and section highlighting
-- **Billboard hero** with match %, genres, and Play / More Info buttons
-- Horizontally-scrolling **card rows** with hover-scale and left/right arrows
-- **Detail modal** for projects (Esc or click-outside to close)
-- Animated skill bars, responsive layout, respects `prefers-reduced-motion`
+- Direct entry to the portfolio; optional Netflix-style intro and profile selection under More
+- Clear hero actions for selected work, the profile-specific resume, email and LinkedIn
+- Three featured projects with real product previews where available; expand to see all six
+- Structured project case studies and a Bachatt experience spotlight, with supporting evidence and limits
+- Skills grouped by use with project evidence, rather than numeric self-ratings
+- Work / Resume / Contact / More navigation on mobile; optional stats and learning below the main content
+- Labelled dialogs with focus trapping/restoration, background isolation and sticky project close controls
+- Sound off by default with a saved global preference; reduced-motion-aware animation and scrolling
+- Analytics events for project/demo/case-study views, resume downloads and contact actions, without form contents
+
+Implementation priorities, screenshot sources and validation notes are recorded in
+[the usability refresh](docs/ux-refresh-2026-11-03.md).
 
 > Netflix-inspired for fun — not affiliated with or endorsed by Netflix.

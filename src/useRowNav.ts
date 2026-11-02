@@ -1,7 +1,9 @@
+import { scrollBehavior } from './lib/scroll.ts'
 import { useEffect } from 'react'
 
 const isCard = (el: Element | null): el is HTMLElement =>
-  !!el && (el.classList.contains('card') || el.classList.contains('top10'))
+  !!el &&
+  (el.classList.contains('card') || el.classList.contains('work-card') || el.classList.contains('top10'))
 
 /**
  * Netflix-style keyboard navigation for the browse rows: arrow keys move
@@ -22,7 +24,7 @@ export default function useRowNav() {
         const cards = [...track.children] as HTMLElement[]
         const next = cards[cards.indexOf(active) + (e.key === 'ArrowRight' ? 1 : -1)]
         next?.focus()
-        next?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+        next?.scrollIntoView({ behavior: scrollBehavior(), inline: 'center', block: 'nearest' })
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault()
         const tracks = [...document.querySelectorAll('.row__track')]
@@ -39,17 +41,17 @@ export default function useRowNav() {
           }
         }
         best.focus()
-        best.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+        best.scrollIntoView({ behavior: scrollBehavior(), block: 'center', inline: 'nearest' })
       } else if (e.key === 'Home') {
         e.preventDefault()
         const first = track.children[0] as HTMLElement | undefined
         first?.focus()
-        first?.scrollIntoView({ behavior: 'smooth', inline: 'start' })
+        first?.scrollIntoView({ behavior: scrollBehavior(), inline: 'start' })
       } else if (e.key === 'End') {
         e.preventDefault()
         const last = track.children[track.children.length - 1] as HTMLElement | undefined
         last?.focus()
-        last?.scrollIntoView({ behavior: 'smooth', inline: 'end' })
+        last?.scrollIntoView({ behavior: scrollBehavior(), inline: 'end' })
       }
     }
     document.addEventListener('keydown', onKeyDown)

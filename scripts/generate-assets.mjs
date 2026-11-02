@@ -17,7 +17,7 @@ const ogSvg = `
   <rect x="0" y="0" width="10" height="630" fill="#e50914"/>
   <text x="90" y="200" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="6" fill="#e50914">A PORTFOLIO</text>
   <text x="90" y="300" font-family="Arial, sans-serif" font-size="92" font-weight="700" fill="#ffffff">AYUSH GUPTA</text>
-  <text x="90" y="360" font-family="Arial, sans-serif" font-size="30" font-weight="500" fill="#d2d2d2">98% Match · EE · NSUT &apos;27</text>
+  <text x="90" y="360" font-family="Arial, sans-serif" font-size="30" font-weight="500" fill="#d2d2d2">Product-minded engineer · NSUT &apos;27</text>
   <text x="90" y="420" font-family="Arial, sans-serif" font-size="26" fill="#8c8c8c">Product · Full-Stack · Infrastructure · Fintech</text>
   <g font-family="Arial, sans-serif" font-size="22" fill="#ffffff">
     <rect x="90" y="470" width="150" height="46" rx="4" fill="#e50914"/>

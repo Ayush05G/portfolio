@@ -1,3 +1,4 @@
+import { scrollBehavior } from './lib/scroll.ts'
 import { useEffect, useState, lazy, Suspense, Fragment, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { track } from '@vercel/analytics'
@@ -24,7 +25,9 @@ import SeasonsSection from './components/SeasonsSection.tsx'
 import StatsRow from './components/StatsRow.tsx'
 import BecauseYouWatched from './components/BecauseYouWatched.tsx'
 import BottomTabBar from './components/BottomTabBar.tsx'
-import ProjectCard from './components/cards/ProjectCard.tsx'
+import SelectedWork from './components/SelectedWork.tsx'
+import ContactActions from './components/ContactActions.tsx'
+import MoreMenu from './components/MoreMenu.tsx'
 import SkillCard from './components/cards/SkillCard.tsx'
 import AchievementCard from './components/cards/AchievementCard.tsx'
 import Top10Card from './components/cards/Top10Card.tsx'
@@ -57,7 +60,9 @@ function Intro({ onDone, onSkip }: IntroProps) {
       role="button"
       tabIndex={0}
       onClick={onSkip}
-      onKeyDown={onSkip}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') onSkip()
+      }}
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -78,8 +83,8 @@ function Intro({ onDone, onSkip }: IntroProps) {
 
 const firstName = profile.name.split(' ')[0]
 // Top 10 = the highest-fluency skills, ranked.
-const topSkills = [...skills].sort((a, b) => b.level - a.level).slice(0, 10)
-const DEFAULT_ORDER: RowId[] = ['projects', 'stats', 'learning', 'top10', 'skills', 'achievements', 'journey']
+const topSkills = skills.slice(0, 10)
+const DEFAULT_ORDER: RowId[] = ['projects', 'journey', 'skills', 'achievements', 'stats', 'learning', 'top10']
 
 const STORAGE_KEY = 'nf_profile'
 // Which project seeded the "Because you watched" row. Session-scoped: the row
@@ -102,7 +107,7 @@ const initial = (() => {
       return null
     }
   })()
-  const prof = profiles.find((p) => p.id === (urlId || savedId)) || null
+  const prof = profiles.find((p) => p.id === (urlId || savedId)) || profiles[0]
   const proj = prof ? findProject(params.get('project')) : null
   return { profile: prof, project: proj }
 })()
@@ -114,12 +119,13 @@ interface SectionDef {
 }
 
 export default function App() {
-  const [phase, setPhase] = useState<Phase>(initial.profile ? 'app' : 'intro')
+  const [phase, setPhase] = useState<Phase>('app')
   const [activeProfile, setActiveProfile] = useState<ProfileSummary | null>(initial.profile)
   const [modalItem, setModalItem] = useState<Project | null>(initial.project)
   const [searchOpen, setSearchOpen] = useState(false)
   const [resumeOpen, setResumeOpen] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [watchedSlug, setWatchedSlug] = useState<string | null>(() => {
     // A ?project= deep-link counts as "watched" too, so a shared link still
     // gets the recommendation row.
@@ -240,10 +246,10 @@ export default function App() {
   }, [])
 
   function scrollToAbout() {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById('about')?.scrollIntoView({ behavior: scrollBehavior() })
   }
   function scrollToId(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById(id)?.scrollIntoView({ behavior: scrollBehavior() })
   }
 
   const config = activeProfile ? profileConfig[activeProfile.id] : null
@@ -261,14 +267,8 @@ export default function App() {
   // emit a card carousel or a full-width section like Seasons.
   const rowDefs: Partial<Record<RowId, SectionDef>> = {
     projects: {
-      title: 'Featured Projects',
-      render: (title) => (
-        <Row id="projects" title={title}>
-          {projects.map((p, i) => (
-            <ProjectCard key={p.title} item={p} index={i} onOpen={openProject} />
-          ))}
-        </Row>
-      ),
+      title: 'Selected work',
+      render: () => <SelectedWork onOpen={openProject} />,
     },
     stats: {
       title: 'Live from GitHub & LeetCode',
@@ -285,7 +285,7 @@ export default function App() {
       ),
     },
     top10: {
-      title: `Top 10 in ${firstName}'s Stack Today`,
+      title: `More of ${firstName}'s toolkit`,
       render: (title) => (
         <Row id="top10" title={title} className="row--top10">
           {topSkills.map((s, i) => (
@@ -297,11 +297,35 @@ export default function App() {
     skills: {
       title: 'Skills & Technologies',
       render: (title) => (
-        <Row id="skills" title={title}>
-          {skills.map((s) => (
-            <SkillCard key={s.name} item={s} />
-          ))}
-        </Row>
+        <section className="panel skills-section" id="skills">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">TOOLS WITH CONTEXT</span>
+              <h2>{title}</h2>
+              <p>Applied across products, analytics and production systems.</p>
+            </div>
+          </div>
+          <div className="skill-groups">
+            {['Build', 'Analyze', 'Ship', 'Collaborate'].map((group) => {
+              const tags: Record<string, string[]> = {
+                Build: ['Language', 'Framework', 'Backend', 'Database'],
+                Analyze: ['Data', 'Markets', 'Foundations'],
+                Ship: ['Infra', 'Tooling'],
+                Collaborate: ['Product', 'Design'],
+              }
+              return (
+                <section key={group}>
+                  <h3>{group}</h3>
+                  {skills
+                    .filter((skill) => tags[group].includes(skill.tag))
+                    .map((skill) => (
+                      <SkillCard key={skill.name} item={skill} />
+                    ))}
+                </section>
+              )
+            })}
+          </div>
+        </section>
       ),
     },
     achievements: {
@@ -320,18 +344,28 @@ export default function App() {
     },
   }
 
-  const order = config?.order || DEFAULT_ORDER
+  const order = (config?.order || DEFAULT_ORDER).filter((id) => !['stats', 'learning', 'top10'].includes(id))
   const isNotFound = typeof window !== 'undefined' && window.location.pathname !== '/'
 
   if (isNotFound) return <NotFound />
 
   return (
     <>
+      <a className="skip-link" href="#projects">
+        Skip to selected work
+      </a>
+      {phase !== 'app' && (
+        <button className="entry-skip" onClick={() => selectProfile(activeProfile || profiles[0])}>
+          Skip to portfolio →
+        </button>
+      )}
       <AnimatePresence mode="wait">
         {phase === 'intro' && (
           <Intro
             key="intro"
-            onDone={() => setTimeout(() => setPhase('gate'), 550)}
+            onDone={() =>
+              setTimeout(() => setPhase((current) => (current === 'intro' ? 'gate' : current)), 550)
+            }
             onSkip={() => setPhase('gate')}
           />
         )}
@@ -351,88 +385,114 @@ export default function App() {
             activeProfile={activeProfile}
             onSwitchProfile={switchProfile}
             onOpenSearch={() => setSearchOpen(true)}
+            onOpenMore={() => setMoreOpen(true)}
             resumeUrl={resumeUrl}
             onOpenResume={openResume}
           />
 
-          <Billboard config={config} onMoreInfo={scrollToAbout} />
+          <main id="main-content">
+            <Billboard
+              config={config}
+              onMoreInfo={scrollToAbout}
+              onOpenResume={openResume}
+              onOpenProject={openProject}
+            />
 
-          <div className="rows">
-            {order.map((id, idx) => {
-              const def = rowDefs[id]
-              if (!def) return null
-              const title =
-                idx === 0 && activeProfile ? `Today's Top Picks for ${activeProfile.name}` : def.title
-              return (
-                <Fragment key={id}>
-                  {def.render(title)}
-                  {id === 'projects' && watched && (
-                    <BecauseYouWatched watched={watched} onOpenProject={openProject} />
-                  )}
-                </Fragment>
-              )
-            })}
-          </div>
-
-          {/* About panel */}
-          <section className="panel" id="about">
-            <h2 className="panel__title">About {profile.name.split(' ')[0]}</h2>
-            <div className="about-grid">
-              <div>
-                {about.paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-              <div className="facts">
-                {about.facts.map((f) => (
-                  <div className="fact" key={f.label}>
-                    <div className="fact__label">{f.label}</div>
-                    <div className="fact__value">{f.value}</div>
-                  </div>
-                ))}
-              </div>
+            <div className="rows">
+              {order.map((id) => {
+                const def = rowDefs[id]
+                if (!def) return null
+                const title = def.title
+                return (
+                  <Fragment key={id}>
+                    {def.render(title)}
+                    {id === 'projects' && watched && (
+                      <BecauseYouWatched watched={watched} onOpenProject={openProject} />
+                    )}
+                  </Fragment>
+                )
+              })}
             </div>
-          </section>
 
-          {/* Contact panel */}
-          <section className="panel" id="contact">
-            <h2 className="panel__title">Let's Connect</h2>
-            <div className="contact-grid">
-              <div className="contact-grid__left">
-                <p className="contact-lead">
-                  Open to full-time product & software roles. Have a role, a question, or just want to say hi?
-                  Drop me a line.
-                </p>
-                <div className="social-row">
-                  {socials.map((s) => (
-                    <a className="social-card" key={s.label} href={s.url} target="_blank" rel="noreferrer">
-                      <div className="social-card__label">{s.label}</div>
-                      <div className="social-card__handle">{s.handle}</div>
-                    </a>
+            {/* About panel */}
+            <section className="panel" id="about">
+              <h2 className="panel__title">About {profile.name.split(' ')[0]}</h2>
+              <div className="about-grid">
+                <div>
+                  {about.paragraphs.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </div>
+                <div className="facts">
+                  {about.facts.map((f) => (
+                    <div className="fact" key={f.label}>
+                      <div className="fact__label">{f.label}</div>
+                      <div className="fact__value">{f.value}</div>
+                    </div>
                   ))}
                 </div>
               </div>
-              <Suspense fallback={null}>
-                <ContactForm />
-              </Suspense>
-            </div>
-          </section>
+            </section>
 
+            <details className="panel bonus-content">
+              <summary>
+                Behind the scenes <span>Live stats, learning & more tools</span>
+              </summary>
+              <div className="bonus-content__body">
+                <StatsRow title="Live from GitHub & LeetCode" />
+                {rowDefs.learning?.render('Currently exploring')}
+                {rowDefs.top10?.render('More of my toolkit')}
+              </div>
+            </details>
+            {/* Contact panel */}
+            <section className="panel" id="contact">
+              <h2 className="panel__title">Let's Connect</h2>
+              <div className="contact-grid">
+                <div className="contact-grid__left">
+                  <p className="contact-lead">
+                    Open to full-time product & software roles. Have a role, a question, or just want to say
+                    hi? Drop me a line.
+                  </p>
+                  <ContactActions />
+                  <div className="social-row">
+                    {socials.map((s) => (
+                      <a
+                        className="social-card"
+                        key={s.label}
+                        href={s.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => track('social_clicked', { platform: s.label })}
+                      >
+                        <div className="social-card__label">{s.label}</div>
+                        <div className="social-card__handle">{s.handle}</div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <Suspense fallback={null}>
+                  <ContactForm />
+                </Suspense>
+              </div>
+            </section>
+          </main>
           <footer className="footer">
             Designed & built by <strong>{profile.name}</strong> · © {new Date().getFullYear()} ·
             Netflix-inspired, not affiliated with Netflix.
           </footer>
 
-          <BottomTabBar
-            activeProfile={activeProfile}
-            resumeUrl={resumeUrl}
-            onOpenSearch={() => setSearchOpen(true)}
-            onOpenResume={openResume}
-            onOpenProfiles={() => setSheetOpen(true)}
-          />
+          <BottomTabBar onOpenResume={openResume} onOpenMore={() => setMoreOpen(true)} />
         </motion.div>
       )}
 
+      {moreOpen && (
+        <MoreMenu
+          onClose={() => setMoreOpen(false)}
+          onSearch={() => setSearchOpen(true)}
+          onProfiles={() => setSheetOpen(true)}
+          onIntro={() => setPhase('intro')}
+        />
+      )}
       <Suspense fallback={null}>
         {searchOpen && (
           <Search

@@ -8,6 +8,7 @@ import '@fontsource/space-grotesk/700.css'
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
+import { MotionConfig } from 'framer-motion'
 import App from './App.tsx'
 import './index.css'
 
@@ -26,7 +27,9 @@ console.log(
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <MotionConfig reducedMotion="user">
+      <App />
+    </MotionConfig>
     <Analytics />
   </React.StrictMode>,
 )
